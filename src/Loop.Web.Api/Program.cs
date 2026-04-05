@@ -27,13 +27,11 @@ builder.Services.AddFluentValidationAutoValidation();
 
 WebApplication app = builder.Build();
 
+app.ApplyMigrations();
 
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwaggerWithUi();
 
-    app.ApplyMigrations();
-}
 
 app.MapHealthChecks("health", new HealthCheckOptions
 {

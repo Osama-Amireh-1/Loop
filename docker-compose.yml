@@ -4,23 +4,25 @@ services:
     container_name: web-api
     build:
       context: .
-      dockerfile: src/Web.Api/Dockerfile
+      dockerfile: src/Loop.Web.Api/Dockerfile
     ports:
       - 5000:8080
-      - 5001:8081
-
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - postgres
   postgres:
     image: postgres:17
     container_name: postgres
     environment:
-      - POSTGRES_DB=clean-architecture
+      - POSTGRES_DB=Loop
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=software
     volumes:
       - ./.containers/db:/var/lib/postgresql/data
     ports:
       - 5432:5432
-
   seq:
     image: datalust/seq:2024.3
     container_name: seq
