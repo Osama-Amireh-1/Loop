@@ -20,7 +20,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-     - name: Restore
+      - name: Restore
         run: dotnet restore src/Loop.sln
 
       - name: Build
