@@ -11,29 +11,32 @@ namespace Web.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]  // ← all endpoints require auth by default
+[Authorize]
 public class UsersController(IDispatcher dispatcher, IUnitOfWork unitOfWork) : ControllerBase
 {
     [HttpPost("register")]
-    [AllowAnonymous]  // ← public, no auth needed
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterUserParams request, CancellationToken cancellationToken)
     {
         RegisterUser.RegisterUserCommand command = new(
             request.Email,
             request.FirstName,
             request.LastName,
+            request.Phone,
+            request.Gender,
             request.Password);
 
         Result<Guid> result = await dispatcher.Dispatch(command, cancellationToken);
-        if(result.IsSuccess)
+        if (result.IsSuccess)
         {
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
+
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
     [HttpPost("login")]
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginUserParams request, CancellationToken cancellationToken)
     {
         LoginUser.LoginUserCommand command = new(request.Email, request.Password);
@@ -49,7 +52,6 @@ public class UsersController(IDispatcher dispatcher, IUnitOfWork unitOfWork) : C
         GetUserById.GetUserByIdQuery query = new(id);
 
         Result<UserResponse> result = await dispatcher.Dispatch(query, cancellationToken);
-        
 
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }

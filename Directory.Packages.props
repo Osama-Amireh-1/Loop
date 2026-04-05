@@ -8,6 +8,7 @@
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageVersion Include="MediatR" Version="14.1.0" />
     <PackageVersion Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.2" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.19.0.132793" />
     <!-- Application -->
     <PackageVersion Include="Scrutor" Version="7.0.0" />

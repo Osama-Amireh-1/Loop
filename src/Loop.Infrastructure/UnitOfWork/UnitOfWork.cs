@@ -119,7 +119,7 @@ public class UnitOfWork : IUnitOfWork
     private async Task PublishDomainEventsAsync()
     {
         var domainEvents = _context.ChangeTracker
-            .Entries<Entity>()
+            .Entries<Loop.SharedKernel.AggregateRoot>()
             .Select(entry => entry.Entity)
             .SelectMany(entity =>
             {

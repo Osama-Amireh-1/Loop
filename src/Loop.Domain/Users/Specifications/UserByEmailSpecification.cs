@@ -5,10 +5,10 @@ using Domain.Specifications;
 
 namespace Domain.Users.Specifications;
 
-public class UserByEmailSpecification: Specification<User>
+public class UserByEmailSpecification : Specification<User>
 {
     public UserByEmailSpecification(string email)
-        : base(user => user.Email == email)
+        : base(user => string.Equals(user.Email.Value, email.Trim(), StringComparison.OrdinalIgnoreCase))
     {
     }
 }

@@ -7,7 +7,7 @@ namespace Domain.Users.Specifications;
 
 public class UserByIdSpecification:Specification<User>
 {
-    public UserByIdSpecification(Guid id):base(x=>x.Id==id)
+    public UserByIdSpecification(Guid id):base(x=>x.UserId==id)
     {
     }
 }

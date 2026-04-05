@@ -6,7 +6,7 @@ using SharedKernel.Interfaces;
 
 namespace Infrastructure.Reposiroty;
 
-public class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : class
+public class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : Entity
 {
     private readonly DbContext _context;
 
@@ -42,6 +42,5 @@ public class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TE
     private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
     {
         return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>().AsNoTracking().AsQueryable(), spec);
-
     }
 }

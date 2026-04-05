@@ -30,10 +30,10 @@ public static class GetUserById
             UserResponse? user = await _userReadRepo.Find(new UserByIdSpecification(query.UserId))
                 .Select(u => new UserResponse
                 {
-                    Id = u.Id,
+                    Id = u.UserId,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    Email = u.Email
+                    Email = u.Email.Value
                 })
                 .SingleOrDefaultAsync(cancellationToken);
 

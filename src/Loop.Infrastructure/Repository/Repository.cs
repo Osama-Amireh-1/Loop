@@ -1,10 +1,12 @@
 using Application.Interfaces;
 using Domain.Specifications;
+using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Interfaces;
+
 namespace Infrastructure.Reposiroty;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : AggregateRoot
 {
     private readonly DbContext _context;
 
@@ -45,20 +47,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return query.Count();
     }
 
-    public Task<IQueryable<TEntity>> FindAsync(ISpecification<TEntity> spec)
-    {
-        IQueryable<TEntity>  query = ApplySpecification(spec);
-        return Task.FromResult(query);
-    }
-
     public IQueryable<TEntity> Find(ISpecification<TEntity> spec)
     {
         return ApplySpecification(spec);
-    }
-
-    public Task<IQueryable<TEntity>> GetAllAsync()
-    {
-        return Task.FromResult(_context.Set<TEntity>().AsQueryable());
     }
 
     public IQueryable<TEntity> GetAll()
@@ -92,6 +83,4 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>().AsQueryable(), spec);
     }
-
-
 }

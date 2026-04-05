@@ -26,10 +26,10 @@ public static class GetUserByEmail
             UserResponse? user = await _userReadRepo.Find(new UserByEmailSpecification(query.Email))
                 .Select(u => new UserResponse
                 {
-                    Id = u.Id,
+                    Id = u.UserId,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    Email = u.Email
+                    Email = u.Email.Value
                 })
                 .SingleOrDefaultAsync(cancellationToken);
 

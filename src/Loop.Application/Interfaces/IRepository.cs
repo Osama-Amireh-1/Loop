@@ -1,11 +1,12 @@
 ﻿
 
 
+using Loop.SharedKernel;
 using SharedKernel.Interfaces;
 
 namespace Application.Interfaces;
 
-public interface IRepository<TEntity> where TEntity : class
+public interface IRepository<TEntity> where TEntity : AggregateRoot
 {
     Task<int> CountAsync(ISpecification<TEntity> spec);
     Task AddAsync(TEntity entity);
