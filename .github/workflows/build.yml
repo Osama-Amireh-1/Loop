@@ -20,14 +20,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore
-        run: dotnet restore Loop.sln
+     - name: Restore
+        run: dotnet restore src/Loop.sln
 
       - name: Build
-        run: dotnet build Loop.sln --configuration Release --no-restore
+        run: dotnet build src/Loop.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test Loop.sln --configuration Release --no-restore --no-build
+        run: dotnet test src/Loop.sln --configuration Release --no-restore --no-build
 
       - name: Publish
-        run: dotnet publish Loop.sln --configuration Release --no-restore --no-build
+        run: dotnet publish src/Loop.sln --configuration Release --no-restore --no-build
