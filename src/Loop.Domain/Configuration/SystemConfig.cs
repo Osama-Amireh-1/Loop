@@ -1,8 +1,8 @@
-using Domain.Common;
-using Domain.Malls;
+﻿using Loop.Domain.Common;
+using Loop.Domain.Malls;
 using Loop.SharedKernel;
 
-namespace Domain.Configuration;
+namespace Loop.Domain.Configuration;
 
 public class SystemConfig : AggregateRoot
 {
@@ -60,4 +60,6 @@ public class SystemConfig : AggregateRoot
     public Money CalculateDiscountValue(int points)
         => Money.Create(points * PointsToCurrencyRatio);
 }
+
+
 

@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Users;
+namespace Loop.Domain.Users;
 
 public static class UserPointsBalanceErrors
 {
@@ -8,3 +8,5 @@ public static class UserPointsBalanceErrors
         "Users.InsufficientPoints",
         "The user does not have enough points for this operation");
 }
+
+

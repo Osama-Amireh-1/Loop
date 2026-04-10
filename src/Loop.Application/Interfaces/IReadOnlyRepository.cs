@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SharedKernel;
-using SharedKernel.Interfaces;
+using Loop.SharedKernel;
+using Loop.SharedKernel.Interfaces;
 
-namespace Application.Interfaces;
+namespace Loop.Application.Interfaces;
 
 public interface IReadOnlyRepository<TEntity> where TEntity : Entity
 {
@@ -13,3 +13,5 @@ public interface IReadOnlyRepository<TEntity> where TEntity : Entity
     IQueryable<TEntity> GetAll();
     int Count(ISpecification<TEntity> spec);
 }
+
+

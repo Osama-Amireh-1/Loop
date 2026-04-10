@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Application.Abstractions.Authentication;
-using Application.Abstractions.Messaging;
-using Application.Interfaces;
-using Application.Users.Contract;
-using Domain.Users;
-using Domain.Users.Specifications;
+using Loop.Application.Abstractions.Authentication;
+using Loop.Application.Abstractions.Messaging;
+using Loop.Application.Interfaces;
+using Loop.Application.Users.Contract;
+using Loop.Domain.Common;
+using Loop.Domain.Users;
+using Loop.Domain.Users.Specifications;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel;
+using Loop.SharedKernel;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace Application.Users.Query;
+namespace Loop.Application.Users.Query;
 
 public static class GetUserByEmail
 {
@@ -22,8 +24,9 @@ public static class GetUserByEmail
     {
         public async Task<Result<UserResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
+            var email = Email.Create(query.Email);
 
-            UserResponse? user = await _userReadRepo.Find(new UserByEmailSpecification(query.Email))
+            UserResponse? user = await _userReadRepo.Find(new UserByEmailSpecification(email))
                 .Select(u => new UserResponse
                 {
                     Id = u.UserId,
@@ -47,3 +50,5 @@ public static class GetUserByEmail
         }
     }
 }
+
+

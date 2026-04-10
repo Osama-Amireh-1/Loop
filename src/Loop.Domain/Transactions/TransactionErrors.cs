@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Transactions;
+namespace Loop.Domain.Transactions;
 
 public static class TransactionErrors
 {
@@ -32,3 +32,5 @@ public static class TransactionErrors
         "Transactions.BelowMinRedemptionThreshold",
         "The user's points are below the minimum redemption threshold");
 }
+
+

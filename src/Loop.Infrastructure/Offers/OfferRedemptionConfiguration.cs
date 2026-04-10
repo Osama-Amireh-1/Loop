@@ -1,10 +1,10 @@
-using Domain.Offers;
-using Domain.Shops;
-using Domain.Users;
+﻿using Loop.Domain.Offers;
+using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Offers;
+namespace Loop.Infrastructure.Offers;
 
 internal sealed class OfferRedemptionConfiguration : IEntityTypeConfiguration<OfferRedemption>
 {
@@ -34,3 +34,4 @@ internal sealed class OfferRedemptionConfiguration : IEntityTypeConfiguration<Of
         builder.HasIndex(or => new { or.UserId, or.OfferId });
     }
 }
+

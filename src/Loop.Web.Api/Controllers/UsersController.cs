@@ -1,15 +1,15 @@
-﻿using Application.Abstractions.Messaging;
-using Application.Interfaces;
-using Application.Users.Command;
-using Application.Users.Contract;
-using Application.Users.Query;
+﻿using Loop.Application.Abstractions.Messaging;
+using Loop.Application.Interfaces;
+using Loop.Application.Users.Command;
+using Loop.Application.Users.Contract;
+using Loop.Application.Users.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Web.Api.Controllers;
+namespace Loop.Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 [Authorize]
 public class UsersController(IDispatcher dispatcher, IUnitOfWork unitOfWork) : ControllerBase
@@ -41,9 +41,78 @@ public class UsersController(IDispatcher dispatcher, IUnitOfWork unitOfWork) : C
     {
         LoginUser.LoginUserCommand command = new(request.Email, request.Password);
 
-        Result<string> result = await dispatcher.Dispatch(command, cancellationToken);
+        Result<AuthTokensResponse> result = await dispatcher.Dispatch(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
 
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+
+    [HttpPost("refresh")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenParams request, CancellationToken cancellationToken)
+    {
+        RefreshToken.RefreshTokenCommand command = new(request.RefreshToken);
+
+        Result<AuthTokensResponse> result = await dispatcher.Dispatch(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    {
+        LogoutUser.LogoutUserCommand command = new();
+
+        Result result = await dispatcher.Dispatch(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+    }
+
+    [HttpPost("forgot-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordParams request, CancellationToken cancellationToken)
+    {
+        ForgotPassword.ForgotPasswordCommand command = new(request.Email);
+
+        Result<string> result = await dispatcher.Dispatch(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+            return Ok(result.Value);
+        }
+
+        return BadRequest(result.Error);
+    }
+
+    [HttpPost("reset-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordParams request, CancellationToken cancellationToken)
+    {
+        ResetPassword.ResetPasswordCommand command = new(request.Email, request.ResetToken, request.NewPassword);
+
+        Result result = await dispatcher.Dispatch(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        return result.IsSuccess ? NoContent() : BadRequest(result.Error);
     }
 
     [HttpGet("{id:guid}")]
@@ -56,3 +125,5 @@ public class UsersController(IDispatcher dispatcher, IUnitOfWork unitOfWork) : C
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 }
+
+

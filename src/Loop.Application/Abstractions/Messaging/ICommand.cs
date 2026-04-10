@@ -1,9 +1,11 @@
 ﻿using MediatR;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Application.Abstractions.Messaging;
+namespace Loop.Application.Abstractions.Messaging;
 
 public interface ICommand : IRequest<Result>;
 
 public interface ICommand<TResponse> : IRequest<Result<TResponse>>;
+
+
 

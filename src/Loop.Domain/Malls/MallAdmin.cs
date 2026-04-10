@@ -1,7 +1,7 @@
-using Domain.Common;
+﻿using Loop.Domain.Common;
 using Loop.SharedKernel;
 
-namespace Domain.Malls;
+namespace Loop.Domain.Malls;
 
 public class MallAdmin : AggregateRoot
 {
@@ -34,3 +34,5 @@ public class MallAdmin : AggregateRoot
 
     public void ChangePasswordHash(string hash) => PasswordHash = hash;
 }
+
+

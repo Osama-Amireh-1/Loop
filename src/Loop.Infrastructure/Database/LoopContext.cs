@@ -1,9 +1,9 @@
-﻿using Domain.Users;
-using Infrastructure.DomainEvents;
+﻿using Loop.Domain.Users;
+using Loop.Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Infrastructure.Database;
+namespace Loop.Infrastructure.Database;
 
 public sealed class LoopContext(
     DbContextOptions<LoopContext> options)
@@ -17,3 +17,5 @@ public sealed class LoopContext(
     }
 
 }
+
+

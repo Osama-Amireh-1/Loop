@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace Infrastructure.Authorization;
+namespace Loop.Infrastructure.Authorization;
 
 internal sealed class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
 {
@@ -31,3 +31,4 @@ internal sealed class PermissionAuthorizationPolicyProvider : DefaultAuthorizati
         return permissionPolicy;
     }
 }
+

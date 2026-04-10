@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SharedKernel;
+using Loop.SharedKernel;
 
 namespace Loop.SharedKernel;
 
@@ -14,3 +14,5 @@ public abstract class AggregateRoot : Entity
     public void Raise(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
     public void ClearDomainEvents() => _domainEvents.Clear();
 }
+
+

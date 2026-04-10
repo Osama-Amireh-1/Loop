@@ -1,10 +1,10 @@
-using Application.Interfaces;
-using Infrastructure.DomainEvents;
+﻿using Loop.Application.Interfaces;
+using Loop.Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace SharedKernel.UnitOfWork;
+namespace Loop.SharedKernel.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DbContext _context;
@@ -119,7 +119,7 @@ public class UnitOfWork : IUnitOfWork
     private async Task PublishDomainEventsAsync()
     {
         var domainEvents = _context.ChangeTracker
-            .Entries<Loop.SharedKernel.AggregateRoot>()
+            .Entries<SharedKernel.AggregateRoot>()
             .Select(entry => entry.Entity)
             .SelectMany(entity =>
             {
@@ -134,3 +134,4 @@ public class UnitOfWork : IUnitOfWork
         await _domainEventsDispatcher.DispatchAsync(domainEvents);
     }
 }
+

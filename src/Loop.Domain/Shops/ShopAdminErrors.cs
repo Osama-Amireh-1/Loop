@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Shops;
+namespace Loop.Domain.Shops;
 
 public static class ShopAdminErrors
 {
@@ -8,3 +8,5 @@ public static class ShopAdminErrors
         "Shops.AdminNotFound",
         $"The shop admin with the Id = '{shopAdminId}' was not found");
 }
+
+

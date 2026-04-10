@@ -1,10 +1,10 @@
-using Application.Interfaces;
-using Domain.Specifications;
+﻿using Loop.Application.Interfaces;
+using Loop.Domain.Specifications;
 using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Interfaces;
+using Loop.SharedKernel.Interfaces;
 
-namespace Infrastructure.Reposiroty;
+namespace Loop.Infrastructure.Repository;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : AggregateRoot
 {
@@ -84,3 +84,5 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Aggregat
         return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>().AsQueryable(), spec);
     }
 }
+
+

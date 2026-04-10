@@ -1,10 +1,9 @@
-using Domain.Receipts;
-using Domain.Shops;
-using Domain.Users;
+﻿using Loop.Domain.Receipts;
+using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Loop.SharedKernel;
-using SharedKernel;
 
-namespace Domain.Offers;
+namespace Loop.Domain.Offers;
 
 public class OfferRedemption : Entity
 {
@@ -12,7 +11,7 @@ public class OfferRedemption : Entity
     public Guid OfferId { get; private set; }
     public Guid UserId { get; private set; }
     public Guid ShopId { get; private set; }
-    public Guid? RedemptionRef { get; private set; }    // receipt_id link
+    public Guid? RedemptionRef { get; private set; }  
     public DateTime CreatedAt { get; private set; }
 
     private OfferRedemption() { }
@@ -32,3 +31,5 @@ public class OfferRedemption : Entity
             CreatedAt = DateTime.UtcNow
         };
 }
+
+

@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Offers;
+namespace Loop.Domain.Offers;
 
 public static class OfferErrors
 {
@@ -20,3 +20,5 @@ public static class OfferErrors
         "Offers.OfferNotStarted",
         "The offer has not started yet");
 }
+
+

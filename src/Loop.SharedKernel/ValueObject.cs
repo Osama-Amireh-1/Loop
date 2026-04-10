@@ -41,3 +41,4 @@ public abstract class ValueObject : IEquatable<ValueObject>
     private bool ValuesAreEqual(ValueObject valueObject) =>
         GetAtomicValues().SequenceEqual(valueObject.GetAtomicValues());
 }
+

@@ -1,10 +1,10 @@
-﻿using Application.Abstractions.Behaviors;
-using Application.Abstractions.Messaging;
+﻿using Loop.Application.Abstractions.Behaviors;
+using Loop.Application.Abstractions.Messaging;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Application;
+namespace Loop.Application;
 
 public static class DependencyInjection
 {
@@ -24,3 +24,5 @@ public static class DependencyInjection
         return services;
     }
 }
+
+

@@ -1,7 +1,7 @@
-﻿using Application.Abstractions.Authentication;
+﻿using Loop.Application.Abstractions.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace Infrastructure.Authentication;
+namespace Loop.Infrastructure.Authentication;
 
 internal sealed class UserContext : IUserContext
 {
@@ -19,3 +19,4 @@ internal sealed class UserContext : IUserContext
             .GetUserId() ??
         throw new UserContextUnavailableException();
 }
+

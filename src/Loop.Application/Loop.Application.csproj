@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Loop.SharedKernel\Loop.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Stamps\Command\" />
+  </ItemGroup>
+
 </Project>

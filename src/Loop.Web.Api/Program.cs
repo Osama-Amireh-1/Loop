@@ -1,16 +1,16 @@
-using System.Reflection;
-using Application;
-using Application.Interfaces;
+﻿using System.Reflection;
+using Loop.Application;
+using Loop.Application.Interfaces;
 using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
-using Infrastructure;
-using Infrastructure.Reposiroty;
+using Loop.Infrastructure;
+using Loop.Infrastructure.Repository;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
-using SharedKernel.UnitOfWork;
-using Web.Api;
-using Web.Api.Extensions;
-using Web.Api.Middleware;
+using Loop.SharedKernel.UnitOfWork;
+using Loop.Web.Api;
+using Loop.Web.Api.Extensions;
+using Loop.Web.Api.Middleware;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +56,9 @@ app.MapControllers();
 await app.RunAsync();
 
 // REMARK: Required for functional and integration tests to work.
-namespace Web.Api
+namespace Loop.Web.Api
 {
     public partial class Program;
 }
+
+

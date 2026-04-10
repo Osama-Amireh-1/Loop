@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Configuration;
+namespace Loop.Domain.Configuration;
 
 public static class SystemConfigErrors
 {
@@ -20,3 +20,5 @@ public static class SystemConfigErrors
         "Configuration.InvalidMinThreshold",
         "Threshold cannot be negative");
 }
+
+

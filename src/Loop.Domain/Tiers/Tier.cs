@@ -1,6 +1,6 @@
-using Loop.SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Tiers;
+namespace Loop.Domain.Tiers;
 
 public class Tier : AggregateRoot
 {
@@ -9,7 +9,7 @@ public class Tier : AggregateRoot
     public string Name { get; private set; }
     public int PointsRequired { get; private set; }
     public string? Benefits { get; private set; }   
-    public string? IconUrl { get; private set; }
+    public string IconUrl { get; private set; }
     public string? ColorHex { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
@@ -19,7 +19,7 @@ public class Tier : AggregateRoot
         string name,
         int pointsRequired,
         string? benefits,
-        string? iconUrl,
+        string iconUrl,
         string? colorHex)
         => new()
         {
@@ -39,3 +39,5 @@ public class Tier : AggregateRoot
         Benefits = benefits;
     }
 }
+
+

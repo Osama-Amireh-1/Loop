@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Stamps;
+namespace Loop.Domain.Stamps;
 
 public static class UserStampCardErrors
 {
@@ -12,3 +12,5 @@ public static class UserStampCardErrors
         "Stamps.CardAlreadyCompleted",
         "The stamp card is already completed");
 }
+
+

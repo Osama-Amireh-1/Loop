@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Application.Abstractions.Behaviors;
+namespace Loop.Application.Abstractions.Behaviors;
 
 public sealed class ValidationPipelineBehavior<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators)
@@ -36,3 +36,5 @@ public sealed class ValidationPipelineBehavior<TRequest, TResponse>(
         return await next(cancellationToken);
     }
 }
+
+

@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Receipts;
+namespace Loop.Domain.Receipts;
 
 public static class ReceiptErrors
 {
@@ -16,3 +16,5 @@ public static class ReceiptErrors
         "Receipts.InvalidAmount",
         "The receipt amount must be a positive value");
 }
+
+

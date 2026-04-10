@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Application.Abstractions.Authentication;
-using Application.Abstractions.Messaging;
-using Application.Interfaces;
-using Application.Users.Contract;
-using Domain.Users;
-using Domain.Users.Specifications;
+using Loop.Application.Abstractions.Authentication;
+using Loop.Application.Abstractions.Messaging;
+using Loop.Application.Interfaces;
+using Loop.Application.Users.Contract;
+using Loop.Domain.Users;
+using Loop.Domain.Users.Specifications;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Application.Users.Query;
+namespace Loop.Application.Users.Query;
 
 public static class GetUserById
 {
@@ -47,3 +47,5 @@ public static class GetUserById
     }
 
 }
+
+

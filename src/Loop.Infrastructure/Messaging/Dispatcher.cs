@@ -1,8 +1,8 @@
-using Application.Abstractions.Messaging;
+﻿using Loop.Application.Abstractions.Messaging;
 using MediatR;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Infrastructure.Messaging;
+namespace Loop.Infrastructure.Messaging;
 
 internal sealed class Dispatcher(ISender sender) : IDispatcher
 {
@@ -15,3 +15,5 @@ internal sealed class Dispatcher(ISender sender) : IDispatcher
     public Task<Result<TResponse>> Dispatch<TResponse>(IQuery<TResponse> query, CancellationToken cancellationToken = default) =>
         sender.Send(query, cancellationToken);
 }
+
+

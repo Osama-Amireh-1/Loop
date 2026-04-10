@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Infrastructure.Authorization;
+namespace Loop.Infrastructure.Authorization;
 
 internal sealed class PermissionRequirement : IAuthorizationRequirement
 {
@@ -11,3 +11,4 @@ internal sealed class PermissionRequirement : IAuthorizationRequirement
 
     public string Permission { get; }
 }
+

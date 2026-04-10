@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Malls;
+namespace Loop.Domain.Malls;
 
 public static class MallErrors
 {
@@ -24,3 +24,5 @@ public static class MallErrors
         "Malls.AdminPhoneNotUnique",
         "A mall admin with the specified phone already exists");
 }
+
+

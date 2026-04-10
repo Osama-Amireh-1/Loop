@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Stamps;
+namespace Loop.Domain.Stamps;
 
 public static class StampErrors
 {
@@ -28,3 +28,5 @@ public static class StampErrors
         "Stamps.CardNotCompleted",
         "The stamp card is not yet completed for reward redemption");
 }
+
+

@@ -1,7 +1,8 @@
-namespace Domain.Audit;
+﻿namespace Loop.Domain.Audit;
 
 public enum AdminType
 {
     MallAdmin = 1,
     ShopAdmin = 2
 }
+

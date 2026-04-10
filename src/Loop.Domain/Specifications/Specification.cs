@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using SharedKernel.Interfaces;
+using Loop.SharedKernel.Interfaces;
 
-namespace Domain.Specifications;
+namespace Loop.Domain.Specifications;
 
 public abstract class Specification<T> : ISpecification<T>
 {
@@ -51,3 +51,4 @@ public abstract class Specification<T> : ISpecification<T>
         IsPagingEnabled = true;
     }
 }
+

@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Audit;
+namespace Loop.Domain.Audit;
 
 public static class AuditLogErrors
 {
@@ -8,3 +8,5 @@ public static class AuditLogErrors
         "Audit.NotFound",
         $"The audit log with the Id = '{logId}' was not found");
 }
+
+

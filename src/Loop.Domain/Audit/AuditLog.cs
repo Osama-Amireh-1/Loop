@@ -1,9 +1,9 @@
-using Domain.Malls;
-using Domain.Shops;
-using Domain.Users;
+﻿using Loop.Domain.Malls;
+using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Loop.SharedKernel;
 
-namespace Domain.Audit;
+namespace Loop.Domain.Audit;
 
 public class AuditLog : AggregateRoot
 {
@@ -50,3 +50,5 @@ public class AuditLog : AggregateRoot
             CreatedAt = DateTime.UtcNow
         };
 }
+
+

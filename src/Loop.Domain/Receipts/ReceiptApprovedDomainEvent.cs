@@ -1,9 +1,11 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Receipts;
+namespace Loop.Domain.Receipts;
 
 public sealed record ReceiptApprovedDomainEvent(
     Guid ReceiptId,
     Guid UserId,
     Guid ShopId,
     decimal Amount) : IDomainEvent;
+
+

@@ -1,7 +1,7 @@
-using Domain.Malls;
+﻿using Loop.Domain.Malls;
 using Loop.SharedKernel;
 
-namespace Domain.Shops;
+namespace Loop.Domain.Shops;
 
 public class Shop : AggregateRoot
 {
@@ -9,11 +9,11 @@ public class Shop : AggregateRoot
     public Guid MallId { get; private set; }
     public string Name { get; private set; }
     public Guid CategoryId { get; private set; }
-    public string? LogoUrl { get; private set; }
-    public string? CoverImageUrl { get; private set; }
-    public string? Bio { get; private set; }
+    public string LogoUrl { get; private set; }
+    public string CoverImageUrl { get; private set; }
+    public string Bio { get; private set; }
     public string? WebsiteUrl { get; private set; }
-    public string? SocialLinks { get; private set; }    // JSON string
+    public string? SocialLinks { get; private set; }   
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
@@ -41,11 +41,11 @@ public class Shop : AggregateRoot
     public void UpdateDetails(
         string name,
         Guid categoryId,
-        string? bio,
-        string? websiteUrl,
-        string? logoUrl,
-        string? coverImageUrl,
-        string? socialLinks)
+        string bio,
+        string logoUrl,
+        string coverImageUrl,
+        string? socialLinks,
+         string? websiteUrl)
     {
         Name = name;
         CategoryId = categoryId;
@@ -56,3 +56,5 @@ public class Shop : AggregateRoot
         SocialLinks = socialLinks;
     }
 }
+
+

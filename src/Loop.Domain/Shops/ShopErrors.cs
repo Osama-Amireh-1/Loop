@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Shops;
+namespace Loop.Domain.Shops;
 
 public static class ShopErrors
 {
@@ -40,3 +40,5 @@ public static class ShopErrors
         "Shops.QrCodeExpired",
         "The QR code has expired");
 }
+
+

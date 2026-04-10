@@ -1,4 +1,4 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
 namespace Loop.SharedKernel;
 
@@ -17,3 +17,5 @@ public sealed class DomainException : Exception
 
     public Error? Error { get; }
 }
+
+

@@ -1,16 +1,17 @@
 ﻿using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
-using Application.Abstractions.Authentication;
-using Domain.Users;
+using Loop.Application.Abstractions.Authentication;
+using Loop.Domain.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure.Authentication;
+namespace Loop.Infrastructure.Authentication;
 
 internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvider
 {
-    public string Create(User user)
+    public string CreateAccessToken(User user)
     {
         string secretKey = configuration["Jwt:Secret"]!;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -32,8 +33,15 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
 
         var handler = new JsonWebTokenHandler();
 
-        string token = handler.CreateToken(tokenDescriptor);
+        return handler.CreateToken(tokenDescriptor);
+    }
 
-        return token;
+    public (string RefreshToken, DateTime ExpiresAtUtc) CreateRefreshToken()
+    {
+        string refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        int refreshTokenExpirationInDays = configuration.GetValue<int>("Jwt:RefreshTokenExpirationInDays");
+
+        return (refreshToken, DateTime.UtcNow.AddDays(refreshTokenExpirationInDays));
     }
 }
+

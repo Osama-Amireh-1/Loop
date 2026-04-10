@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using FluentValidation;
 
-namespace Application.Users.Contract;
+namespace Loop.Application.Users.Contract;
 
 public class LoginUserParams
 {
@@ -23,3 +23,4 @@ public sealed class LoginUserParamsValidator : AbstractValidator<LoginUserParams
         RuleFor(c => c.Password).NotEmpty().MinimumLength(8);
     }
 }
+

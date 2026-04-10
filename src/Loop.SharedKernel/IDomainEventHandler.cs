@@ -1,6 +1,7 @@
-using MediatR;
+﻿using MediatR;
 
-namespace SharedKernel;
+namespace Loop.SharedKernel;
 
 public interface IDomainEventHandler<in T> : INotificationHandler<T>
     where T : IDomainEvent;
+

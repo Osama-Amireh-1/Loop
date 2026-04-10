@@ -1,8 +1,7 @@
-using Domain.Users;
+﻿using Loop.Domain.Users;
 using Loop.SharedKernel;
-using SharedKernel;
 
-namespace Domain.Stamps;
+namespace Loop.Domain.Stamps;
 
 public class UserStampCard : AggregateRoot
 {
@@ -43,3 +42,5 @@ public class UserStampCard : AggregateRoot
         }
     }
 }
+
+

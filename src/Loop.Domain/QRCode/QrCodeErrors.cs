@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.QRCode;
+namespace Loop.Domain.QRCode;
 
 public static class QrCodeErrors
 {
@@ -12,3 +12,5 @@ public static class QrCodeErrors
         "QRCode.Expired",
         "The QR code has expired");
 }
+
+

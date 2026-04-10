@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Web.Api.Middleware;
+namespace Loop.Web.Api.Middleware;
 
 public sealed class ExceptionHandlingMiddleware(RequestDelegate next)
 {
@@ -22,3 +22,4 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next)
         }
     }
 }
+

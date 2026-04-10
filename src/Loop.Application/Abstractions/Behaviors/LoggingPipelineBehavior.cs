@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Abstractions.Behaviors;
+namespace Loop.Application.Abstractions.Behaviors;
 
 public sealed class LoggingPipelineBehavior<TRequest, TResponse>(
     ILogger<LoggingPipelineBehavior<TRequest, TResponse>> logger)
@@ -30,3 +30,4 @@ public sealed class LoggingPipelineBehavior<TRequest, TResponse>(
         return response;
     }
 }
+

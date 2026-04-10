@@ -1,10 +1,9 @@
-using Domain.Receipts;
-using Domain.Shops;
-using Domain.Users;
+﻿using Loop.Domain.Receipts;
+using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Loop.SharedKernel;
-using SharedKernel;
 
-namespace Domain.Stamps;
+namespace Loop.Domain.Stamps;
 
 public class StampTransaction : AggregateRoot
 {
@@ -54,3 +53,5 @@ public class StampTransaction : AggregateRoot
             CreatedAt = DateTime.UtcNow
         };
 }
+
+

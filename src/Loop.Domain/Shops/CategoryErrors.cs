@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Shops;
+namespace Loop.Domain.Shops;
 
 public static class CategoryErrors
 {
@@ -8,3 +8,5 @@ public static class CategoryErrors
         "Shops.CategoryNotFound",
         $"The category with the Id = '{categoryId}' was not found");
 }
+
+

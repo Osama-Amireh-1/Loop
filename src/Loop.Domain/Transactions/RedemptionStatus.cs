@@ -1,4 +1,4 @@
-namespace Domain.Transactions;
+﻿namespace Loop.Domain.Transactions;
 
 public enum RedemptionStatus
 {
@@ -6,3 +6,4 @@ public enum RedemptionStatus
     Verified = 2,
     Cancelled = 3
 }
+

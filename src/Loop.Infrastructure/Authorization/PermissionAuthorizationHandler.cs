@@ -1,8 +1,8 @@
-﻿using Infrastructure.Authentication;
+﻿using Loop.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Authorization;
+namespace Loop.Infrastructure.Authorization;
 
 internal sealed class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFactory)
     : AuthorizationHandler<PermissionRequirement>
@@ -34,3 +34,4 @@ internal sealed class PermissionAuthorizationHandler(IServiceScopeFactory servic
         }
     }
 }
+

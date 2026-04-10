@@ -1,8 +1,8 @@
-using Domain.Stamps;
+﻿using Loop.Domain.Stamps;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Stamps;
+namespace Loop.Infrastructure.Stamps;
 
 internal sealed class StampTransactionConfiguration : IEntityTypeConfiguration<StampTransaction>
 {
@@ -47,3 +47,4 @@ internal sealed class StampTransactionConfiguration : IEntityTypeConfiguration<S
         builder.HasIndex(st => st.StampProgramId);
     }
 }
+

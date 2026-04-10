@@ -1,12 +1,14 @@
 ﻿using System.Text;
-using Application.Abstractions.Authentication;
-using Application.Interfaces;
-using Infrastructure.Authentication;
-using Infrastructure.Authorization;
-using Infrastructure.Database;
-using Infrastructure.DomainEvents;
-using Infrastructure.Reposiroty;
-using Infrastructure.Time;
+using Loop.Application.Abstractions.Authentication;
+using Loop.Application.Abstractions.Communication;
+using Loop.Application.Interfaces;
+using Loop.Infrastructure.Authentication;
+using Loop.Infrastructure.Authorization;
+using Loop.Infrastructure.Communication;
+using Loop.Infrastructure.Database;
+using Loop.Infrastructure.DomainEvents;
+using Loop.Infrastructure.Repository;
+using Loop.Infrastructure.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +16,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using SharedKernel;
-using SharedKernel.UnitOfWork;
+using Loop.SharedKernel;
+using Loop.SharedKernel.UnitOfWork;
 
-namespace Infrastructure;
+namespace Loop.Infrastructure;
 
 public static class DependencyInjection
 {
@@ -90,6 +92,7 @@ public static class DependencyInjection
         services.AddScoped<IUserContext, UserContext>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
+        services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
         return services;
     }
@@ -107,3 +110,5 @@ public static class DependencyInjection
         return services;
     }
 }
+
+

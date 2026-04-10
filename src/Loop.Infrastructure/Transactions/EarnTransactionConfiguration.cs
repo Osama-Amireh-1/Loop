@@ -1,8 +1,8 @@
-using Domain.Transactions;
+﻿using Loop.Domain.Transactions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Transactions;
+namespace Loop.Infrastructure.Transactions;
 
 internal sealed class EarnTransactionConfiguration : IEntityTypeConfiguration<EarnTransaction>
 {
@@ -48,3 +48,4 @@ internal sealed class EarnTransactionConfiguration : IEntityTypeConfiguration<Ea
         builder.HasIndex(e => e.CreatedAt);
     }
 }
+

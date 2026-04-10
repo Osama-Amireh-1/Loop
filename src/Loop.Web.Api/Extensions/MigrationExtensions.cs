@@ -1,7 +1,7 @@
-﻿using Infrastructure.Database;
+﻿using Loop.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace Web.Api.Extensions;
+namespace Loop.Web.Api.Extensions;
 
 public static class MigrationExtensions
 {
@@ -15,3 +15,4 @@ public static class MigrationExtensions
         dbContext.Database.Migrate();
     }
 }
+

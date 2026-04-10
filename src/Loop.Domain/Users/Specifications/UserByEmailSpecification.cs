@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Domain.Specifications;
+using Loop.Domain.Common;
+using Loop.Domain.Specifications;
 
-namespace Domain.Users.Specifications;
+namespace Loop.Domain.Users.Specifications;
 
 public class UserByEmailSpecification : Specification<User>
 {
-    public UserByEmailSpecification(string email)
-        : base(user => string.Equals(user.Email.Value, email.Trim(), StringComparison.OrdinalIgnoreCase))
+    public UserByEmailSpecification(Email email)
+           : base(user => user.Email == email)
     {
     }
 }
+

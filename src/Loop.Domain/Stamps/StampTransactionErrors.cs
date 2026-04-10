@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Stamps;
+namespace Loop.Domain.Stamps;
 
 public static class StampTransactionErrors
 {
@@ -8,3 +8,5 @@ public static class StampTransactionErrors
         "Stamps.TransactionNotFound",
         $"The stamp transaction with the Id = '{stampTransactionId}' was not found");
 }
+
+

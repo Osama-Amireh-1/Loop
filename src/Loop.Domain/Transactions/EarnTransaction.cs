@@ -1,9 +1,9 @@
-using Domain.Common;
-using Domain.Shops;
-using Domain.Users;
+﻿using Loop.Domain.Common;
+using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Loop.SharedKernel;
 
-namespace Domain.Transactions;
+namespace Loop.Domain.Transactions;
 
 public class EarnTransaction : AggregateRoot
 {
@@ -38,3 +38,5 @@ public class EarnTransaction : AggregateRoot
             CreatedAt = DateTime.UtcNow
         };
 }
+
+

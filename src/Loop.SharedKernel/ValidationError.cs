@@ -1,4 +1,4 @@
-﻿namespace SharedKernel;
+﻿namespace Loop.SharedKernel;
 
 public sealed record ValidationError : Error
 {
@@ -16,3 +16,4 @@ public sealed record ValidationError : Error
     public static ValidationError FromResults(IEnumerable<Result> results) =>
         new(results.Where(r => r.IsFailure).Select(r => r.Error).ToArray());
 }
+

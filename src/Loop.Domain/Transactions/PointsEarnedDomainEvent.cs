@@ -1,9 +1,11 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Transactions;
+namespace Loop.Domain.Transactions;
 
 public sealed record PointsEarnedDomainEvent(
     Guid EarnId,
     Guid UserId,
     Guid ShopId,
     int PointsEarned) : IDomainEvent;
+
+

@@ -79,7 +79,8 @@ dotnet_style_readonly_field = true:error
 
 # Parameter preferences
 dotnet_code_quality_unused_parameters = all:none
-
+# CA1862: Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
+dotnet_diagnostic.CA1862.severity = none
 #### C# Coding Conventions ####
 
 # Namespace preferences

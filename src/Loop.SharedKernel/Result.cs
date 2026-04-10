@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace SharedKernel;
+namespace Loop.SharedKernel;
 
 public class Result
 {
@@ -54,3 +54,4 @@ public class Result<TValue> : Result
     public static Result<TValue> ValidationFailure(Error error) =>
         new(default, false, error);
 }
+

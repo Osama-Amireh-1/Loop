@@ -1,7 +1,8 @@
-namespace Domain.Common;
+﻿namespace Loop.Domain.Common;
 
 public enum Gender
 {
     Male = 1,
     Female = 2,
 }
+

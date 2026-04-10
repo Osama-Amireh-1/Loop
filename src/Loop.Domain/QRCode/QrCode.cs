@@ -1,8 +1,8 @@
-using Domain.Shops;
-using Domain.Users;
+﻿using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Loop.SharedKernel;
 
-namespace Domain.QRCode;
+namespace Loop.Domain.QRCode;
 
 public sealed class QrCode : AggregateRoot
 {
@@ -36,3 +36,4 @@ public sealed class QrCode : AggregateRoot
 
     public bool IsExpired(DateTime utcNow) => utcNow >= ExpiresAt;
 }
+

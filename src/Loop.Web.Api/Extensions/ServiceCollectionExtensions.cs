@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
-namespace Web.Api.Extensions;
+namespace Loop.Web.Api.Extensions;
 
 internal static class ServiceCollectionExtensions
 {
@@ -44,3 +44,4 @@ internal static class ServiceCollectionExtensions
         return services;
     }
 }
+

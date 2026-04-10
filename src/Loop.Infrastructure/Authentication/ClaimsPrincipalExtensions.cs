@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Infrastructure.Authentication;
+namespace Loop.Infrastructure.Authentication;
 
 internal static class ClaimsPrincipalExtensions
 {
@@ -13,3 +13,4 @@ internal static class ClaimsPrincipalExtensions
             throw new ApplicationException("User id is unavailable");
     }
 }
+

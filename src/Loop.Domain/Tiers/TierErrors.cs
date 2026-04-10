@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Tiers;
+namespace Loop.Domain.Tiers;
 
 public static class TierErrors
 {
@@ -20,3 +20,5 @@ public static class TierErrors
         "Tiers.InvalidPointsRequired",
         "Points required must be a non-negative value");
 }
+
+

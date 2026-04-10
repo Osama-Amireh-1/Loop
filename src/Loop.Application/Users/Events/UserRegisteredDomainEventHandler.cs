@@ -1,7 +1,7 @@
-﻿using Domain.Users;
-using SharedKernel;
+﻿using Loop.Domain.Users;
+using Loop.SharedKernel;
 
-namespace Application.Users.Events;
+namespace Loop.Application.Users.Events;
 
 public sealed class UserRegisteredDomainEventHandler : IDomainEventHandler<UserRegisteredDomainEvent>
 {
@@ -20,3 +20,5 @@ public sealed class UserRegisteredDomainEventHandler1 : IDomainEventHandler<User
         return Task.CompletedTask;
     }
 }
+
+

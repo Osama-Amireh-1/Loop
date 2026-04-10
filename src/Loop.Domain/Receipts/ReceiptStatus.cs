@@ -1,4 +1,4 @@
-namespace Domain.Receipts;
+﻿namespace Loop.Domain.Receipts;
 
 public enum ReceiptStatus
 {
@@ -6,3 +6,4 @@ public enum ReceiptStatus
     Approved = 1,
     Rejected = 2
 }
+

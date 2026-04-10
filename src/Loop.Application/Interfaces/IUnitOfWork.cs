@@ -1,4 +1,4 @@
-namespace Application.Interfaces;
+﻿namespace Loop.Application.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
@@ -12,3 +12,4 @@ public interface IUnitOfWork : IDisposable
     Task RollbackAsync();
 
 }
+

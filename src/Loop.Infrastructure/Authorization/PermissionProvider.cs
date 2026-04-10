@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Authorization;
+﻿namespace Loop.Infrastructure.Authorization;
 
 internal sealed class PermissionProvider
 {
@@ -10,3 +10,4 @@ internal sealed class PermissionProvider
         return Task.FromResult(permissionsSet);
     }
 }
+

@@ -1,8 +1,10 @@
-﻿using Domain.Users;
+﻿using Loop.Domain.Users;
 
-namespace Application.Abstractions.Authentication;
+namespace Loop.Application.Abstractions.Authentication;
 
 public interface ITokenProvider
 {
-    string Create(User user);
+    string CreateAccessToken(User user);
+    (string RefreshToken, DateTime ExpiresAtUtc) CreateRefreshToken();
 }
+

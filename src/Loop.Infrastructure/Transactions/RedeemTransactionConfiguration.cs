@@ -1,8 +1,8 @@
-using Domain.Transactions;
+﻿using Loop.Domain.Transactions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Transactions;
+namespace Loop.Infrastructure.Transactions;
 
 internal sealed class RedeemTransactionConfiguration : IEntityTypeConfiguration<RedeemTransaction>
 {
@@ -58,3 +58,4 @@ internal sealed class RedeemTransactionConfiguration : IEntityTypeConfiguration<
         builder.HasIndex(r => r.VerificationCode).IsUnique();
     }
 }
+

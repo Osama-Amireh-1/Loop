@@ -1,9 +1,7 @@
-using Domain.Common;
-using Domain.Stamps;
-using Domain.Tiers;
+﻿using Loop.Domain.Common;
 using Loop.SharedKernel;
 
-namespace Domain.Users;
+namespace Loop.Domain.Users;
 
 public class User : AggregateRoot
 {
@@ -74,3 +72,5 @@ public class User : AggregateRoot
     public bool HasEnoughPoints(int required)
         => PointsBalance.TotalPoints >= required;
 }
+
+

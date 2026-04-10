@@ -2,9 +2,9 @@
 
 
 using Loop.SharedKernel;
-using SharedKernel.Interfaces;
+using Loop.SharedKernel.Interfaces;
 
-namespace Application.Interfaces;
+namespace Loop.Application.Interfaces;
 
 public interface IRepository<TEntity> where TEntity : AggregateRoot
 {
@@ -21,3 +21,5 @@ public interface IRepository<TEntity> where TEntity : AggregateRoot
     void Delete(TEntity entity);
     void DeleteRange(IEnumerable<TEntity> entities);
 }
+
+

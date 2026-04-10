@@ -1,10 +1,10 @@
-using Application.Interfaces;
-using Domain.Specifications;
+﻿using Loop.Application.Interfaces;
+using Loop.Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel;
-using SharedKernel.Interfaces;
+using Loop.SharedKernel;
+using Loop.SharedKernel.Interfaces;
 
-namespace Infrastructure.Reposiroty;
+namespace Loop.Infrastructure.Repository;
 
 public class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : Entity
 {
@@ -44,3 +44,5 @@ public class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TE
         return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>().AsNoTracking().AsQueryable(), spec);
     }
 }
+
+

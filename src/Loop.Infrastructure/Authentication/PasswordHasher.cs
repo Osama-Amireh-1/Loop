@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
-using Application.Abstractions.Authentication;
+using Loop.Application.Abstractions.Authentication;
 
-namespace Infrastructure.Authentication;
+namespace Loop.Infrastructure.Authentication;
 
 internal sealed class PasswordHasher : IPasswordHasher
 {
@@ -30,3 +30,4 @@ internal sealed class PasswordHasher : IPasswordHasher
         return CryptographicOperations.FixedTimeEquals(hash, inputHash);
     }
 }
+

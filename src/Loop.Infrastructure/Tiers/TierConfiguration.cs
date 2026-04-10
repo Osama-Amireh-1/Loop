@@ -1,11 +1,14 @@
-using Domain.Tiers;
+﻿using System;
+using Loop.Domain.Tiers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Tiers;
+namespace Loop.Infrastructure.Tiers;
 
 internal sealed class TierConfiguration : IEntityTypeConfiguration<Tier>
 {
+    private static readonly Guid SeedTierId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+
     public void Configure(EntityTypeBuilder<Tier> builder)
     {
         builder.HasKey(t => t.TierId);
@@ -22,6 +25,7 @@ internal sealed class TierConfiguration : IEntityTypeConfiguration<Tier>
             .HasColumnType("jsonb");
 
         builder.Property(t => t.IconUrl)
+            .IsRequired()
             .HasMaxLength(512);
 
         builder.Property(t => t.ColorHex)
@@ -36,5 +40,18 @@ internal sealed class TierConfiguration : IEntityTypeConfiguration<Tier>
 
         builder.HasIndex(t => t.TierOrder).IsUnique();
         builder.HasIndex(t => t.Name).IsUnique();
+
+        builder.HasData(new
+        {
+            TierId = SeedTierId,
+            TierOrder = 1,
+            Name = "Bronze",
+            PointsRequired = 0,
+            Benefits = "{\"multiplier\":1.0}",
+            IconUrl = "https://cdn.loop.local/tiers/bronze.png",
+            ColorHex = "#CD7F32",
+            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+        });
     }
 }
+

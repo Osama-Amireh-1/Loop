@@ -1,8 +1,8 @@
-using Domain.Audit;
+﻿using Loop.Domain.Audit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Audit;
+namespace Loop.Infrastructure.Audit;
 
 internal sealed class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
 {
@@ -52,3 +52,4 @@ internal sealed class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
         builder.HasIndex(a => a.CreatedAt);
     }
 }
+

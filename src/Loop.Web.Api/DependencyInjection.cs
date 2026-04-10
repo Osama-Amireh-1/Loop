@@ -1,6 +1,6 @@
-﻿using Web.Api.Infrastructure;
+﻿using Loop.Web.Api.Infrastructure;
 
-namespace Web.Api;
+namespace Loop.Web.Api;
 
 public static class DependencyInjection
 {
@@ -18,3 +18,4 @@ public static class DependencyInjection
         return services;
     }
 }
+

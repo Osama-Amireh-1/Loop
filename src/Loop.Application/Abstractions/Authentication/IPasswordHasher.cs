@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions.Authentication;
+﻿namespace Loop.Application.Abstractions.Authentication;
 
 public interface IPasswordHasher
 {
@@ -6,3 +6,4 @@ public interface IPasswordHasher
 
     bool Verify(string password, string passwordHash);
 }
+

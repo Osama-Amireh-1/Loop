@@ -1,9 +1,9 @@
-using Domain.Common;
-using Domain.Shops;
-using Domain.Users;
+﻿using Loop.Domain.Common;
+using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Loop.SharedKernel;
 
-namespace Domain.Receipts;
+namespace Loop.Domain.Receipts;
 
 public class Receipt : AggregateRoot
 {
@@ -50,3 +50,5 @@ public class Receipt : AggregateRoot
         Status = ReceiptStatus.Rejected;
     }
 }
+
+

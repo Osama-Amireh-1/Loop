@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Offers;
+namespace Loop.Domain.Offers;
 
 public static class OfferRedemptionErrors
 {
@@ -8,3 +8,5 @@ public static class OfferRedemptionErrors
         "Offers.RedemptionNotFound",
         $"The offer redemption with the Id = '{redemptionId}' was not found");
 }
+
+

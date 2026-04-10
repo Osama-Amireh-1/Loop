@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Infrastructure.DomainEvents;
+namespace Loop.Infrastructure.DomainEvents;
 
 internal sealed class DomainEventsDispatcher(IPublisher publisher) : IDomainEventsDispatcher
 {
@@ -13,3 +13,5 @@ internal sealed class DomainEventsDispatcher(IPublisher publisher) : IDomainEven
         }
     }
 }
+
+

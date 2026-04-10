@@ -1,12 +1,11 @@
-using Domain.Configuration;
+﻿using Loop.Domain.Configuration;
 using Loop.SharedKernel;
 
-namespace Domain.Malls;
+namespace Loop.Domain.Malls;
 
 public class Mall : AggregateRoot
 {
     public Guid MallId { get; private set; }
-    public Guid SystemConfigId { get; private set; }
     public string Name { get; private set; }
     public string? Location { get; private set; }
     public string? LogoUrl { get; private set; }
@@ -39,3 +38,5 @@ public class Mall : AggregateRoot
         CoverImageUrl = coverImageUrl;
     }
 }
+
+

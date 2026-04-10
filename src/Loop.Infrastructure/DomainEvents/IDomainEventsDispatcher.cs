@@ -1,8 +1,10 @@
-﻿using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Infrastructure.DomainEvents;
+namespace Loop.Infrastructure.DomainEvents;
 
 public interface IDomainEventsDispatcher
 {
     Task DispatchAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken = default);
 }
+
+

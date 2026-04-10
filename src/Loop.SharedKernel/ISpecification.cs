@@ -1,6 +1,6 @@
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace SharedKernel.Interfaces;
+namespace Loop.SharedKernel.Interfaces;
 
 public interface ISpecification<T>
 {
@@ -15,3 +15,4 @@ public interface ISpecification<T>
     int Skip { get; }
     bool IsPagingEnabled { get; }
 }
+

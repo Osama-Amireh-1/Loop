@@ -1,11 +1,15 @@
-using Domain.Offers;
+﻿using System;
+using Loop.Domain.Offers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Offers;
+namespace Loop.Infrastructure.Offers;
 
 internal sealed class OfferConfiguration : IEntityTypeConfiguration<Offer>
 {
+    private static readonly Guid SeedShopId = Guid.Parse("7d5dc255-7f80-4f6f-b962-b83f0d0ac001");
+    private static readonly Guid SeedOfferId = Guid.Parse("77777777-7777-7777-7777-777777777777");
+
     public void Configure(EntityTypeBuilder<Offer> builder)
     {
         builder.HasKey(o => o.OfferId);
@@ -15,10 +19,12 @@ internal sealed class OfferConfiguration : IEntityTypeConfiguration<Offer>
             .HasMaxLength(200);
 
         builder.Property(o => o.Description)
-            .HasColumnType("text");
+            .HasColumnType("text")
+               .IsRequired();
 
         builder.Property(o => o.ImageUrl)
-            .HasMaxLength(512);
+            .HasMaxLength(512)
+                        .IsRequired();
 
         builder.Property(o => o.RewardType)
             .IsRequired()
@@ -26,7 +32,8 @@ internal sealed class OfferConfiguration : IEntityTypeConfiguration<Offer>
             .HasMaxLength(30);
 
         builder.Property(o => o.RewardValue)
-            .HasColumnType("jsonb");
+            .HasColumnType("jsonb")
+                        .IsRequired();
 
         builder.Property(o => o.IsActive)
             .IsRequired()
@@ -40,7 +47,7 @@ internal sealed class OfferConfiguration : IEntityTypeConfiguration<Offer>
             .HasDefaultValueSql("now()");
 
         builder.Property(o => o.EndDate)
-                        .IsRequired();
+            .IsRequired();
 
         builder.HasOne(o => o.Shop)
             .WithMany()
@@ -55,5 +62,21 @@ internal sealed class OfferConfiguration : IEntityTypeConfiguration<Offer>
         builder.HasIndex(o => o.ShopId);
         builder.HasIndex(o => o.IsActive);
         builder.HasIndex(o => o.StartDate);
+
+        builder.HasData(new
+        {
+            OfferId = SeedOfferId,
+            ShopId = SeedShopId,
+            Name = "10% Off Drinks",
+            Description = "Get 10% discount on any drink.",
+            ImageUrl = "https://cdn.loop.local/offers/ten-percent.png",
+            RewardType = RewardType.Discount,
+            RewardValue = "{\"percent\":10}",
+            IsActive = true,
+            StartDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            EndDate = new DateTime(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+        });
     }
 }
+

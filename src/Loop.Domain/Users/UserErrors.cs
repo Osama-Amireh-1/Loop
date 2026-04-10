@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Users;
+namespace Loop.Domain.Users;
 
 public static class UserErrors
 {
@@ -31,4 +31,22 @@ public static class UserErrors
     public static readonly Error InsufficientPoints = Error.Failure(
         "Users.InsufficientPoints",
         "The user does not have enough points for this operation");
+
+    public static readonly Error InvalidRefreshToken = Error.Failure(
+        "Users.InvalidRefreshToken",
+        "The provided refresh token is invalid.");
+
+    public static readonly Error RefreshTokenExpired = Error.Failure(
+        "Users.RefreshTokenExpired",
+        "The provided refresh token is expired.");
+
+    public static readonly Error InvalidPasswordResetToken = Error.Failure(
+        "Users.InvalidPasswordResetToken",
+        "The provided password reset token is invalid or expired.");
+
+    public static readonly Error PasswordResetTokenExpired = Error.Failure(
+        "Users.PasswordResetTokenExpired",
+        "The password reset token has expired. Please request a new one.");
 }
+
+

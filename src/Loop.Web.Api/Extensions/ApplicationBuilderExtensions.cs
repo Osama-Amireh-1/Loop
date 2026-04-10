@@ -1,4 +1,4 @@
-﻿namespace Web.Api.Extensions;
+﻿namespace Loop.Web.Api.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
@@ -10,3 +10,4 @@ public static class ApplicationBuilderExtensions
         return app;
     }
 }
+

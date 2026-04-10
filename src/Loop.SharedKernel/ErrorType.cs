@@ -1,4 +1,4 @@
-﻿namespace SharedKernel;
+﻿namespace Loop.SharedKernel;
 
 public enum ErrorType
 {
@@ -8,3 +8,4 @@ public enum ErrorType
     NotFound = 3,
     Conflict = 4
 }
+

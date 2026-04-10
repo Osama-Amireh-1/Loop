@@ -1,6 +1,6 @@
-﻿using Web.Api.Middleware;
+﻿using Loop.Web.Api.Middleware;
 
-namespace Web.Api.Extensions;
+namespace Loop.Web.Api.Extensions;
 
 public static class MiddlewareExtensions
 {
@@ -11,3 +11,4 @@ public static class MiddlewareExtensions
         return app;
     }
 }
+

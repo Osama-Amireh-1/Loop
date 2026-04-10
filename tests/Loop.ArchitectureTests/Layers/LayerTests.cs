@@ -1,7 +1,7 @@
 ﻿using NetArchTest.Rules;
 using Shouldly;
 
-namespace ArchitectureTests.Layers;
+namespace Loop.ArchitectureTests.Layers;
 
 public class LayerTests : BaseTest
 {
@@ -71,3 +71,4 @@ public class LayerTests : BaseTest
         result.IsSuccessful.ShouldBeTrue();
     }
 }
+

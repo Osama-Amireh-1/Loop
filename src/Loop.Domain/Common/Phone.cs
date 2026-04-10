@@ -1,6 +1,6 @@
-using Loop.SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Common;
+namespace Loop.Domain.Common;
 
 public sealed class Phone : ValueObject
 {
@@ -32,3 +32,5 @@ public sealed class Phone : ValueObject
         yield return Value;
     }
 }
+
+

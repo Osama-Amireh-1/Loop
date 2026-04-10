@@ -1,6 +1,7 @@
-using Loop.SharedKernel;
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Stamps;
+namespace Loop.Domain.Stamps;
 
 public sealed record CardCompletedDomainEvent(Guid UserId, Guid StampId) : IDomainEvent;
+
+

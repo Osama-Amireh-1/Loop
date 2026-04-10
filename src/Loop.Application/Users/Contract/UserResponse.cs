@@ -1,4 +1,4 @@
-﻿namespace Application.Users.Contract;
+﻿namespace Loop.Application.Users.Contract;
 
 public sealed record UserResponse
 {
@@ -10,3 +10,4 @@ public sealed record UserResponse
 
     public string LastName { get; init; }
 }
+

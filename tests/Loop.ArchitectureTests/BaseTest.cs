@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using Application.Abstractions.Messaging;
-using Domain.Users;
-using Infrastructure.Database;
-using Web.Api;
+using Loop.Application.Abstractions.Messaging;
+using Loop.Domain.Users;
+using Loop.Infrastructure.Database;
+using Loop.Web.Api;
 
-namespace ArchitectureTests;
+namespace Loop.ArchitectureTests;
 
 public abstract class BaseTest
 {
@@ -13,3 +13,4 @@ public abstract class BaseTest
     protected static readonly Assembly InfrastructureAssembly = typeof(LoopContext).Assembly;
     protected static readonly Assembly PresentationAssembly = typeof(Program).Assembly;
 }
+

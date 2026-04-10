@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Transactions;
+namespace Loop.Domain.Transactions;
 
 public sealed record PointsRedeemedDomainEvent(
     Guid RedeemId,
@@ -8,3 +8,5 @@ public sealed record PointsRedeemedDomainEvent(
     Guid ShopId,
     int PointsUsed,
     decimal DiscountValue) : IDomainEvent;
+
+

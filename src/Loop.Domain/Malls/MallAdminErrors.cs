@@ -1,6 +1,6 @@
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Malls;
+namespace Loop.Domain.Malls;
 
 public static class MallAdminErrors
 {
@@ -8,3 +8,5 @@ public static class MallAdminErrors
         "Malls.AdminNotFound",
         $"The mall admin with the Id = '{mallAdminId}' was not found");
 }
+
+

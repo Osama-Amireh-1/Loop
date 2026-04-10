@@ -1,4 +1,4 @@
-using Domain.QRCode;
+﻿using Loop.Domain.QRCode;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,3 +30,4 @@ internal sealed class QrCodeConfiguration : IEntityTypeConfiguration<QrCode>
         builder.HasIndex(q => q.ExpiresAt);
     }
 }
+

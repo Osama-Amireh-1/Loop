@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Domain.Specifications;
+using Loop.Domain.Specifications;
 
-namespace Domain.Users.Specifications;
+namespace Loop.Domain.Users.Specifications;
 
 public class UserByIdSpecification:Specification<User>
 {
@@ -11,3 +11,4 @@ public class UserByIdSpecification:Specification<User>
     {
     }
 }
+

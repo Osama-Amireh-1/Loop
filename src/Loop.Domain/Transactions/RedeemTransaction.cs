@@ -1,11 +1,11 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Security.Cryptography;
-using Domain.Common;
-using Domain.Shops;
-using Domain.Users;
+using Loop.Domain.Common;
+using Loop.Domain.Shops;
+using Loop.Domain.Users;
 using Loop.SharedKernel;
 
-namespace Domain.Transactions;
+namespace Loop.Domain.Transactions;
 
 public class RedeemTransaction : AggregateRoot
 {
@@ -57,3 +57,5 @@ public class RedeemTransaction : AggregateRoot
         CompletedAt = DateTime.UtcNow;
     }
 }
+
+

@@ -1,5 +1,7 @@
-﻿using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Users;
+namespace Loop.Domain.Users;
 
 public sealed record UserRegisteredDomainEvent(Guid UserId) : IDomainEvent;
+
+

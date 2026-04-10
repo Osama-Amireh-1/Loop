@@ -1,8 +1,10 @@
-﻿using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Infrastructure.Time;
+namespace Loop.Infrastructure.Time;
 
 internal sealed class DateTimeProvider : IDateTimeProvider
 {
     public DateTime UtcNow => DateTime.UtcNow;
 }
+
+

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Serilog.Context;
 
-namespace Web.Api.Middleware;
+namespace Loop.Web.Api.Middleware;
 
 public class RequestContextLoggingMiddleware(RequestDelegate next)
 {
@@ -24,3 +24,4 @@ public class RequestContextLoggingMiddleware(RequestDelegate next)
         return correlationId.FirstOrDefault() ?? context.TraceIdentifier;
     }
 }
+

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 
-namespace Application.Users.Contract;
+namespace Loop.Application.Users.Contract;
 
 public class RegisterUserParams
 {
@@ -37,3 +37,4 @@ public sealed class RegisterUserParamsValidator : AbstractValidator<RegisterUser
         RuleFor(c => c.Password).NotEmpty().MinimumLength(8);
     }
 }
+

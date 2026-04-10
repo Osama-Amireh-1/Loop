@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Authentication;
+﻿namespace Loop.Infrastructure.Authentication;
 
 public sealed class UserContextUnavailableException : Exception
 {
@@ -6,3 +6,4 @@ public sealed class UserContextUnavailableException : Exception
     {
     }
 }
+

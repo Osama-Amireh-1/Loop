@@ -1,7 +1,6 @@
-using Loop.SharedKernel;
-using SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Users;
+namespace Loop.Domain.Users;
 
 public class UserPointsBalance : Entity
 {
@@ -37,3 +36,5 @@ public class UserPointsBalance : Entity
         LastUpdated = DateTime.UtcNow;
     }
 }
+
+

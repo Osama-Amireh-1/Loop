@@ -1,16 +1,11 @@
-using SharedKernel.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Loop.SharedKernel.Interfaces;
 
-namespace Domain.Specifications;
+namespace Loop.Domain.Specifications;
 
 /// <summary>
 /// Builds a LINQ <see cref="IQueryable{TEntity}"/> from a specification.
-/// Criteria, ordering and paging are applied here (pure LINQ – no EF Core dependency).
-/// <para>
-/// <b>Includes</b> (eager loading) must be applied in the Infrastructure layer where
-/// EF Core's <c>.Include()</c> / <c>.ThenInclude()</c> extension methods are available.
-/// Simply iterate <see cref="ISpecification{T}.Includes"/> and
-/// <see cref="ISpecification{T}.IncludeStrings"/> inside your repository implementation.
-/// </para>
+/// Criteria, includes, ordering and paging are applied here.
 /// </summary>
 public static class SpecificationEvaluator<TEntity> where TEntity : class
 {
@@ -19,13 +14,21 @@ public static class SpecificationEvaluator<TEntity> where TEntity : class
         ISpecification<TEntity> spec)
     {
         IQueryable<TEntity> query = inputQuery;
-        // 1. WHERE
+        
+        // 1. INCLUDES (eager loading)
+        query = spec.Includes.Aggregate(query, (current, includeExpression) =>
+            current.Include(includeExpression));
+
+        query = spec.IncludeStrings.Aggregate(query, (current, includeString) =>
+            current.Include(includeString));
+
+        // 2. WHERE
         if (spec.Criteria is not null)
         {
             query = query.Where(spec.Criteria);
         }
 
-        // 2. ORDER BY
+        // 3. ORDER BY
         if (spec.OrderBy is not null)
         {
             query = query.OrderBy(spec.OrderBy);
@@ -35,7 +38,7 @@ public static class SpecificationEvaluator<TEntity> where TEntity : class
             query = query.OrderByDescending(spec.OrderByDescending);
         }
 
-        // 3. PAGING  (must come after ordering)
+        // 4. PAGING  (must come after ordering)
         if (spec.IsPagingEnabled)
         {
             query = query.Skip(spec.Skip).Take(spec.Take);
@@ -44,3 +47,4 @@ public static class SpecificationEvaluator<TEntity> where TEntity : class
         return query;
     }
 }
+

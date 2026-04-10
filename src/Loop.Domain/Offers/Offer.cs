@@ -1,21 +1,20 @@
-using Domain.Shops;
+﻿using Loop.Domain.Shops;
 using Loop.SharedKernel;
-using SharedKernel;
 
-namespace Domain.Offers;
+namespace Loop.Domain.Offers;
 
 public class Offer : AggregateRoot
 {
     public Guid OfferId { get; private set; }
     public Guid ShopId { get; private set; }
     public string Name { get; private set; }
-    public string? Description { get; private set; }
-    public string? ImageUrl { get; private set; }
+    public string Description { get; private set; }
+    public string ImageUrl { get; private set; }
     public RewardType RewardType { get; private set; }
-    public string? RewardValue { get; private set; }    // JSON string
+    public string RewardValue { get; private set; }  
     public bool IsActive { get; private set; }
     public DateTime StartDate { get; private set; }
-    public DateTime? EndDate { get; private set; }
+    public DateTime EndDate { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public Shop Shop { get; private set; }
 
@@ -27,11 +26,11 @@ public class Offer : AggregateRoot
     public static Offer Create(
         Guid shopId,
         string name,
-        string? description,
+        string description,
         RewardType rewardType,
-        string? rewardValue,
+        string rewardValue,
         DateTime startDate,
-        DateTime? endDate)
+        DateTime endDate)
         => new()
         {
             OfferId = Guid.NewGuid(),
@@ -50,7 +49,7 @@ public class Offer : AggregateRoot
     {
         if (!IsActive)
             throw new DomainException("Offer is not active.");
-        if (DateTime.UtcNow < StartDate || EndDate.HasValue && DateTime.UtcNow > EndDate.Value)
+        if (DateTime.UtcNow < StartDate ||  DateTime.UtcNow > EndDate)
             throw new DomainException("Offer is outside its active period.");
 
         var redemption = OfferRedemption.Create(OfferId, userId, shopId, receiptId);
@@ -61,4 +60,6 @@ public class Offer : AggregateRoot
     public void Deactivate() => IsActive = false;
     public void Activate() => IsActive = true;
 }
+
+
 

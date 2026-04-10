@@ -1,7 +1,7 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Loop.SharedKernel;
 
-namespace Domain.Common;
+namespace Loop.Domain.Common;
 
 public sealed class Email:ValueObject
 {
@@ -36,3 +36,5 @@ public sealed class Email:ValueObject
         yield return Value;
     }
 }
+
+

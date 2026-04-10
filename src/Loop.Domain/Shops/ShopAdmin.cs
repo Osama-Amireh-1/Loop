@@ -1,7 +1,7 @@
-using Domain.Common;
+﻿using Loop.Domain.Common;
 using Loop.SharedKernel;
 
-namespace Domain.Shops;
+namespace Loop.Domain.Shops;
 
 public class ShopAdmin : AggregateRoot
 {
@@ -39,3 +39,5 @@ public class ShopAdmin : AggregateRoot
     public void Activate() => IsActive = true;
     public void ChangePasswordHash(string hash) => PasswordHash = hash;
 }
+
+

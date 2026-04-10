@@ -1,15 +1,15 @@
-using Application.Abstractions.Authentication;
-using Application.Abstractions.Messaging;
-using Application.Interfaces;
-using Domain.Common;
-using Domain.Tiers;
-using Domain.Users;
-using Domain.Users.Specifications;
+﻿using Loop.Application.Abstractions.Authentication;
+using Loop.Application.Abstractions.Messaging;
+using Loop.Application.Interfaces;
+using Loop.Domain.Common;
+using Loop.Domain.Tiers;
+using Loop.Domain.Users;
+using Loop.Domain.Users.Specifications;
 using Loop.Domain.Tiers.Specifications;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel;
+using Loop.SharedKernel;
 
-namespace Application.Users.Command;
+namespace Loop.Application.Users.Command;
 
 public static class RegisterUser
 {
@@ -27,15 +27,17 @@ public static class RegisterUser
     {
         public async Task<Result<Guid>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
         {
-            bool emailExists = await userRepo.Find(new UserByEmailSpecification(command.Email)).AnyAsync(cancellationToken);
+            var email = Email.Create(command.Email);
+
+            bool emailExists = await userRepo.Find(new UserByEmailSpecification(email)).AnyAsync(cancellationToken);
 
             if (emailExists)
             {
                 return Result.Failure<Guid>(UserErrors.EmailNotUnique);
             }
 
-            string normalizedPhone = command.Phone.Trim();
-            bool phoneExists = await userRepo.GetAll().AnyAsync(u => u.Phone.Value == normalizedPhone, cancellationToken);
+            var phone = Phone.Create(command.Phone);
+            bool phoneExists = await userRepo.GetAll().AnyAsync(u => u.Phone == phone, cancellationToken);
 
             if (phoneExists)
             {
@@ -67,3 +69,5 @@ public static class RegisterUser
         }
     }
 }
+
+

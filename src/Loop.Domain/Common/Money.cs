@@ -1,6 +1,6 @@
-using Loop.SharedKernel;
+﻿using Loop.SharedKernel;
 
-namespace Domain.Common;
+namespace Loop.Domain.Common;
 
 public sealed class Money : ValueObject
 {
@@ -52,3 +52,5 @@ public sealed class Money : ValueObject
         yield return Currency;
     }
 }
+
+
