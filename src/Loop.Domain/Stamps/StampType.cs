@@ -1,6 +1,6 @@
 ﻿namespace Loop.Domain.Stamps;
 
-public enum StampTransactionType
+public enum StampType
 {
     Collect = 1,
     Reward = 2

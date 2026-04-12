@@ -27,6 +27,7 @@ public sealed class GetCategories
             var categories = await _categoryReadRepo.Find(new CategoryByMallSpecification(request.mallId))
                 .Select(c => new GetCategoriesResponse
                 {
+                    CategoryId=c.CategoryId,
                     CategoryName = c.Name,
                 })
                 .ToListAsync(cancellationToken);

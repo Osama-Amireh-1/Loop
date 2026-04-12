@@ -8,5 +8,7 @@ namespace Loop.Application.Categories.Contract;
 public class GetCategoriesResponse
 {
     [Required]
+    public Guid CategoryId { get; set; }
+    [Required]
     public string CategoryName { get; set; }
 }

@@ -13,7 +13,7 @@ public class Stamp : AggregateRoot
     public string ImageUrl { get; private set; }
     public string StampIconUrl { get; private set; }
     public int StampsRequired { get; private set; }
-    public StampTransactionType RewardType { get; private set; }
+    public StampType RewardType { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
@@ -26,7 +26,7 @@ public class Stamp : AggregateRoot
         Guid shopId,
         string name,
         int stampsRequired,
-        StampTransactionType rewardType,
+        StampType rewardType,
         DateTime startDate,
         DateTime endDate)
     {

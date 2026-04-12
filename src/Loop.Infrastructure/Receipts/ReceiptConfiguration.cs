@@ -26,6 +26,10 @@ internal sealed class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
         builder.Property(r => r.ReceiptDetails)
             .HasColumnType("jsonb");
 
+        builder.Property(c => c.CreatedAt)
+        .IsRequired()
+        .HasDefaultValueSql("now()");
+
         builder.HasOne(r => r.Shop)
             .WithMany()
             .HasForeignKey(r => r.ShopId)
@@ -66,7 +70,8 @@ internal sealed class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
             ShopId = SeedShopId,
             UserId = SeedUserId,
             ReceiptDetails = "{\"items\":1,\"source\":\"seed\"}",
-            Status = ReceiptStatus.Approved
+            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            Status = ReceiptStatus.Approved,
         });
     }
 }

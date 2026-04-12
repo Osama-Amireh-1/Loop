@@ -16,18 +16,18 @@ namespace Loop.Application.Stamps.Query;
 
 public sealed class GetUserStampCards
 {
-    public sealed record Query(Guid userId) : IQuery<List<GetUserStampCardsResponse>>;
+    public sealed record Query() : IQuery<List<GetUserStampCardsResponse>>;
 
 
 
-    public sealed class Handler(IReadOnlyRepository<UserStampCard> _userStampCardReadRepo)
+    public sealed class Handler(IReadOnlyRepository<UserStampCard> _userStampCardReadRepo, IUserContext userContext)
     : IQueryHandler<Query, List<GetUserStampCardsResponse>>
     {
         public async Task<Result<List<GetUserStampCardsResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {
 
-            var userStampCards = await _userStampCardReadRepo.Find(new UserStampCardsWithDetailsSpecification(request.userId))
-                .Where(usc=> !usc.IsCompleted)
+            var userStampCards = await _userStampCardReadRepo.Find(new UserStampCardsWithDetailsSpecification(userContext.UserId))
+                .Where(usc=> usc.Stamp.IsActive&& usc.Stamp.StartDate>= DateTime.Now && usc.Stamp.EndDate<= DateTime.Now&& !usc.IsCompleted)
                 .Select(usc => new GetUserStampCardsResponse
                 {
                     stampId = usc.StampId,

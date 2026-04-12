@@ -69,7 +69,7 @@ internal sealed class StampConfiguration : IEntityTypeConfiguration<Stamp>
             ImageUrl = "https://cdn.loop.local/stamps/loop-coffee-card.png",
             StampIconUrl = "https://cdn.loop.local/stamps/loop-coffee-icon.png",
             StampsRequired = 10,
-            RewardType = StampTransactionType.Reward,
+            RewardType = StampType.Reward,
             IsActive = true,
             StartDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             EndDate = new DateTime(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc),

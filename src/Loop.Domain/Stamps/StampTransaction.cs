@@ -11,7 +11,7 @@ public class StampTransaction : AggregateRoot
     public Guid UserId { get; private set; }
     public Guid ShopId { get; private set; }
     public Guid StampProgramId { get; private set; }
-    public StampTransactionType Type { get; private set; }
+    public StampType Type { get; private set; }
     public int StampsCount { get; private set; }
     public Guid? RedemptionRef { get; private set; }    
     public DateTime CreatedAt { get; private set; }
@@ -32,7 +32,7 @@ public class StampTransaction : AggregateRoot
             UserId = userId,
             ShopId = shopId,
             StampProgramId = stampProgramId,
-            Type = StampTransactionType.Collect,
+            Type = StampType.Collect,
             StampsCount = count,
             RedemptionRef = receiptId,
             CreatedAt = DateTime.UtcNow
@@ -48,7 +48,7 @@ public class StampTransaction : AggregateRoot
             UserId = userId,
             ShopId = shopId,
             StampProgramId = stampProgramId,
-            Type = StampTransactionType.Reward,
+            Type = StampType.Reward,
             StampsCount = 0,
             CreatedAt = DateTime.UtcNow
         };

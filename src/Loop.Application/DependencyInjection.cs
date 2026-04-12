@@ -1,4 +1,4 @@
-﻿using Loop.Application.Abstractions.Behaviors;
+using Loop.Application.Abstractions.Behaviors;
 using Loop.Application.Abstractions.Messaging;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +15,7 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
             cfg.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
             cfg.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
+            cfg.AddOpenBehavior(typeof(UnitOfWorkPipelineBehavior<,>));
         });
 
         services.AddValidatorsFromAssembly(

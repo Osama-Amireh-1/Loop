@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Loop.Infrastructure.Migrations;
 
 /// <inheritdoc />
@@ -162,6 +164,51 @@ public partial class Initial_DB : Migration
                     principalTable: "mall",
                     principalColumn: "mall_id",
                     onDelete: ReferentialAction.Restrict);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "mall_admin_password_reset_request",
+            schema: "public",
+            columns: table => new
+            {
+                request_id = table.Column<Guid>(type: "uuid", nullable: false),
+                mall_admin_id = table.Column<Guid>(type: "uuid", nullable: false),
+                token_hash = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                expires_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("pk_mall_admin_password_reset_request", x => x.request_id);
+                table.ForeignKey(
+                    name: "fk_mall_admin_password_reset_request_mall_admin_mall_admin_id",
+                    column: x => x.mall_admin_id,
+                    principalSchema: "public",
+                    principalTable: "mall_admin",
+                    principalColumn: "mall_admin_id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "mall_admin_session",
+            schema: "public",
+            columns: table => new
+            {
+                session_id = table.Column<Guid>(type: "uuid", nullable: false),
+                mall_admin_id = table.Column<Guid>(type: "uuid", nullable: false),
+                refresh_token_hash = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                expires_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("pk_mall_admin_session", x => x.session_id);
+                table.ForeignKey(
+                    name: "fk_mall_admin_session_mall_admin_mall_admin_id",
+                    column: x => x.mall_admin_id,
+                    principalSchema: "public",
+                    principalTable: "mall_admin",
+                    principalColumn: "mall_admin_id",
+                    onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
@@ -368,7 +415,8 @@ public partial class Initial_DB : Migration
                 Amount = table.Column<decimal>(type: "numeric(12,2)", precision: 12, scale: 2, nullable: false),
                 Currency = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false),
                 receipt_details = table.Column<string>(type: "jsonb", nullable: false),
-                status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false)
+                status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
             },
             constraints: table =>
             {
@@ -568,6 +616,51 @@ public partial class Initial_DB : Migration
             });
 
         migrationBuilder.CreateTable(
+            name: "shop_admin_password_reset_request",
+            schema: "public",
+            columns: table => new
+            {
+                request_id = table.Column<Guid>(type: "uuid", nullable: false),
+                shop_admin_id = table.Column<Guid>(type: "uuid", nullable: false),
+                token_hash = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                expires_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("pk_shop_admin_password_reset_request", x => x.request_id);
+                table.ForeignKey(
+                    name: "fk_shop_admin_password_reset_request_shop_admin_shop_admin_id",
+                    column: x => x.shop_admin_id,
+                    principalSchema: "public",
+                    principalTable: "shop_admin",
+                    principalColumn: "shop_admin_id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "shop_admin_session",
+            schema: "public",
+            columns: table => new
+            {
+                session_id = table.Column<Guid>(type: "uuid", nullable: false),
+                shop_admin_id = table.Column<Guid>(type: "uuid", nullable: false),
+                refresh_token_hash = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                expires_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("pk_shop_admin_session", x => x.session_id);
+                table.ForeignKey(
+                    name: "fk_shop_admin_session_shop_admin_shop_admin_id",
+                    column: x => x.shop_admin_id,
+                    principalSchema: "public",
+                    principalTable: "shop_admin",
+                    principalColumn: "shop_admin_id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
             name: "stamp_transaction",
             schema: "public",
             columns: table => new
@@ -654,7 +747,12 @@ public partial class Initial_DB : Migration
             schema: "public",
             table: "category",
             columns: new[] { "category_id", "created_at", "description", "display_order", "icon_url", "mall_id", "name" },
-            values: new object[] { new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec01"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Coffee and beverages", 1, "https://cdn.loop.local/icons/coffee.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Coffee" });
+            values: new object[,]
+            {
+                { new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec01"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Coffee and beverages", 1, "https://cdn.loop.local/icons/coffee.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Coffee" },
+                { new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec02"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Clothing, shoes and accessories", 2, "https://cdn.loop.local/icons/fashion.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Fashion" },
+                { new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec03"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Phones, gadgets and accessories", 3, "https://cdn.loop.local/icons/electronics.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Electronics" }
+            });
 
         migrationBuilder.InsertData(
             schema: "public",
@@ -672,7 +770,12 @@ public partial class Initial_DB : Migration
             schema: "public",
             table: "shop",
             columns: new[] { "shop_id", "bio", "category_id", "cover_image_url", "created_at", "is_active", "logo_url", "mall_id", "name", "social_links", "website_url" },
-            values: new object[] { new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"), "Specialty coffee and pastries.", new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec01"), "https://cdn.loop.local/shops/loop-coffee-cover.png", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), true, "https://cdn.loop.local/shops/loop-coffee-logo.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Loop Coffee", "{\"instagram\":\"@loopcoffee\"}", "https://loop-coffee.local" });
+            values: new object[,]
+            {
+                { new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"), "Specialty coffee and pastries.", new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec01"), "https://cdn.loop.local/shops/loop-coffee-cover.png", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), true, "https://cdn.loop.local/shops/loop-coffee-logo.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Loop Coffee", "{\"instagram\":\"@loopcoffee\"}", "https://loop-coffee.local" },
+                { new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac002"), "Streetwear and seasonal fashion.", new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec02"), "https://cdn.loop.local/shops/urban-wear-cover.png", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), true, "https://cdn.loop.local/shops/urban-wear-logo.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Urban Wear", "{\"instagram\":\"@urbanwear\"}", "https://urban-wear.local" },
+                { new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac003"), "Latest smartphones, audio and gadgets.", new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec03"), "https://cdn.loop.local/shops/tech-zone-cover.png", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), true, "https://cdn.loop.local/shops/tech-zone-logo.png", new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"), "Tech Zone", "{\"instagram\":\"@techzone\"}", "https://tech-zone.local" }
+            });
 
         migrationBuilder.InsertData(
             schema: "public",
@@ -690,13 +793,18 @@ public partial class Initial_DB : Migration
             schema: "public",
             table: "offer",
             columns: new[] { "offer_id", "created_at", "description", "end_date", "image_url", "is_active", "name", "reward_type", "reward_value", "shop_id", "start_date" },
-            values: new object[] { new Guid("77777777-7777-7777-7777-777777777777"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Get 10% discount on any drink.", new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "https://cdn.loop.local/offers/ten-percent.png", true, "10% Off Drinks", "Discount", "{\"percent\":10}", new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) });
+            values: new object[,]
+            {
+                { new Guid("77777777-7777-7777-7777-777777777777"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Get 10% discount on any drink.", new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "https://cdn.loop.local/offers/ten-percent.png", true, "10% Off Drinks", "Discount", "{\"percent\":10}", new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                { new Guid("77777777-7777-7777-7777-777777777778"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Buy 2 items and get 1 free.", new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "https://cdn.loop.local/offers/buy2get1.png", true, "Buy 2 Get 1", "Discount", "{\"type\":\"buy2get1\"}", new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac002"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                { new Guid("77777777-7777-7777-7777-777777777779"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Get a free accessory with selected devices.", new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "https://cdn.loop.local/offers/free-accessory.png", true, "Free Accessory", "Discount", "{\"value\":\"free_accessory\"}", new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac003"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) }
+            });
 
         migrationBuilder.InsertData(
             schema: "public",
             table: "receipt",
-            columns: new[] { "receipt_id", "receipt_details", "receipt_path", "shop_id", "status", "user_id", "Amount", "Currency" },
-            values: new object[] { new Guid("88888888-8888-8888-8888-888888888888"), "{\"items\":1,\"source\":\"seed\"}", "receipts/2026/seed-receipt-1.jpg", new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"), "Approved", new Guid("22222222-2222-2222-2222-222222222222"), 12.50m, "JOD" });
+            columns: new[] { "receipt_id", "created_at", "receipt_details", "receipt_path", "shop_id", "status", "user_id", "Amount", "Currency" },
+            values: new object[] { new Guid("88888888-8888-8888-8888-888888888888"), new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "{\"items\":1,\"source\":\"seed\"}", "receipts/2026/seed-receipt-1.jpg", new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"), "Approved", new Guid("22222222-2222-2222-2222-222222222222"), 12.50m, "JOD" });
 
         migrationBuilder.InsertData(
             schema: "public",
@@ -802,6 +910,33 @@ public partial class Initial_DB : Migration
             schema: "public",
             table: "mall_admin",
             column: "phone",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "ix_mall_admin_password_reset_request_mall_admin_id",
+            schema: "public",
+            table: "mall_admin_password_reset_request",
+            column: "mall_admin_id",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "ix_mall_admin_password_reset_request_token_hash",
+            schema: "public",
+            table: "mall_admin_password_reset_request",
+            column: "token_hash",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "ix_mall_admin_session_mall_admin_id",
+            schema: "public",
+            table: "mall_admin_session",
+            column: "mall_admin_id");
+
+        migrationBuilder.CreateIndex(
+            name: "ix_mall_admin_session_refresh_token_hash",
+            schema: "public",
+            table: "mall_admin_session",
+            column: "refresh_token_hash",
             unique: true);
 
         migrationBuilder.CreateIndex(
@@ -961,6 +1096,33 @@ public partial class Initial_DB : Migration
             column: "shop_id");
 
         migrationBuilder.CreateIndex(
+            name: "ix_shop_admin_password_reset_request_shop_admin_id",
+            schema: "public",
+            table: "shop_admin_password_reset_request",
+            column: "shop_admin_id",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "ix_shop_admin_password_reset_request_token_hash",
+            schema: "public",
+            table: "shop_admin_password_reset_request",
+            column: "token_hash",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "ix_shop_admin_session_refresh_token_hash",
+            schema: "public",
+            table: "shop_admin_session",
+            column: "refresh_token_hash",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "ix_shop_admin_session_shop_admin_id",
+            schema: "public",
+            table: "shop_admin_session",
+            column: "shop_admin_id");
+
+        migrationBuilder.CreateIndex(
             name: "ix_stamp_is_active",
             schema: "public",
             table: "stamp",
@@ -1082,6 +1244,14 @@ public partial class Initial_DB : Migration
             schema: "public");
 
         migrationBuilder.DropTable(
+            name: "mall_admin_password_reset_request",
+            schema: "public");
+
+        migrationBuilder.DropTable(
+            name: "mall_admin_session",
+            schema: "public");
+
+        migrationBuilder.DropTable(
             name: "offer_redemption",
             schema: "public");
 
@@ -1099,6 +1269,14 @@ public partial class Initial_DB : Migration
 
         migrationBuilder.DropTable(
             name: "redeem_transaction",
+            schema: "public");
+
+        migrationBuilder.DropTable(
+            name: "shop_admin_password_reset_request",
+            schema: "public");
+
+        migrationBuilder.DropTable(
+            name: "shop_admin_session",
             schema: "public");
 
         migrationBuilder.DropTable(
@@ -1122,11 +1300,11 @@ public partial class Initial_DB : Migration
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "shop_admin",
+            name: "offer",
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "offer",
+            name: "shop_admin",
             schema: "public");
 
         migrationBuilder.DropTable(

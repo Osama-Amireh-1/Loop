@@ -6,9 +6,9 @@ using Loop.Domain.Specifications;
 
 namespace Loop.Domain.Offers.Specifications;
 
-public class OfferByMallSpecification:Specification<Offer>
+public class ActiveOfferByMallSpecification:Specification<Offer>
 {
-    public OfferByMallSpecification(Guid mallId) :base(o=>o.Shop.MallId== mallId)
+    public ActiveOfferByMallSpecification(Guid mallId) :base(o=>o.IsActive&& o.StartDate<= DateTime.Now&& o.EndDate >= DateTime.Now && o.Shop.MallId== mallId)
     {
         AddInclude(o => o.Shop);
         AddInclude(o => o.Redemptions);

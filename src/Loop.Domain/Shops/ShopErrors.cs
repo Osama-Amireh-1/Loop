@@ -6,7 +6,7 @@ public static class ShopErrors
 {
     public static Error NotFound(Guid shopId) => Error.NotFound(
         "Shops.NotFound",
-        $"The shop with the Id = '{shopId}' was not found");
+        $"The shop with the name = '{shopId}' was not found");
 
     public static readonly Error NameNotUnique = Error.Conflict(
         "Shops.NameNotUnique",

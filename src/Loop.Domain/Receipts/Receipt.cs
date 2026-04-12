@@ -16,6 +16,7 @@ public class Receipt : AggregateRoot
     public ReceiptStatus Status { get; private set; }
     public User User { get; private set; }
     public Shop Shop { get; private set; }
+    public DateTime CreatedAt { get; private set; }
 
     private Receipt() { }
 

@@ -18,7 +18,7 @@ namespace Loop.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("public")
-                .HasAnnotation("ProductVersion", "10.0.2")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -276,6 +276,81 @@ namespace Loop.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Loop.Domain.Malls.MallAdminPasswordResetRequest", b =>
+                {
+                    b.Property<Guid>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("request_id");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at_utc");
+
+                    b.Property<Guid>("MallAdminId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("mall_admin_id");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("token_hash");
+
+                    b.HasKey("RequestId")
+                        .HasName("pk_mall_admin_password_reset_request");
+
+                    b.HasIndex("MallAdminId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_mall_admin_password_reset_request_mall_admin_id");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique()
+                        .HasDatabaseName("ix_mall_admin_password_reset_request_token_hash");
+
+                    b.ToTable("mall_admin_password_reset_request", "public");
+                });
+
+            modelBuilder.Entity("Loop.Domain.Malls.MallAdminSession", b =>
+                {
+                    b.Property<Guid>("SessionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("session_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at_utc");
+
+                    b.Property<Guid>("MallAdminId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("mall_admin_id");
+
+                    b.Property<string>("RefreshTokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("refresh_token_hash");
+
+                    b.HasKey("SessionId")
+                        .HasName("pk_mall_admin_session");
+
+                    b.HasIndex("MallAdminId")
+                        .HasDatabaseName("ix_mall_admin_session_mall_admin_id");
+
+                    b.HasIndex("RefreshTokenHash")
+                        .IsUnique()
+                        .HasDatabaseName("ix_mall_admin_session_refresh_token_hash");
+
+                    b.ToTable("mall_admin_session", "public");
+                });
+
             modelBuilder.Entity("Loop.Domain.Offers.Offer", b =>
                 {
                     b.Property<Guid>("OfferId")
@@ -362,6 +437,34 @@ namespace Loop.Infrastructure.Migrations
                             RewardType = "Discount",
                             RewardValue = "{\"percent\":10}",
                             ShopId = new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"),
+                            StartDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            OfferId = new Guid("77777777-7777-7777-7777-777777777778"),
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Buy 2 items and get 1 free.",
+                            EndDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ImageUrl = "https://cdn.loop.local/offers/buy2get1.png",
+                            IsActive = true,
+                            Name = "Buy 2 Get 1",
+                            RewardType = "Discount",
+                            RewardValue = "{\"type\":\"buy2get1\"}",
+                            ShopId = new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac002"),
+                            StartDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            OfferId = new Guid("77777777-7777-7777-7777-777777777779"),
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Get a free accessory with selected devices.",
+                            EndDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            ImageUrl = "https://cdn.loop.local/offers/free-accessory.png",
+                            IsActive = true,
+                            Name = "Free Accessory",
+                            RewardType = "Discount",
+                            RewardValue = "{\"value\":\"free_accessory\"}",
+                            ShopId = new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac003"),
                             StartDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
@@ -459,6 +562,12 @@ namespace Loop.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("receipt_id");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("now()");
+
                     b.Property<string>("ReceiptDetails")
                         .IsRequired()
                         .HasColumnType("jsonb")
@@ -502,6 +611,7 @@ namespace Loop.Infrastructure.Migrations
                         new
                         {
                             ReceiptId = new Guid("88888888-8888-8888-8888-888888888888"),
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             ReceiptDetails = "{\"items\":1,\"source\":\"seed\"}",
                             ReceiptPath = "receipts/2026/seed-receipt-1.jpg",
                             ShopId = new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001"),
@@ -572,6 +682,26 @@ namespace Loop.Infrastructure.Migrations
                             IconUrl = "https://cdn.loop.local/icons/coffee.png",
                             MallId = new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"),
                             Name = "Coffee"
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec02"),
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Clothing, shoes and accessories",
+                            DisplayOrder = 2,
+                            IconUrl = "https://cdn.loop.local/icons/fashion.png",
+                            MallId = new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"),
+                            Name = "Fashion"
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec03"),
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Phones, gadgets and accessories",
+                            DisplayOrder = 3,
+                            IconUrl = "https://cdn.loop.local/icons/electronics.png",
+                            MallId = new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"),
+                            Name = "Electronics"
                         });
                 });
 
@@ -663,6 +793,34 @@ namespace Loop.Infrastructure.Migrations
                             Name = "Loop Coffee",
                             SocialLinks = "{\"instagram\":\"@loopcoffee\"}",
                             WebsiteUrl = "https://loop-coffee.local"
+                        },
+                        new
+                        {
+                            ShopId = new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac002"),
+                            Bio = "Streetwear and seasonal fashion.",
+                            CategoryId = new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec02"),
+                            CoverImageUrl = "https://cdn.loop.local/shops/urban-wear-cover.png",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsActive = true,
+                            LogoUrl = "https://cdn.loop.local/shops/urban-wear-logo.png",
+                            MallId = new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"),
+                            Name = "Urban Wear",
+                            SocialLinks = "{\"instagram\":\"@urbanwear\"}",
+                            WebsiteUrl = "https://urban-wear.local"
+                        },
+                        new
+                        {
+                            ShopId = new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac003"),
+                            Bio = "Latest smartphones, audio and gadgets.",
+                            CategoryId = new Guid("9f6454d5-a767-4c2f-a38d-cf6c9ee1ec03"),
+                            CoverImageUrl = "https://cdn.loop.local/shops/tech-zone-cover.png",
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsActive = true,
+                            LogoUrl = "https://cdn.loop.local/shops/tech-zone-logo.png",
+                            MallId = new Guid("d86d8ee3-4bf9-47a8-b2c2-81a6f09bf001"),
+                            Name = "Tech Zone",
+                            SocialLinks = "{\"instagram\":\"@techzone\"}",
+                            WebsiteUrl = "https://tech-zone.local"
                         });
                 });
 
@@ -740,6 +898,81 @@ namespace Loop.Infrastructure.Migrations
                             Phone = "+962790000002",
                             ShopId = new Guid("7d5dc255-7f80-4f6f-b962-b83f0d0ac001")
                         });
+                });
+
+            modelBuilder.Entity("Loop.Domain.Shops.ShopAdminPasswordResetRequest", b =>
+                {
+                    b.Property<Guid>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("request_id");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at_utc");
+
+                    b.Property<Guid>("ShopAdminId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("shop_admin_id");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("token_hash");
+
+                    b.HasKey("RequestId")
+                        .HasName("pk_shop_admin_password_reset_request");
+
+                    b.HasIndex("ShopAdminId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_shop_admin_password_reset_request_shop_admin_id");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique()
+                        .HasDatabaseName("ix_shop_admin_password_reset_request_token_hash");
+
+                    b.ToTable("shop_admin_password_reset_request", "public");
+                });
+
+            modelBuilder.Entity("Loop.Domain.Shops.ShopAdminSession", b =>
+                {
+                    b.Property<Guid>("SessionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("session_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at_utc");
+
+                    b.Property<string>("RefreshTokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("refresh_token_hash");
+
+                    b.Property<Guid>("ShopAdminId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("shop_admin_id");
+
+                    b.HasKey("SessionId")
+                        .HasName("pk_shop_admin_session");
+
+                    b.HasIndex("RefreshTokenHash")
+                        .IsUnique()
+                        .HasDatabaseName("ix_shop_admin_session_refresh_token_hash");
+
+                    b.HasIndex("ShopAdminId")
+                        .HasDatabaseName("ix_shop_admin_session_shop_admin_id");
+
+                    b.ToTable("shop_admin_session", "public");
                 });
 
             modelBuilder.Entity("Loop.Domain.Stamps.Stamp", b =>
@@ -1395,6 +1628,26 @@ namespace Loop.Infrastructure.Migrations
                         .HasConstraintName("fk_mall_admin_mall_mall_id");
                 });
 
+            modelBuilder.Entity("Loop.Domain.Malls.MallAdminPasswordResetRequest", b =>
+                {
+                    b.HasOne("Loop.Domain.Malls.MallAdmin", null)
+                        .WithMany()
+                        .HasForeignKey("MallAdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_mall_admin_password_reset_request_mall_admin_mall_admin_id");
+                });
+
+            modelBuilder.Entity("Loop.Domain.Malls.MallAdminSession", b =>
+                {
+                    b.HasOne("Loop.Domain.Malls.MallAdmin", null)
+                        .WithMany()
+                        .HasForeignKey("MallAdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_mall_admin_session_mall_admin_mall_admin_id");
+                });
+
             modelBuilder.Entity("Loop.Domain.Offers.Offer", b =>
                 {
                     b.HasOne("Loop.Domain.Shops.Shop", "Shop")
@@ -1545,6 +1798,26 @@ namespace Loop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_shop_admin_shop_shop_id");
+                });
+
+            modelBuilder.Entity("Loop.Domain.Shops.ShopAdminPasswordResetRequest", b =>
+                {
+                    b.HasOne("Loop.Domain.Shops.ShopAdmin", null)
+                        .WithMany()
+                        .HasForeignKey("ShopAdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_shop_admin_password_reset_request_shop_admin_shop_admin_id");
+                });
+
+            modelBuilder.Entity("Loop.Domain.Shops.ShopAdminSession", b =>
+                {
+                    b.HasOne("Loop.Domain.Shops.ShopAdmin", null)
+                        .WithMany()
+                        .HasForeignKey("ShopAdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_shop_admin_session_shop_admin_shop_admin_id");
                 });
 
             modelBuilder.Entity("Loop.Domain.Stamps.Stamp", b =>

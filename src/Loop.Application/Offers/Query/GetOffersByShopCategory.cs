@@ -25,12 +25,12 @@ public sealed class GetOffersByShopCategory
         public async Task<Result<List<GetOffersByShopCategoryResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var offers = await _offerReadRepo
-                    .Find(new OfferByMallSpecification(request.mallId))
+                    .Find(new ActiveOfferByMallSpecification(request.mallId))
                     .Where(o => !o.Redemptions.Any(r => r.UserId == userContext.UserId))
-                    .GroupBy(o => new { o.Shop.CategoryId, o.Shop.Category.Name })
+                    .GroupBy(o => new { o.Shop.CategoryId })
                     .Select(g => new GetOffersByShopCategoryResponse
                     {
-                        CategoryName = g.Key.Name,
+                        CategoryName = g.Select(o=>o.Shop.Category.Name).First(),
                         Offers = g.Select(o => new OfferItem
                         {
                             ShopName = o.Shop.Name,
