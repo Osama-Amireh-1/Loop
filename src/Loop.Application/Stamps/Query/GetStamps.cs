@@ -19,7 +19,7 @@ public sealed class GetStamps
 
 
 
-    public class Handler(IReadOnlyRepository<UserStampCard> _userStampCardReadRepo, IReadOnlyRepository<Stamp> _stampReadRepo, IUserContext userContext) : IQueryHandler<Query, List<GetStampsResponse>>
+    public sealed class Handler(IReadOnlyRepository<UserStampCard> _userStampCardReadRepo, IReadOnlyRepository<Stamp> _stampReadRepo, IUserContext userContext) : IQueryHandler<Query, List<GetStampsResponse>>
     {
         public async Task<Result<List<GetStampsResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {

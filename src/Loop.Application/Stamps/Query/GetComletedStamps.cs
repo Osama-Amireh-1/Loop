@@ -17,7 +17,7 @@ public sealed class GetComletedStamps
 {
     public sealed record Query() : IQuery<List<GetComletedStampsResponse>>;
 
-    public class Handler(IReadOnlyRepository<UserStampCard> _userStampCardReadRepo, IReadOnlyRepository<StampRedemption> _stampRedemptioReadRepo, IUserContext userContext) : IQueryHandler<Query, List<GetComletedStampsResponse>>
+    public sealed class Handler(IReadOnlyRepository<UserStampCard> _userStampCardReadRepo, IReadOnlyRepository<StampRedemption> _stampRedemptioReadRepo, IUserContext userContext) : IQueryHandler<Query, List<GetComletedStampsResponse>>
     {
         public async Task<Result<List<GetComletedStampsResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {

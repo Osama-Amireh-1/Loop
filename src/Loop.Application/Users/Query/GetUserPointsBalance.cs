@@ -19,7 +19,7 @@ public sealed class GetUserPointsBalance
     public sealed record Query(Guid MallId) : IQuery<PointsBalancResponse>;
 
 
-    public class Handler(
+    public sealed class Handler(
         IReadOnlyRepository<User> userReadRepo,
         IReadOnlyRepository<SystemConfig> systemConfigRepo,
         IUserContext userContext) : IQueryHandler<Query, PointsBalancResponse>
