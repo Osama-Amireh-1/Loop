@@ -27,7 +27,7 @@ public static class GetUserById
                 return Result.Failure<UserResponse>(UserErrors.Unauthorized());
             }
 
-            UserResponse? user = await _userReadRepo.Find(new UserByIdSpecification(query.UserId))
+            UserResponse? user = await _userReadRepo.Find(new UserByPKSpecification(query.UserId))
                 .Select(u => new UserResponse
                 {
                     Id = u.UserId,

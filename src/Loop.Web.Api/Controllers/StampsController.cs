@@ -17,4 +17,11 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         var result = await dispatcher.Dispatch(query, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
+    [HttpGet("Colmpeted")]
+    public async Task<IActionResult> GetComletedStamps(CancellationToken cancellationToken)
+    {
+        var query = new Application.Stamps.Query.GetComletedStamps.Query();
+        var result = await dispatcher.Dispatch(query, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
 }

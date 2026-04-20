@@ -41,4 +41,11 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
 
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
+    [HttpGet("GetUserPointsBalance")]
+    public async Task<IActionResult> GetPointsBalance([FromQuery] Guid mallId, CancellationToken cancellationToken)
+    {
+        GetUserPointsBalance.Query query = new(mallId);
+        Result<PointsBalancResponse> result = await dispatcher.Dispatch(query, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
 }

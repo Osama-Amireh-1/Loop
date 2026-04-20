@@ -19,7 +19,7 @@ public static class LogoutUser
     {
         public async Task<Result> Handle(LogoutUserCommand command, CancellationToken cancellationToken)
         {
-            User? user = await userRepo.Find(new UserByIdSpecification(userContext.UserId))
+            User? user = await userRepo.Find(new UserByPKSpecification(userContext.UserId))
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (user is null)

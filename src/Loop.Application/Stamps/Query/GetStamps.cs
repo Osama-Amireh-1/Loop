@@ -24,7 +24,7 @@ public sealed class GetStamps
         public async Task<Result<List<GetStampsResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var stamps = await (from s in _stampReadRepo.Find(new ActiveStampByPKSpecification(request.mallId, request.shopId))
-                                join usc in _userStampCardReadRepo.Find(new UserStampCardsWithDetailsSpecification(userContext.UserId))
+                                join usc in _userStampCardReadRepo.Find(new ActiveUserStampCardsWithDetailsSpecification(userContext.UserId))
                                      on s.StampId equals usc.StampId into stampsWithUserCards
                                 select new GetStampsResponse
                                 {

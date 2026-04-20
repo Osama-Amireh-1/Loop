@@ -38,7 +38,7 @@ public static class RefreshToken
                 return Result.Failure<AuthTokensResponse>(UserErrors.RefreshTokenExpired);
             }
 
-            User? user = await userRepo.Find(new UserByIdSpecification(session.UserId))
+            User? user = await userRepo.Find(new UserByPKSpecification(session.UserId))
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (user is null)

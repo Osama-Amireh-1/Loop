@@ -1,83 +1,83 @@
+using Microsoft.EntityFrameworkCore;
 using NetArchTest.Rules;
 using Shouldly;
 
 namespace Loop.ArchitectureTests.Layers;
 
-public class LayerTests : BaseTest
+public class InfrastructureLayerTests : BaseTest
 {
     // ──────────────────────────────────────────────────────────────
-    //  Domain Layer – must depend on NOTHING except SharedKernel
+    //  DbContext
     // ──────────────────────────────────────────────────────────────
 
     [Fact]
-    public void DomainLayer_ShouldNotHaveDependencyOn_ApplicationLayer()
-    {
-        TestResult result = Types.InAssembly(DomainAssembly)
-            .Should()
-            .NotHaveDependencyOn("Loop.Application")
-            .GetResult();
-
-        result.IsSuccessful.ShouldBeTrue();
-    }
-
-    [Fact]
-    public void DomainLayer_ShouldNotHaveDependencyOn_InfrastructureLayer()
-    {
-        TestResult result = Types.InAssembly(DomainAssembly)
-            .Should()
-            .NotHaveDependencyOn(InfrastructureAssembly.GetName().Name)
-            .GetResult();
-
-        result.IsSuccessful.ShouldBeTrue();
-    }
-
-    [Fact]
-    public void DomainLayer_ShouldNotHaveDependencyOn_PresentationLayer()
-    {
-        TestResult result = Types.InAssembly(DomainAssembly)
-            .Should()
-            .NotHaveDependencyOn(PresentationAssembly.GetName().Name)
-            .GetResult();
-
-        result.IsSuccessful.ShouldBeTrue();
-    }
-
-    // ──────────────────────────────────────────────────────────────
-    //  Application Layer – depends only on Domain & SharedKernel
-    // ──────────────────────────────────────────────────────────────
-
-    [Fact]
-    public void ApplicationLayer_ShouldNotHaveDependencyOn_InfrastructureLayer()
-    {
-        TestResult result = Types.InAssembly(ApplicationAssembly)
-            .Should()
-            .NotHaveDependencyOn(InfrastructureAssembly.GetName().Name)
-            .GetResult();
-
-        result.IsSuccessful.ShouldBeTrue();
-    }
-
-    [Fact]
-    public void ApplicationLayer_ShouldNotHaveDependencyOn_PresentationLayer()
-    {
-        TestResult result = Types.InAssembly(ApplicationAssembly)
-            .Should()
-            .NotHaveDependencyOn(PresentationAssembly.GetName().Name)
-            .GetResult();
-
-        result.IsSuccessful.ShouldBeTrue();
-    }
-
-    // ──────────────────────────────────────────────────────────────
-    //  Infrastructure Layer – should not depend on Presentation
-    // ──────────────────────────────────────────────────────────────
-
-    [Fact]
-    public void InfrastructureLayer_ShouldNotHaveDependencyOn_PresentationLayer()
+    public void DbContext_ShouldResideIn_InfrastructureLayer()
     {
         TestResult result = Types.InAssembly(InfrastructureAssembly)
+            .That()
+            .Inherit(typeof(DbContext))
             .Should()
-            .NotHaveDependencyOn(PresentationAssembly.GetName().Name)
+            .ResideInNamespaceStartingWith("Loop.Infrastructure")
+            .GetResult();
+
+        result.IsSuccessful.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void DbContext_ShouldBe_Sealed()
+    {
+        TestResult result = Types.InAssembly(InfrastructureAssembly)
+            .That()
+            .Inherit(typeof(DbContext))
+            .Should()
+            .BeSealed()
+            .GetResult();
+
+        result.IsSuccessful.ShouldBeTrue();
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    //  Entity Type Configurations
+    // ──────────────────────────────────────────────────────────────
+
+    [Fact]
+    public void EntityConfigurations_ShouldBe_Sealed()
+    {
+        TestResult result = Types.InAssembly(InfrastructureAssembly)
+            .That()
+            .ImplementInterface(typeof(IEntityTypeConfiguration<>))
+            .Should()
+            .BeSealed()
+            .GetResult();
+
+        result.IsSuccessful.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void EntityConfigurations_ShouldHave_ConfigurationSuffix()
+    {
+        TestResult result = Types.InAssembly(InfrastructureAssembly)
+            .That()
+            .ImplementInterface(typeof(IEntityTypeConfiguration<>))
+            .Should()
+            .HaveNameEndingWith("Configuration")
+            .GetResult();
+
+        result.IsSuccessful.ShouldBeTrue();
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    //  Repository Implementations
+    // ──────────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Repositories_ShouldResideIn_InfrastructureLayer()
+    {
+        TestResult result = Types.InAssembly(InfrastructureAssembly)
+            .That()
+            .HaveNameEndingWith("Repository")
+            .Should()
+            .ResideInNamespaceStartingWith("Loop.Infrastructure")
             .GetResult();
 
         result.IsSuccessful.ShouldBeTrue();

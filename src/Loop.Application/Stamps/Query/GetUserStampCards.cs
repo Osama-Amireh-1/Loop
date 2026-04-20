@@ -26,8 +26,8 @@ public sealed class GetUserStampCards
         public async Task<Result<List<GetUserStampCardsResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {
 
-            var userStampCards = await _userStampCardReadRepo.Find(new UserStampCardsWithDetailsSpecification(userContext.UserId))
-                .Where(usc=> usc.Stamp.IsActive&& usc.Stamp.StartDate>= DateTime.Now && usc.Stamp.EndDate<= DateTime.Now&& !usc.IsCompleted)
+            var userStampCards = await _userStampCardReadRepo.Find(new ActiveUserStampCardsWithDetailsSpecification(userContext.UserId))
+                .Where(usc=> !usc.IsCompleted)
                 .Select(usc => new GetUserStampCardsResponse
                 {
                     stampId = usc.StampId,

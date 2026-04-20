@@ -20,6 +20,9 @@ public class Stamp : AggregateRoot
     public DateTime CreatedAt { get; private set; }
     public Shop Shop { get; private set; }
 
+    private readonly List<StampRedemption> _redemptions = [];
+    public IReadOnlyList<StampRedemption> Redemptions => _redemptions.AsReadOnly();
+
     private Stamp() { }
 
     public static Stamp Create(
