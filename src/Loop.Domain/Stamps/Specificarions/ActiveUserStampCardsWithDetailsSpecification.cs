@@ -9,7 +9,7 @@ namespace Loop.Domain.Stamps.Specifications;
 public class ActiveUserStampCardsWithDetailsSpecification:Specification<UserStampCard>
 {
     public ActiveUserStampCardsWithDetailsSpecification(Guid userId)
-        : base(usc => usc.UserId == userId && usc.Stamp.IsActive && usc.Stamp.StartDate <= DateTime.Now && usc.Stamp.EndDate >= DateTime.Now)
+        : base(usc => usc.UserId == userId && usc.Stamp.IsActive && usc.Stamp.StartDate <= DateTime.UtcNow && usc.Stamp.EndDate >= DateTime.UtcNow)
     {
         AddInclude(usc => usc.Stamp);
         AddInclude(usc => usc.Stamp.Shop);

@@ -27,6 +27,24 @@ public static class StampErrors
     public static readonly Error CardNotCompleted = Error.Failure(
         "Stamps.CardNotCompleted",
         "The stamp card is not yet completed for reward redemption");
+
+    public static readonly Error InvalidQrPayload = Error.Failure(
+        "Stamps.InvalidQrPayload",
+        "The QR payload is invalid");
+
+    public static readonly Error QrCodeNotFound = Error.NotFound(
+        "Stamps.QrCodeNotFound",
+        "The QR session was not found");
+
+    public static readonly Error QrCodeExpired = Error.Failure(
+        "Stamps.QrCodeExpired",
+        "The QR code has expired");
+
+    public static readonly Error QrCodeAlreadyUsed = Error.Failure(
+        "Stamps.QrCodeAlreadyUsed",
+        "The QR code has already been redeemed");
 }
+
+
 
 

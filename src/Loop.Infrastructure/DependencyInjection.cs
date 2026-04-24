@@ -90,8 +90,10 @@ public static class DependencyInjection
 
         services.AddHttpContextAccessor();
         services.AddScoped<IUserContext, UserContext>();
+        services.AddScoped<IShopAdminContext, ShopAdminContext>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
+        services.AddSingleton<IStampRedemptionQrTokenProvider, StampRedemptionQrTokenProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
         return services;
@@ -99,7 +101,12 @@ public static class DependencyInjection
 
     private static IServiceCollection AddAuthorizationInternal(this IServiceCollection services)
     {
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ShopAdminOnly", policy =>
+                policy.RequireAuthenticatedUser()
+                    .RequireClaim("shop_admin_id"));
+        });
 
         services.AddScoped<PermissionProvider>();
 

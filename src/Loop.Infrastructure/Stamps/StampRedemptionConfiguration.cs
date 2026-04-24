@@ -1,3 +1,4 @@
+using Loop.Domain.QRCode;
 using Loop.Domain.Shops;
 using Loop.Domain.Stamps;
 using Loop.Domain.Users;
@@ -34,9 +35,16 @@ internal sealed class StampRedemptionConfiguration : IEntityTypeConfiguration<St
             .HasForeignKey(sr => sr.StampId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.HasOne<QrCode>()
+            .WithMany()
+            .HasForeignKey(sr => sr.RedemptionRef)
+            .HasPrincipalKey(q => q.QrId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasIndex(sr => sr.UserId);
         builder.HasIndex(sr => sr.ShopId);
         builder.HasIndex(sr => sr.StampId);
         builder.HasIndex(sr => new { sr.UserId, sr.StampId });
+        builder.HasIndex(sr => sr.RedemptionRef).IsUnique();
     }
 }

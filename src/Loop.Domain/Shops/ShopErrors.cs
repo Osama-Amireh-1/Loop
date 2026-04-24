@@ -28,6 +28,10 @@ public static class ShopErrors
         "Shops.AdminNotFound",
         $"The shop admin with the Id = '{shopAdminId}' was not found");
 
+    public static readonly Error AdminNotFoundByEmail = Error.NotFound(
+        "Shops.AdminNotFoundByEmail",
+        "The shop admin with the specified email was not found");
+
     public static readonly Error AdminEmailNotUnique = Error.Conflict(
         "Shops.AdminEmailNotUnique",
         "A shop admin with the specified email already exists");
@@ -35,6 +39,14 @@ public static class ShopErrors
     public static readonly Error AdminPhoneNotUnique = Error.Conflict(
         "Shops.AdminPhoneNotUnique",
         "A shop admin with the specified phone already exists");
+
+    public static readonly Error InvalidRefreshToken = Error.Failure(
+        "Shops.InvalidRefreshToken",
+        "The provided refresh token is invalid.");
+
+    public static readonly Error RefreshTokenExpired = Error.Failure(
+        "Shops.RefreshTokenExpired",
+        "The provided refresh token is expired.");
 
     public static readonly Error QrCodeExpired = Error.Failure(
         "Shops.QrCodeExpired",
