@@ -11,6 +11,8 @@ namespace Loop.Web.Api.Controllers;
 public class OffersController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
+    [ProducesResponseType(typeof(List<Loop.Application.Offers.Contract.GetOffersByShopCategoryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByShopCategory(
         [FromQuery] Guid mallId,
         CancellationToken cancellationToken)
@@ -21,6 +23,8 @@ public class OffersController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpGet("{mallId:guid}/{shopId:guid}")]
+    [ProducesResponseType(typeof(List<Loop.Application.Offers.Contract.GetOffersByShopResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByShop(
          Guid mallId,
          Guid shopId,

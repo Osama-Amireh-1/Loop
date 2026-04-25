@@ -1,4 +1,5 @@
 using Loop.Application.Abstractions.Messaging;
+using Loop.Application.Stamps.Contract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,8 @@ namespace Loop.Web.Api.Controllers;
 public class UserStampCardsController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
+    [ProducesResponseType(typeof(List<GetUserStampCardsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserStampCards(CancellationToken cancellationToken)
     {
         var query = new Application.Stamps.Query.GetUserStampCards.Query();

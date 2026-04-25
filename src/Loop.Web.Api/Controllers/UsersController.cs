@@ -15,6 +15,8 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpPost("register")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterUserParams request, CancellationToken cancellationToken)
     {
         RegisterUser.RegisterUserCommand command = new(
@@ -33,6 +35,8 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         GetUserById.GetUserByIdQuery query = new(id);
@@ -41,7 +45,10 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
 
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
+
     [HttpGet("GetUserPointsBalance")]
+    [ProducesResponseType(typeof(PointsBalancResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPointsBalance([FromQuery] Guid mallId, CancellationToken cancellationToken)
     {
         GetUserPointsBalance.Query query = new(mallId);

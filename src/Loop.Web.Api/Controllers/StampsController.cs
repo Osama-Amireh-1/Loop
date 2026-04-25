@@ -12,6 +12,8 @@ namespace Loop.Web.Api.Controllers;
 public class StampsController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
+    [ProducesResponseType(typeof(List<GetStampsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetStamps([FromQuery] Guid mallId, [FromQuery] Guid shopId, CancellationToken cancellationToken)
     {
         var query = new Application.Stamps.Query.GetStamps.Query(mallId, shopId);
@@ -20,6 +22,8 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpGet("Colmpeted")]
+    [ProducesResponseType(typeof(List<GetComletedStampsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetComletedStamps(CancellationToken cancellationToken)
     {
         var query = new Application.Stamps.Query.GetComletedStamps.Query();
@@ -28,6 +32,8 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpPost("{stampId:guid}/redeem/qr")]
+    [ProducesResponseType(typeof(GenerateStampRedemptionQrResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GenerateRedemptionQr(Guid stampId, CancellationToken cancellationToken)
     {
         var command = new GenerateStampRedemptionQr.Command(stampId);
@@ -37,6 +43,8 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
 
     [HttpPost("redeem/confirm")]
     [Authorize(Policy = "ShopAdminOnly")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConfirmRedemptionQr([FromBody] ConfirmStampRedemptionQrRequest request, CancellationToken cancellationToken)
     {
         var command = new ConfirmStampRedemptionQr.Command(request.QrCodeData);

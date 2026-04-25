@@ -14,6 +14,8 @@ public class ShopAdminsController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpPost("login")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(AuthTokensResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginShopAdminParams request, CancellationToken cancellationToken)
     {
         var command = new LoginShopAdmin.LoginShopAdminCommand(request.Email, request.Password);
@@ -23,6 +25,8 @@ public class ShopAdminsController(IDispatcher dispatcher) : ControllerBase
 
     [HttpPost("refresh")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(AuthTokensResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Refresh([FromBody] RefreshShopAdminTokenParams request, CancellationToken cancellationToken)
     {
         var command = new RefreshShopAdminToken.RefreshShopAdminTokenCommand(request.RefreshToken);

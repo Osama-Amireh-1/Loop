@@ -10,6 +10,8 @@ namespace Loop.Web.Api.Controllers;
 public class CategoriesController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
+    [ProducesResponseType(typeof(List<Loop.Application.Categories.Contract.GetCategoriesResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCategories([FromQuery] Guid mallId, CancellationToken cancellationToken)
     {
         var query = new Application.Categories.Query.GetCategories.Query(mallId);
