@@ -17,8 +17,8 @@ internal sealed class StampRedemptionConfiguration : IEntityTypeConfiguration<St
             .IsRequired()
             .HasDefaultValueSql("now()");
 
-        builder.Property(sr => sr.RedemptionRef)
-            .IsRequired(false);
+        builder.Property(sr => sr.QrId)
+            .IsRequired();
 
         builder.HasOne<User>()
             .WithMany()
@@ -31,20 +31,19 @@ internal sealed class StampRedemptionConfiguration : IEntityTypeConfiguration<St
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne<Stamp>()
-            .WithMany()
+            .WithMany(s => s.Redemptions)
             .HasForeignKey(sr => sr.StampId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne<QrCode>()
             .WithMany()
-            .HasForeignKey(sr => sr.RedemptionRef)
-            .HasPrincipalKey(q => q.QrId)
+            .HasForeignKey(sr => sr.QrId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(sr => sr.UserId);
         builder.HasIndex(sr => sr.ShopId);
         builder.HasIndex(sr => sr.StampId);
         builder.HasIndex(sr => new { sr.UserId, sr.StampId });
-        builder.HasIndex(sr => sr.RedemptionRef).IsUnique();
+        builder.HasIndex(sr => sr.QrId).IsUnique();
     }
 }

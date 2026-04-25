@@ -58,7 +58,7 @@ public static class ConfirmStampRedemptionQr
             }
 
             bool alreadyUsed = await stampRedemptionReadRepo.GetAll()
-                .AnyAsync(sr => sr.RedemptionRef == qrCode.QrId, cancellationToken);
+                .AnyAsync(sr => sr.QrId == qrCode.QrId, cancellationToken);
 
             if (alreadyUsed)
             {

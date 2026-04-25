@@ -9,7 +9,7 @@ public class StampRedemption : AggregateRoot
     public Guid UserId { get; private set; }
     public Guid ShopId { get; private set; }
     public Guid StampId { get; private set; }
-    public Guid? RedemptionRef { get; private set; }
+    public Guid? QrId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private StampRedemption() { }
@@ -18,14 +18,14 @@ public class StampRedemption : AggregateRoot
         Guid userId,
         Guid shopId,
         Guid stampId,
-        Guid? redemptionRef)
+        Guid? QrId)
         => new()
         {
             RedemptionId = Guid.NewGuid(),
             UserId = userId,
             StampId = stampId,
             ShopId = shopId,
-            RedemptionRef = redemptionRef,
+            QrId = QrId,
             CreatedAt = DateTime.UtcNow
         };
 }

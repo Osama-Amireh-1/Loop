@@ -57,11 +57,6 @@ internal sealed class StampConfiguration : IEntityTypeConfiguration<Stamp>
             .HasForeignKey(s => s.ShopId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany(s => s.Redemptions)
-            .WithOne()
-            .HasForeignKey(sr => sr.StampId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasIndex(s => s.ShopId);
         builder.HasIndex(s => s.IsActive);
 
@@ -82,5 +77,3 @@ internal sealed class StampConfiguration : IEntityTypeConfiguration<Stamp>
         });
     }
 }
-
-
