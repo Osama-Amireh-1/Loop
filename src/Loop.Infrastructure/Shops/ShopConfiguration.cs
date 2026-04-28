@@ -60,9 +60,9 @@ internal sealed class ShopConfiguration : IEntityTypeConfiguration<Shop>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne<Mall>()
-    .WithMany()
-    .HasForeignKey(s => s.MallId)
-    .OnDelete(DeleteBehavior.Restrict);
+            .WithMany()
+            .HasForeignKey(s => s.MallId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasData(
             new

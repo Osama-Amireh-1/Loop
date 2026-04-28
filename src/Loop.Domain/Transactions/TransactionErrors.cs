@@ -31,6 +31,24 @@ public static class TransactionErrors
     public static readonly Error BelowMinRedemptionThreshold = Error.Failure(
         "Transactions.BelowMinRedemptionThreshold",
         "The user's points are below the minimum redemption threshold");
+
+    public static readonly Error InvalidRedemptionPoints = Error.Failure(
+        "Transactions.InvalidRedemptionPoints",
+        "The points to redeem must be greater than zero");
+
+    public static readonly Error InvalidQrPayload = Error.Failure(
+        "Transactions.InvalidQrPayload",
+        "The redemption QR payload is invalid");
+
+    public static readonly Error QrCodeNotFound = Error.NotFound(
+        "Transactions.QrCodeNotFound",
+        "The redemption QR code was not found");
+
+    public static readonly Error QrCodeExpired = Error.Failure(
+        "Transactions.QrCodeExpired",
+        "The redemption QR code has expired");
 }
+
+
 
 

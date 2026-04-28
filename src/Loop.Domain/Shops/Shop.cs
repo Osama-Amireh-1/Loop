@@ -18,6 +18,7 @@ public class Shop : AggregateRoot
     public DateTime CreatedAt { get; private set; }
 
     public Category Category { get; private set; }
+    public ShopPointsWallet PointsWallet { get; private set; } = null!;
 
     private Shop() { }
 
@@ -25,18 +26,29 @@ public class Shop : AggregateRoot
         Guid mallId,
         string name,
         Guid categoryId)
-        => new()
+    {
+        var shopId = Guid.NewGuid();
+
+        return new Shop
         {
-            ShopId = Guid.NewGuid(),
+            ShopId = shopId,
             MallId = mallId,
             Name = name,
             CategoryId = categoryId,
             IsActive = true,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            PointsWallet = ShopPointsWallet.Create(shopId)
         };
+    }
 
     public void Deactivate() => IsActive = false;
     public void Activate() => IsActive = true;
+
+    public void AddRedeemedPoints(int points)
+    {
+        PointsWallet ??= ShopPointsWallet.Create(ShopId);
+        PointsWallet.AddPoints(points);
+    }
 
     public void UpdateDetails(
         string name,

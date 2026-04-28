@@ -35,5 +35,10 @@ public sealed class QrCode : AggregateRoot
     }
 
     public bool IsExpired(DateTime utcNow) => utcNow >= ExpiresAt;
+
+    public void Invalidate(DateTime utcNow)
+    {
+        ExpiresAt = utcNow;
+    }
 }
 

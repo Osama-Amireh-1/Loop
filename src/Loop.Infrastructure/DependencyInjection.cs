@@ -94,6 +94,7 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
         services.AddSingleton<IStampRedemptionQrTokenProvider, StampRedemptionQrTokenProvider>();
+        services.AddSingleton<IPointsRedemptionQrTokenProvider, PointsRedemptionQrTokenProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
         return services;

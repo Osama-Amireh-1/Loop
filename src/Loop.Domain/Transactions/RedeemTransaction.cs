@@ -14,6 +14,7 @@ public class RedeemTransaction : AggregateRoot
     public Guid ShopId { get; private set; }
     public int PointsUsed { get; private set; }
     public Money DiscountValue { get; private set; }
+    public decimal AppliedPointsToCurrencyRatio { get; private set; }
     public string VerificationCode { get; private set; }
     public RedemptionStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -28,7 +29,8 @@ public class RedeemTransaction : AggregateRoot
         Guid userId,
         Guid shopId,
         int pointsUsed,
-        Money discountValue)
+        Money discountValue,
+        decimal appliedPointsToCurrencyRatio)
         => new()
         {
             RedeemId = Guid.NewGuid(),
@@ -36,6 +38,7 @@ public class RedeemTransaction : AggregateRoot
             ShopId = shopId,
             PointsUsed = pointsUsed,
             DiscountValue = discountValue,
+            AppliedPointsToCurrencyRatio = appliedPointsToCurrencyRatio,
             VerificationCode = RandomNumberGenerator.GetInt32(100000, 999999).ToString(CultureInfo.InvariantCulture),
             Status = RedemptionStatus.Pending,
             CreatedAt = DateTime.UtcNow

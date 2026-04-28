@@ -13,6 +13,10 @@ internal sealed class RedeemTransactionConfiguration : IEntityTypeConfiguration<
         builder.Property(r => r.PointsUsed)
             .IsRequired();
 
+        builder.Property(r => r.AppliedPointsToCurrencyRatio)
+            .IsRequired()
+            .HasPrecision(12, 6);
+
         builder.OwnsOne(r => r.DiscountValue, money =>
         {
             money.Property(m => m.Amount)
@@ -58,4 +62,5 @@ internal sealed class RedeemTransactionConfiguration : IEntityTypeConfiguration<
         builder.HasIndex(r => r.VerificationCode).IsUnique();
     }
 }
+
 
