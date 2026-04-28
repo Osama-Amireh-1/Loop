@@ -51,4 +51,15 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         var result = await dispatcher.Dispatch(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
+
+    [HttpGet("active")]
+    [Authorize(Policy = "ShopAdminOnly")]
+    [ProducesResponseType(typeof(List<GetActiveShopStampsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetActiveShopStamps(CancellationToken cancellationToken)
+    {
+        var query = new Application.Stamps.Query.GetActiveShopStamps.Query();
+        var result = await dispatcher.Dispatch(query, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
 }
