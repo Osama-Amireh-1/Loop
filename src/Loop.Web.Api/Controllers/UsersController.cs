@@ -35,6 +35,7 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
@@ -47,6 +48,7 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpGet("GetUserPointsBalance")]
+    [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(PointsBalancResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPointsBalance([FromQuery] Guid mallId, CancellationToken cancellationToken)
@@ -54,5 +56,16 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
         GetUserPointsBalance.Query query = new(mallId);
         Result<PointsBalancResponse> result = await dispatcher.Dispatch(query, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+
+    [HttpPost("redeem/points/confirm")]
+    [Authorize(Policy = "ShopAdminOnly")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ConfirmPointsRedemptionQr([FromBody] ConfirmPointsRedemptionQrRequest request, CancellationToken cancellationToken)
+    {
+        var command = new ConfirmPointsRedemptionQr.Command(request.QrId);
+        Result<bool> result = await dispatcher.Dispatch(command, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }

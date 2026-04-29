@@ -12,6 +12,7 @@ namespace Loop.Web.Api.Controllers;
 public class StampsController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(List<GetStampsResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetStamps([FromQuery] Guid mallId, [FromQuery] Guid shopId, CancellationToken cancellationToken)
@@ -22,6 +23,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpGet("Colmpeted")]
+    [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(List<GetComletedStampsResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetComletedStamps(CancellationToken cancellationToken)
@@ -32,6 +34,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpPost("{stampId:guid}/redeem/qr")]
+    [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(GenerateStampRedemptionQrResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GenerateRedemptionQr(Guid stampId, CancellationToken cancellationToken)
@@ -47,7 +50,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConfirmRedemptionQr([FromBody] ConfirmStampRedemptionQrRequest request, CancellationToken cancellationToken)
     {
-        var command = new ConfirmStampRedemptionQr.Command(request.QrCodeData);
+        var command = new ConfirmStampRedemptionQr.Command(request.QrId);
         var result = await dispatcher.Dispatch(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
@@ -61,5 +64,27 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         var query = new Application.Stamps.Query.GetActiveShopStamps.Query();
         var result = await dispatcher.Dispatch(query, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+
+    [HttpPost("{stampId:guid}/collect/qr")]
+    [Authorize(Policy = "ShopAdminOnly")]
+    [ProducesResponseType(typeof(GenerateStampCollectQrResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GenerateCollectQr(Guid stampId, [FromQuery] int stampsCount, CancellationToken cancellationToken)
+    {
+        var command = new GenerateStampCollectQr.Command(stampId, stampsCount <= 0 ? 1 : stampsCount);
+        var result = await dispatcher.Dispatch(command, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+
+    [HttpPost("collect/scan")]
+    [Authorize(Policy = "UserOnly")]
+    [ProducesResponseType(typeof(ScanStampCollectQrResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ScanCollectQr([FromBody] ScanStampCollectQrRequest request, CancellationToken cancellationToken)
+    {
+        var command = new ScanStampCollectQr.Command(request.QrId);
+        var result = await dispatcher.Dispatch(command, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }

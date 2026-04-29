@@ -61,7 +61,6 @@ public static class GeneratePointsRedemptionQr
             return Result.Success(new GeneratePointsRedemptionQrResponse
             {
                 QrId = qrCode.QrId,
-                QrCodeData = qrCode.QrCodeData,
                 ExpiresAtUtc = qrCode.ExpiresAt
             });
         }

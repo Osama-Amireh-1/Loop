@@ -6,7 +6,7 @@ namespace Loop.Web.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Policy = "UserOnly")]
 public class CategoriesController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]

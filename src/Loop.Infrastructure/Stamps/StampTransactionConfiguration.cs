@@ -1,4 +1,5 @@
-﻿using Loop.Domain.Stamps;
+﻿using Loop.Domain.QRCode;
+using Loop.Domain.Stamps;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -35,16 +36,23 @@ internal sealed class StampTransactionConfiguration : IEntityTypeConfiguration<S
         builder.Property(st => st.StampProgramId)
             .IsRequired();
 
+        builder.HasOne<Stamp>()
+            .WithMany()
+            .HasForeignKey(st => st.StampProgramId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.Property(st => st.RedemptionRef)
             .IsRequired(false);
-        builder.HasOne<Stamp>()
-    .WithMany()
-    .HasForeignKey(st => st.StampProgramId)
-    .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(st => st.RedemptionQrCode)
+            .WithMany()
+            .HasForeignKey(st => st.RedemptionRef)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(st => st.UserId);
         builder.HasIndex(st => st.ShopId);
         builder.HasIndex(st => st.StampProgramId);
+        builder.HasIndex(st => st.RedemptionRef);
     }
 }
 

@@ -7,7 +7,7 @@ namespace Loop.Web.Api.Controllers;
 
 [Route("api/users/{userId:guid}/stamp-cards")]
 [ApiController]
-[Authorize]
+[Authorize(Policy = "UserOnly")]
 public class UserStampCardsController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]

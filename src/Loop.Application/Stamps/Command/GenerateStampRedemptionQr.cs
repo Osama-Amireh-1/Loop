@@ -58,7 +58,6 @@ public static class GenerateStampRedemptionQr
             return Result.Success(new GenerateStampRedemptionQrResponse
             {
                 QrId = qrCode.QrId,
-                QrCodeData = qrCode.QrCodeData,
                 ExpiresAtUtc = qrCode.ExpiresAt
             });
         }

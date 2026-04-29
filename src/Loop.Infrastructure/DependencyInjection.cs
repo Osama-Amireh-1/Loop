@@ -95,6 +95,7 @@ public static class DependencyInjection
         services.AddSingleton<ITokenProvider, TokenProvider>();
         services.AddSingleton<IStampRedemptionQrTokenProvider, StampRedemptionQrTokenProvider>();
         services.AddSingleton<IPointsRedemptionQrTokenProvider, PointsRedemptionQrTokenProvider>();
+        services.AddSingleton<IStampCollectionQrTokenProvider, StampCollectionQrTokenProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
         return services;
@@ -107,6 +108,10 @@ public static class DependencyInjection
             options.AddPolicy("ShopAdminOnly", policy =>
                 policy.RequireAuthenticatedUser()
                     .RequireClaim("shop_admin_id"));
+
+            options.AddPolicy("UserOnly", policy =>
+                policy.RequireAuthenticatedUser()
+                    .RequireClaim("user_id"));
         });
 
         services.AddScoped<PermissionProvider>();

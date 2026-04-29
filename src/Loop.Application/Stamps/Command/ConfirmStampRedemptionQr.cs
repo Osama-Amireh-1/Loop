@@ -4,7 +4,9 @@ using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Interfaces;
 using Loop.Domain.Audit;
 using Loop.Domain.QRCode;
+using Loop.Domain.QRCode.Specifications;
 using Loop.Domain.Stamps;
+using Loop.Domain.Stamps.Specificarions;
 using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +14,7 @@ namespace Loop.Application.Stamps.Command;
 
 public static class ConfirmStampRedemptionQr
 {
-    public sealed record Command(string QrCodeData) : ICommand<bool>;
+    public sealed record Command(Guid QrId) : ICommand<bool>;
 
     public sealed class Handler(
         IRepository<QrCode> qrCodeRepo,
@@ -26,28 +28,25 @@ public static class ConfirmStampRedemptionQr
     {
         public async Task<Result<bool>> Handle(Command request, CancellationToken cancellationToken)
         {
-            StampRedemptionQrTokenPayload? payload = await stampRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(request.QrCodeData);
+            var qrCode = await qrCodeRepo
+                .Find(new QrCodeByPKSpecification(request.QrId))
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (qrCode is null)
+            {
+                return Result.Failure<bool>(StampErrors.QrCodeNotFound);
+            }
+
+            StampRedemptionQrTokenPayload? payload = await stampRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(qrCode.QrCodeData);
 
             if (payload is null)
             {
                 return Result.Failure<bool>(StampErrors.InvalidQrPayload);
             }
 
-            if (payload.ShopId != shopAdminContext.ShopId)
+            if (payload.ShopId != shopAdminContext.ShopId || qrCode.ShopId != shopAdminContext.ShopId)
             {
                 return Result.Failure<bool>(StampErrors.InvalidQrPayload);
-            }
-
-            var qrCode = await qrCodeRepo.GetAll()
-                .FirstOrDefaultAsync(q =>
-                    q.QrCodeData == request.QrCodeData &&
-                    q.UserId == payload.UserId &&
-                    q.ShopId == payload.ShopId,
-                    cancellationToken);
-
-            if (qrCode is null)
-            {
-                return Result.Failure<bool>(StampErrors.QrCodeNotFound);
             }
 
             DateTime utcNow = dateTimeProvider.UtcNow;
@@ -57,8 +56,9 @@ public static class ConfirmStampRedemptionQr
                 return Result.Failure<bool>(StampErrors.QrCodeExpired);
             }
 
-            bool alreadyUsed = await stampRedemptionReadRepo.GetAll()
-                .AnyAsync(sr => sr.QrId == qrCode.QrId, cancellationToken);
+            bool alreadyUsed = await stampRedemptionReadRepo
+                .Find(new StampRedemptionByQrIdSpecification(qrCode.QrId))
+                .AnyAsync(cancellationToken);
 
             if (alreadyUsed)
             {

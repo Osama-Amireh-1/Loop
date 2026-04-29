@@ -6,7 +6,9 @@ using Loop.Domain.Audit;
 using Loop.Domain.Configuration;
 using Loop.Domain.Configuration.Specifications;
 using Loop.Domain.QRCode;
+using Loop.Domain.QRCode.Specifications;
 using Loop.Domain.Shops;
+using Loop.Domain.Shops.Specificarions;
 using Loop.Domain.Transactions;
 using Loop.Domain.Users;
 using Loop.Domain.Users.Specifications;
@@ -17,7 +19,7 @@ namespace Loop.Application.Users.Command;
 
 public static class ConfirmPointsRedemptionQr
 {
-    public sealed record Command(string QrCodeData) : ICommand<bool>;
+    public sealed record Command(Guid QrId) : ICommand<bool>;
 
     public sealed class Handler(
         IRepository<QrCode> qrCodeRepo,
@@ -33,19 +35,25 @@ public static class ConfirmPointsRedemptionQr
     {
         public async Task<Result<bool>> Handle(Command request, CancellationToken cancellationToken)
         {
-            PointsRedemptionQrTokenPayload? payload = await pointsRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(request.QrCodeData);
+            var qrCode = await qrCodeRepo
+                .Find(new QrCodeByPKSpecification(request.QrId))
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (qrCode is null)
+            {
+                return Result.Failure<bool>(TransactionErrors.QrCodeNotFound);
+            }
+
+            PointsRedemptionQrTokenPayload? payload = await pointsRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(qrCode.QrCodeData);
 
             if (payload is null)
             {
                 return Result.Failure<bool>(TransactionErrors.InvalidQrPayload);
             }
 
-            var qrCode = await qrCodeRepo.GetAll()
-                .FirstOrDefaultAsync(q => q.QrCodeData == request.QrCodeData && q.UserId == payload.UserId, cancellationToken);
-
-            if (qrCode is null)
+            if (qrCode.UserId != payload.UserId)
             {
-                return Result.Failure<bool>(TransactionErrors.QrCodeNotFound);
+                return Result.Failure<bool>(TransactionErrors.InvalidQrPayload);
             }
 
             DateTime utcNow = dateTimeProvider.UtcNow;
@@ -55,8 +63,9 @@ public static class ConfirmPointsRedemptionQr
                 return Result.Failure<bool>(TransactionErrors.QrCodeExpired);
             }
 
-            var shop = await shopRepo.GetAll()
-                .FirstOrDefaultAsync(s => s.ShopId == shopAdminContext.ShopId, cancellationToken);
+            var shop = await shopRepo
+                .Find(new ShopByIdSpecification(shopAdminContext.ShopId))
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (shop is null)
             {

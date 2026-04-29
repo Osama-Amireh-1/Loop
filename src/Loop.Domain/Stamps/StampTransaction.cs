@@ -1,4 +1,5 @@
-﻿using Loop.Domain.Receipts;
+﻿using Loop.Domain.QRCode;
+using Loop.Domain.Receipts;
 using Loop.Domain.Shops;
 using Loop.Domain.Users;
 using Loop.SharedKernel;
@@ -13,7 +14,8 @@ public class StampTransaction : AggregateRoot
     public Guid StampProgramId { get; private set; }
     public StampType Type { get; private set; }
     public int StampsCount { get; private set; }
-    public Guid? RedemptionRef { get; private set; }    
+    public Guid? RedemptionRef { get; private set; }
+    public QrCode? RedemptionQrCode { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public User User { get; private set; }
     public Shop Shop { get; private set; }
@@ -25,7 +27,7 @@ public class StampTransaction : AggregateRoot
         Guid shopId,
         Guid stampProgramId,
         int count,
-        Guid? receiptId)
+        Guid? qrId)
         => new()
         {
             StampTxId = Guid.NewGuid(),
@@ -34,7 +36,7 @@ public class StampTransaction : AggregateRoot
             StampProgramId = stampProgramId,
             Type = StampType.Collect,
             StampsCount = count,
-            RedemptionRef = receiptId,
+            RedemptionRef = qrId,
             CreatedAt = DateTime.UtcNow
         };
 

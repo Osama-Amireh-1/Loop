@@ -1,8 +1,9 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Loop.Application.Users.Contract;
+namespace Loop.Application.Stamps.Contract;
 
-public sealed class ConfirmPointsRedemptionQrRequest
+public sealed class ScanStampCollectQrRequest
 {
     [Required]
     public required Guid QrId { get; init; }

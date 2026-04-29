@@ -18,7 +18,8 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
             subjectId: user.UserId.ToString(),
             email: user.Email.Value,
             shopAdminId: null,
-            shopId: null);
+            shopId: null,
+            userId: user.UserId);
     }
 
     public string CreateAccessToken(ShopAdmin shopAdmin)
@@ -27,7 +28,8 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
             subjectId: shopAdmin.ShopAdminId.ToString(),
             email: shopAdmin.Email.Value,
             shopAdminId: shopAdmin.ShopAdminId,
-            shopId: shopAdmin.ShopId);
+            shopId: shopAdmin.ShopId,
+            userId: null);
     }
 
     public (string RefreshToken, DateTime ExpiresAtUtc) CreateRefreshToken()
@@ -38,7 +40,7 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
         return (refreshToken, DateTime.UtcNow.AddDays(refreshTokenExpirationInDays));
     }
 
-    private string CreateAccessToken(string subjectId, string email, Guid? shopAdminId, Guid? shopId)
+    private string CreateAccessToken(string subjectId, string email, Guid? shopAdminId, Guid? shopId, Guid? userId)
     {
         string secretKey = configuration["Jwt:Secret"]!;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -59,6 +61,11 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
         if (shopId is not null)
         {
             claims.Add(new Claim("shop_id", shopId.Value.ToString()));
+        }
+
+        if (userId is not null)
+        {
+            claims.Add(new Claim("user_id", userId.Value.ToString()));
         }
 
         var tokenDescriptor = new SecurityTokenDescriptor

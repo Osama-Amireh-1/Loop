@@ -5,5 +5,5 @@ namespace Loop.Application.Stamps.Contract;
 public sealed class ConfirmStampRedemptionQrRequest
 {
     [Required]
-    public required string QrCodeData { get; init; }
+    public required Guid QrId { get; init; }
 }
