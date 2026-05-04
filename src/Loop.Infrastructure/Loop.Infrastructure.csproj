@@ -12,6 +12,7 @@
 
   <ItemGroup>
 	<InternalsVisibleTo Include="ArchitectureTests" />
+    <InternalsVisibleTo Include="Loop.ArchitectureTests" />
   </ItemGroup>
 
   <ItemGroup>

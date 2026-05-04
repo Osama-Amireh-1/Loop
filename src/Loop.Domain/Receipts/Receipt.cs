@@ -25,10 +25,11 @@ public class Receipt : AggregateRoot
         Guid shopId,
         string receiptPath,
         Money amount,
-        string receiptDetails)
+        string receiptDetails,
+        Guid? receiptId = null)
         => new()
         {
-            ReceiptId = Guid.NewGuid(),
+            ReceiptId = receiptId ?? Guid.NewGuid(),
             UserId = userId,
             ShopId = shopId,
             ReceiptPath = receiptPath,

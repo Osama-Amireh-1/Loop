@@ -8,6 +8,10 @@ public static class ReceiptErrors
         "Receipts.NotFound",
         $"The receipt with the Id = '{receiptId}' was not found");
 
+    public static Error ShopNotMatched(string? merchantName) => Error.NotFound(
+        "Receipts.ShopNotMatched",
+        $"No shop matched the receipt merchant '{merchantName ?? "unknown"}'");
+
     public static readonly Error AlreadyProcessed = Error.Failure(
         "Receipts.AlreadyProcessed",
         "The receipt has already been approved or rejected");

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Communication;
+using Loop.Application.Abstractions.Storage;
 using Loop.Application.Interfaces;
 using Loop.Infrastructure.Authentication;
 using Loop.Infrastructure.Authorization;
@@ -8,6 +9,7 @@ using Loop.Infrastructure.Communication;
 using Loop.Infrastructure.Database;
 using Loop.Infrastructure.DomainEvents;
 using Loop.Infrastructure.Repository;
+using Loop.Infrastructure.Storage;
 using Loop.Infrastructure.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -40,6 +42,14 @@ public static class DependencyInjection
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
         services.AddTransient<Application.Abstractions.Messaging.IDispatcher, Infrastructure.Messaging.Dispatcher>();
+
+        // OCR
+        services.AddHttpClient();
+        services.AddScoped<Loop.Application.Abstractions.Ocr.IReceiptOcrProvider, Loop.Infrastructure.Ocr.MestalOcrProvider>();
+        services.AddSingleton<IReceiptFileStore, LocalReceiptFileStore>();
+
+        // Merchant matcher (local DB)
+        services.AddScoped<Loop.Application.Receipts.Services.IMerchantMatcher, Loop.Infrastructure.Receipts.MerchantMatcher.LocalMerchantMatcher>();
 
         return services;
     }
