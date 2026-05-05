@@ -32,7 +32,9 @@ public static class GetUserByEmail
                     Id = u.UserId,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    Email = u.Email.Value
+                    Email = u.Email.Value,
+                    Phone = u.Phone.Value,
+                    Gender = u.Gender.ToString()
                 })
                 .SingleOrDefaultAsync(cancellationToken);
 
@@ -50,5 +52,8 @@ public static class GetUserByEmail
         }
     }
 }
+
+
+
 
 

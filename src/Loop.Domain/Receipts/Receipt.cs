@@ -17,6 +17,7 @@ public class Receipt : AggregateRoot
     public User User { get; private set; }
     public Shop Shop { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public string ImageHash { get; private set; } = string.Empty;
 
     private Receipt() { }
 
@@ -26,8 +27,10 @@ public class Receipt : AggregateRoot
         string receiptPath,
         Money amount,
         string receiptDetails,
-        Guid? receiptId = null)
-        => new()
+        Guid? receiptId = null,
+        string? imageHash = null)
+    {
+        var receipt = new Receipt
         {
             ReceiptId = receiptId ?? Guid.NewGuid(),
             UserId = userId,
@@ -35,8 +38,12 @@ public class Receipt : AggregateRoot
             ReceiptPath = receiptPath,
             Amount = amount,
             ReceiptDetails = receiptDetails,
+            ImageHash = imageHash ?? string.Empty,
             Status = ReceiptStatus.Pending
         };
+
+        return receipt;
+    }
 
     public void Approve()
     {

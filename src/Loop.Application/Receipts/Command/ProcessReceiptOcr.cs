@@ -1,4 +1,5 @@
-using System.Text.Json;
+using System.Security.Cryptography;
+using Loop.Domain.Receipts.Specifications;
 using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Abstractions.Ocr;
@@ -16,6 +17,7 @@ using Loop.Domain.Users;
 using Loop.Domain.Users.Specifications;
 using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Loop.Application.Receipts.Command;
 
@@ -32,10 +34,12 @@ public sealed class ProcessReceiptOcr
         IMerchantMatcher merchantMatcher,
         IReadOnlyRepository<User> userReadRepo,
         IReadOnlyRepository<SystemConfig> systemConfigReadRepo,
+        IReadOnlyRepository<Receipt> receiptReadRepo,
         IRepository<Receipt> receiptRepo,
         IRepository<AuditLog> auditLogRepo,
         IReceiptFileStore receiptFileStore,
-        IUserContext userContext) : ICommandHandler<Command, ReceiptOcrResult>
+        IUserContext userContext)
+        : ICommandHandler<Command, ReceiptOcrResult>
     {
         public async Task<Result<ReceiptOcrResult>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -71,6 +75,16 @@ public sealed class ProcessReceiptOcr
                 return Result.Failure<ReceiptOcrResult>(SystemConfigErrors.NotFound(request.MallId));
             }
 
+            var imageHash = ComputeSha256(request.ImageBytes);
+            var existingReceipt = await receiptReadRepo
+                .Find(new ReceiptByImageHashSpecification(imageHash))
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (existingReceipt is not null)
+            {
+                return Result.Failure<ReceiptOcrResult>(ReceiptErrors.DuplicateUpload);
+            }
+
             var receiptId = Guid.NewGuid();
             var receiptPath = await receiptFileStore.SaveAsync(
                 request.MallId,
@@ -87,15 +101,22 @@ public sealed class ProcessReceiptOcr
                 JsonSerializer.Serialize(new
                 {
                     ocr = matchedResult,
-                    mallId = request.MallId
+                    mallId = request.MallId,
+                    imageHash
                 }),
-                receiptId);
+                receiptId,
+                imageHash);
 
             var auditActionType = matchedResult.IsPendingReview ? "ReceiptPendingReview" : "ReceiptProcessed";
             var earnedPoints = matchedResult.IsPendingReview ? 0 : systemConfig.CalculateEarnedPoints(matchedResult.Subtotal.Value);
 
             if (!matchedResult.IsPendingReview)
             {
+                if (earnedPoints <= 0)
+                {
+                    return Result.Failure<ReceiptOcrResult>(ReceiptErrors.InvalidAmount);
+                }
+
                 user.CreditPoints(earnedPoints);
                 receipt.Approve();
             }
@@ -124,6 +145,11 @@ public sealed class ProcessReceiptOcr
             await auditLogRepo.AddAsync(auditLog);
 
             return Result.Success(matchedResult);
+        }
+
+        private static string ComputeSha256(byte[] bytes)
+        {
+            return Convert.ToHexString(SHA256.HashData(bytes));
         }
     }
 }

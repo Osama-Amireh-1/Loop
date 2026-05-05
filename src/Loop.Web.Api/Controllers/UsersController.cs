@@ -1,3 +1,4 @@
+using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Users.Command;
 using Loop.Application.Users.Contract;
@@ -11,7 +12,7 @@ namespace Loop.Web.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class UsersController(IDispatcher dispatcher) : ControllerBase
+public class UsersController(IDispatcher dispatcher, IUserContext userContext) : ControllerBase
 {
     [HttpPost("register")]
     [AllowAnonymous]
@@ -41,6 +42,19 @@ public class UsersController(IDispatcher dispatcher) : ControllerBase
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         GetUserById.GetUserByIdQuery query = new(id);
+
+        Result<UserResponse> result = await dispatcher.Dispatch(query, cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+
+    [HttpGet("GetLoginUserDetials")]
+    [Authorize(Policy = "UserOnly")]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetLoginUserDetails(CancellationToken cancellationToken)
+    {
+        GetUserById.GetUserByIdQuery query = new(userContext.UserId);
 
         Result<UserResponse> result = await dispatcher.Dispatch(query, cancellationToken);
 

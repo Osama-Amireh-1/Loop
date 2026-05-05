@@ -19,6 +19,16 @@ public static class ReceiptErrors
     public static readonly Error InvalidAmount = Error.Failure(
         "Receipts.InvalidAmount",
         "The receipt amount must be a positive value");
+
+    public static readonly Error DuplicateUpload = new(
+        "Receipt.Duplicate",
+        "This receipt image has already been uploaded.",
+        ErrorType.Failure);
+
+    public static Error ImageHashAlreadyExists(string hash) => Error.Conflict(
+        "Receipts.ImageHashAlreadyExists",
+        $"A receipt image with the hash '{hash}' already exists.");
 }
+
 
 

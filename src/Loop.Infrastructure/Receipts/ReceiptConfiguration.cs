@@ -63,6 +63,13 @@ internal sealed class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
         builder.HasIndex(r => r.ShopId);
         builder.HasIndex(r => r.Status);
 
+        builder.Property(x => x.ImageHash)
+            .HasMaxLength(64)
+            .IsRequired();
+
+        builder.HasIndex(x => x.ImageHash)
+            .IsUnique();
+
         builder.HasData(new
         {
             ReceiptId = SeedReceiptId,
@@ -72,7 +79,9 @@ internal sealed class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
             ReceiptDetails = "{\"items\":1,\"source\":\"seed\"}",
             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             Status = ReceiptStatus.Approved,
+            ImageHash = "0000000000000000000000000000000000000000000000000000000000000000"
         });
     }
 }
+
 
