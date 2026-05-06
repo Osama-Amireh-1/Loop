@@ -23,6 +23,11 @@ public class RedeemTransaction : AggregateRoot
     public User User { get; private set; }
     public Shop Shop { get; private set; }
 
+    private static readonly Error RedemptionAlreadyProcessedError = new(
+        "Transactions.RedemptionAlreadyProcessed",
+        "The redemption has already been verified or cancelled.",
+        ErrorType.Validation);
+
     private RedeemTransaction() { }
 
     public static RedeemTransaction Initiate(
@@ -44,20 +49,28 @@ public class RedeemTransaction : AggregateRoot
             CreatedAt = DateTime.UtcNow
         };
 
-    public void Verify()
+    public Result Verify()
     {
         if (Status != RedemptionStatus.Pending)
-            throw new DomainException("Only pending redemptions can be verified.");
+        {
+            return Result.Failure(RedemptionAlreadyProcessedError);
+        }
+
         Status = RedemptionStatus.Verified;
         CompletedAt = DateTime.UtcNow;
+        return Result.Success();
     }
 
-    public void Cancel()
+    public Result Cancel()
     {
         if (Status != RedemptionStatus.Pending)
-            throw new DomainException("Only pending redemptions can be cancelled.");
+        {
+            return Result.Failure(RedemptionAlreadyProcessedError);
+        }
+
         Status = RedemptionStatus.Cancelled;
         CompletedAt = DateTime.UtcNow;
+        return Result.Success();
     }
 }
 

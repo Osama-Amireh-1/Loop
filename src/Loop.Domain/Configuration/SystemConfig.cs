@@ -14,9 +14,22 @@ public class SystemConfig : AggregateRoot
     public DateTime UpdatedAt { get; private set; }
     public Guid UpdatedByAdminId { get; private set; }
 
+    private static readonly Error InvalidRatioError = new(
+        "Configuration.InvalidRatio",
+        "Ratio must be positive.",
+        ErrorType.Validation);
+
+    private static readonly Error InvalidEarnRateError = new(
+        "Configuration.InvalidEarnRate",
+        "Earn rate must be positive.",
+        ErrorType.Validation);
+
+    private static readonly Error InvalidThresholdError = new(
+        "Configuration.InvalidThreshold",
+        "Threshold cannot be negative.",
+        ErrorType.Validation);
+
     private SystemConfig() { }
-
-
 
     public static SystemConfig Create(
         Guid mallId,
@@ -34,30 +47,39 @@ public class SystemConfig : AggregateRoot
             UpdatedByAdminId = adminId
         };
 
-    public void Update(
+    public Result Update(
         decimal ratio,
         decimal earnRate,
         int minThreshold,
         Guid adminId)
     {
         if (ratio <= 0)
-            throw new DomainException("Ratio must be positive.");
+        {
+            return Result.Failure(InvalidRatioError);
+        }
+
         if (earnRate <= 0)
-            throw new DomainException("Earn rate must be positive.");
+        {
+            return Result.Failure(InvalidEarnRateError);
+        }
+
         if (minThreshold < 0)
-            throw new DomainException("Threshold cannot be negative.");
+        {
+            return Result.Failure(InvalidThresholdError);
+        }
 
         PointsToCurrencyRatio = ratio;
         EarnPointsPerCurrency = earnRate;
         MinRedemptionThreshold = minThreshold;
         UpdatedAt = DateTime.UtcNow;
         UpdatedByAdminId = adminId;
+        return Result.Success();
     }
 
     public int CalculateEarnedPoints(decimal purchaseAmount)
         => (int)(purchaseAmount * EarnPointsPerCurrency);
 
-    public Money CalculateDiscountValue(int points)
+    public Result<Money> CalculateDiscountValue(int points)
         => Money.Create(points * PointsToCurrencyRatio);
 }
 

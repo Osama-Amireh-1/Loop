@@ -23,9 +23,13 @@ public static class ForgotPassword
     {
         public async Task<Result<string>> Handle(ForgotPasswordCommand command, CancellationToken cancellationToken)
         {
-            var email = Email.Create(command.Email);
+            var emailResult = Email.Create(command.Email);
+            if (emailResult.IsFailure)
+            {
+                return Result.Failure<string>(emailResult.Error);
+            }
 
-            User? user = await userRepo.Find(new UserByEmailSpecification(email))
+            User? user = await userRepo.Find(new UserByEmailSpecification(emailResult.Value))
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (user is null)

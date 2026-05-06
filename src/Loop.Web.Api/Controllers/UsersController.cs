@@ -82,4 +82,22 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
         Result<bool> result = await dispatcher.Dispatch(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
+
+    [HttpPut("UpdateMyProfile ")]
+    [Authorize(Policy = "UserOnly")]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateMe([FromBody] UpdateUserParams request, CancellationToken cancellationToken)
+    {
+        var command = new UpdateUser.UpdateUserCommand(
+            request.FirstName,
+            request.LastName,
+            request.Phone,
+            request.ProfileImageUrl);
+
+        Result<UserResponse> result = await dispatcher.Dispatch(command, cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
 }

@@ -44,7 +44,13 @@ public sealed class ProcessReceiptOcr
         public async Task<Result<ReceiptOcrResult>> Handle(Command request, CancellationToken cancellationToken)
         {
             await using var imageStream = new MemoryStream(request.ImageBytes);
-            var ocrResult = await ocrProvider.ProcessAsync(imageStream, request.ContentType, cancellationToken);
+            var ocrResultResult = await ocrProvider.ProcessAsync(imageStream, request.ContentType, cancellationToken);
+            if (ocrResultResult.IsFailure)
+            {
+                return Result.Failure<ReceiptOcrResult>(ocrResultResult.Error);
+            }
+
+            var ocrResult = ocrResultResult.Value;
             var matchedResult = await merchantMatcher.MatchAsync(request.MallId, ocrResult, cancellationToken);
 
             if (matchedResult.MatchedShopId is null)
@@ -93,11 +99,17 @@ public sealed class ProcessReceiptOcr
                 request.ImageBytes,
                 cancellationToken);
 
+            var receiptAmountResult = Money.Create(matchedResult.Subtotal.Value);
+            if (receiptAmountResult.IsFailure)
+            {
+                return Result.Failure<ReceiptOcrResult>(receiptAmountResult.Error);
+            }
+
             var receipt = Receipt.Upload(
                 user.UserId,
                 matchedResult.MatchedShopId.Value,
                 receiptPath,
-                Money.Create(matchedResult.Subtotal.Value),
+                receiptAmountResult.Value,
                 JsonSerializer.Serialize(new
                 {
                     ocr = matchedResult,
@@ -117,7 +129,12 @@ public sealed class ProcessReceiptOcr
                     return Result.Failure<ReceiptOcrResult>(ReceiptErrors.InvalidAmount);
                 }
 
-                user.CreditPoints(earnedPoints);
+                var creditResult = user.CreditPoints(earnedPoints);
+                if (creditResult.IsFailure)
+                {
+                    return Result.Failure<ReceiptOcrResult>(creditResult.Error);
+                }
+
                 receipt.Approve();
             }
 
@@ -138,7 +155,6 @@ public sealed class ProcessReceiptOcr
                     currency = matchedResult.Currency,
                     earnedPoints,
                     pendingReview = matchedResult.IsPendingReview,
-                    ocrText = matchedResult.RawText,
                     mallId = request.MallId
                 }));
 

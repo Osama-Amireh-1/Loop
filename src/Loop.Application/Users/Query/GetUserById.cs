@@ -35,7 +35,8 @@ public static class GetUserById
                     LastName = u.LastName,
                     Email = u.Email.Value,
                     Phone = u.Phone.Value,
-                    Gender = u.Gender.ToString()
+                    Gender = u.Gender.ToString(),
+                    ProfileImageUrl = u.ProfileImageUrl
                 })
                 .SingleOrDefaultAsync(cancellationToken);
 

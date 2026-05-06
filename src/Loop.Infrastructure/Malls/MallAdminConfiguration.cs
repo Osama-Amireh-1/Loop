@@ -22,12 +22,12 @@ internal sealed class MallAdminConfiguration : IEntityTypeConfiguration<MallAdmi
         builder.Property(sa => sa.Email)
             .IsRequired()
             .HasMaxLength(256)
-            .HasConversion(e => e.Value, v => Email.Create(v));
+            .HasConversion(e => e.Value, v => Email.Create(v).Value);
 
         builder.Property(sa => sa.Phone)
             .IsRequired()
             .HasMaxLength(20)
-            .HasConversion(p => p.Value, v => Phone.Create(v));
+            .HasConversion(p => p.Value, v => Phone.Create(v).Value);
 
         builder.Property(ma => ma.PasswordHash)
             .IsRequired();
@@ -46,12 +46,12 @@ internal sealed class MallAdminConfiguration : IEntityTypeConfiguration<MallAdmi
         builder.Property(sa => sa.Email)
             .IsRequired()
             .HasMaxLength(256)
-            .HasConversion(e => e.Value, v => Email.Create(v));
+            .HasConversion(e => e.Value, v => Email.Create(v).Value);
 
         builder.Property(sa => sa.Phone)
             .IsRequired()
             .HasMaxLength(20)
-            .HasConversion(p => p.Value, v => Phone.Create(v));
+            .HasConversion(p => p.Value, v => Phone.Create(v).Value);
 
         builder.HasIndex(ma => ma.Email).IsUnique();
         builder.HasIndex(ma => ma.Phone).IsUnique();
@@ -61,11 +61,12 @@ internal sealed class MallAdminConfiguration : IEntityTypeConfiguration<MallAdmi
             MallAdminId = SeedMallAdminId,
             MallId = SeedMallId,
             Name = "Loop Mall Admin",
-            Email = Email.Create("mall.admin@loop.local"),
-            Phone = Phone.Create("+962790000003"),
+            Email = Email.Create("mall.admin@loop.local").Value,
+            Phone = Phone.Create("+962790000003").Value,
             PasswordHash = "seeded-password-hash",
             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         });
     }
 }
+
 

@@ -7,10 +7,9 @@ public sealed class ReceiptOcrResult
     public List<ReceiptLineItem> Items { get; init; } = [];
     public decimal? Subtotal { get; init; }
     public string? Currency { get; init; }
-    public string? RawText { get; init; }
     public bool IsPendingReview { get; init; }
+    public string? RawText { get; init; }
 
-    // Merchant matching result
     public Guid? MatchedShopId { get; init; }
     public string? MatchedShopName { get; init; }
     public double? MatchScore { get; init; }

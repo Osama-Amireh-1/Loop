@@ -10,6 +10,11 @@ public class ShopPointsWallet : Entity
 
     public Shop Shop { get; private set; } = null!;
 
+    private static readonly Error InvalidPointsError = new(
+        "Shops.InvalidPoints",
+        "Points must be positive.",
+        ErrorType.Validation);
+
     private ShopPointsWallet() { }
 
     public static ShopPointsWallet Create(Guid shopId) => new()
@@ -19,12 +24,15 @@ public class ShopPointsWallet : Entity
         LastUpdated = DateTime.UtcNow
     };
 
-    public void AddPoints(int points)
+    public Result AddPoints(int points)
     {
         if (points <= 0)
-            throw new DomainException("Points must be positive.");
+        {
+            return Result.Failure(InvalidPointsError);
+        }
 
         PointsReceived += points;
         LastUpdated = DateTime.UtcNow;
+        return Result.Success();
     }
 }

@@ -48,12 +48,12 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
         builder.Property(sa => sa.Email)
             .IsRequired()
             .HasMaxLength(256)
-            .HasConversion(e => e.Value, v => Email.Create(v));
+            .HasConversion(e => e.Value, v => Email.Create(v).Value);
 
         builder.Property(sa => sa.Phone)
-           .IsRequired()
-           .HasMaxLength(20)
-           .HasConversion(p => p.Value, v => Phone.Create(v));
+            .IsRequired()
+            .HasMaxLength(20)
+            .HasConversion(p => p.Value, v => Phone.Create(v).Value);
 
         builder.HasIndex(sa => sa.Email).IsUnique();
         builder.HasIndex(sa => sa.Phone).IsUnique();
@@ -63,12 +63,13 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
             ShopAdminId = SeedShopAdminId,
             ShopId = SeedShopId,
             Name = "Loop Coffee Admin",
-            Email = Email.Create("shop.admin@loop.local"),
-            Phone = Phone.Create("+962790000002"),
+            Email = Email.Create("shop.admin@loop.local").Value,
+            Phone = Phone.Create("+962790000002").Value,
             PasswordHash = "seeded-password-hash",
             IsActive = true,
             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         });
     }
 }
+
 

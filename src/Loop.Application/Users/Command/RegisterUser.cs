@@ -27,17 +27,26 @@ public static class RegisterUser
     {
         public async Task<Result<Guid>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
         {
-            var email = Email.Create(command.Email);
+            var emailResult = Email.Create(command.Email);
+            if (emailResult.IsFailure)
+            {
+                return Result.Failure<Guid>(emailResult.Error);
+            }
 
-            bool emailExists = await userRepo.Find(new UserByEmailSpecification(email)).AnyAsync(cancellationToken);
+            bool emailExists = await userRepo.Find(new UserByEmailSpecification(emailResult.Value)).AnyAsync(cancellationToken);
 
             if (emailExists)
             {
                 return Result.Failure<Guid>(UserErrors.EmailNotUnique);
             }
 
-            var phone = Phone.Create(command.Phone);
-            bool phoneExists = await userRepo.GetAll().AnyAsync(u => u.Phone == phone, cancellationToken);
+            var phoneResult = Phone.Create(command.Phone);
+            if (phoneResult.IsFailure)
+            {
+                return Result.Failure<Guid>(phoneResult.Error);
+            }
+
+            bool phoneExists = await userRepo.GetAll().AnyAsync(u => u.Phone == phoneResult.Value, cancellationToken);
 
             if (phoneExists)
             {
@@ -48,9 +57,10 @@ public static class RegisterUser
             {
                 return Result.Failure<Guid>(UserErrors.InvalidGender);
             }
+
             var tier = await tireReadRepo.Find(new TierByOrderSpecification(1)).FirstOrDefaultAsync(cancellationToken);
 
-            if(tier is null)
+            if (tier is null)
             {
                 return Result.Failure<Guid>(TierErrors.NotFound(1));
             }
@@ -58,8 +68,8 @@ public static class RegisterUser
             var user = User.Create(
                 firstName: command.FirstName,
                 lastName: command.LastName,
-                phone: Phone.Create(command.Phone),
-                email: Email.Create(command.Email),
+                phone: phoneResult.Value,
+                email: emailResult.Value,
                 passwordHash: passwordHasher.Hash(command.Password),
                 gender: gender,
                 defaultTierId: tier.TierId);
@@ -69,5 +79,6 @@ public static class RegisterUser
         }
     }
 }
+
 
 

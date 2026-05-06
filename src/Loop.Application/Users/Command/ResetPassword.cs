@@ -22,9 +22,13 @@ public static class ResetPassword
     {
         public async Task<Result> Handle(ResetPasswordCommand command, CancellationToken cancellationToken)
         {
-            var email = Email.Create(command.Email);
+            var emailResult = Email.Create(command.Email);
+            if (emailResult.IsFailure)
+            {
+                return Result.Failure(emailResult.Error);
+            }
 
-            User? user = await userRepo.Find(new UserByEmailSpecification(email))
+            User? user = await userRepo.Find(new UserByEmailSpecification(emailResult.Value))
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (user is null)
@@ -74,5 +78,6 @@ public static class ResetPassword
         }
     }
 }
+
 
 

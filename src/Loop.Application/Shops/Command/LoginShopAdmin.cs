@@ -24,9 +24,13 @@ public static class LoginShopAdmin
     {
         public async Task<Result<AuthTokensResponse>> Handle(LoginShopAdminCommand command, CancellationToken cancellationToken)
         {
-            var email = Email.Create(command.Email);
+            var emailResult = Email.Create(command.Email);
+            if (emailResult.IsFailure)
+            {
+                return Result.Failure<AuthTokensResponse>(emailResult.Error);
+            }
 
-            ShopAdmin? shopAdmin = await shopAdminRepo.Find(new ShopAdminByEmailSpecification(email))
+            ShopAdmin? shopAdmin = await shopAdminRepo.Find(new ShopAdminByEmailSpecification(emailResult.Value))
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (shopAdmin is null)

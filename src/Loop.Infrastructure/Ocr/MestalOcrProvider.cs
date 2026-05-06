@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Loop.Application.Abstractions.Ocr;
 using Loop.Application.Receipts.Contract;
+using Loop.SharedKernel;
 using Microsoft.Extensions.Configuration;
 
 namespace Loop.Infrastructure.Ocr;
@@ -10,6 +11,16 @@ namespace Loop.Infrastructure.Ocr;
 internal sealed class MestalOcrProvider : IReceiptOcrProvider
 {
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
+
+    private static readonly Error HttpFailureError = new(
+        "ReceiptOcr.HttpFailure",
+        "The OCR service request failed.",
+        ErrorType.Problem);
+
+    private static readonly Error InvalidResponseError = new(
+        "ReceiptOcr.InvalidResponse",
+        "The OCR service returned an invalid response.",
+        ErrorType.Problem);
 
     private readonly string _url;
     private readonly string _apiKey;
@@ -22,7 +33,7 @@ internal sealed class MestalOcrProvider : IReceiptOcrProvider
         _httpClient = httpClient;
     }
 
-    public async Task<ReceiptOcrResult> ProcessAsync(Stream imageStream, string contentType = "image/jpeg", CancellationToken cancellationToken = default)
+    public async Task<Result<ReceiptOcrResult>> ProcessAsync(Stream imageStream, string contentType = "image/jpeg", CancellationToken cancellationToken = default)
     {
         using var buffer = new MemoryStream();
         await imageStream.CopyToAsync(buffer, cancellationToken);
@@ -77,36 +88,62 @@ internal sealed class MestalOcrProvider : IReceiptOcrProvider
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         request.Content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
 
-        using var response = await _httpClient.SendAsync(request, cancellationToken);
-        var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
-        response.EnsureSuccessStatusCode();
-
-        using var doc = JsonDocument.Parse(responseString);
-        var rawText = ExtractMarkdown(doc.RootElement);
-        var structuredJson = ExtractJsonPayload(doc.RootElement);
-
-        ReceiptOcrResult? parsed = null;
-        if (!string.IsNullOrWhiteSpace(structuredJson))
-            parsed = TryDeserialize(structuredJson);
-
-        if (parsed is null && !string.IsNullOrWhiteSpace(rawText))
+        try
         {
-            parsed = new ReceiptOcrResult
+            using var response = await _httpClient.SendAsync(request, cancellationToken);
+            var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
             {
-                StoreName = ExtractFirstLine(rawText),
-                RawText = rawText
-            };
-        }
+                return Result.Failure<ReceiptOcrResult>(HttpFailureError);
+            }
 
-        return new ReceiptOcrResult
+            using var doc = JsonDocument.Parse(responseString);
+            var rawText = ExtractMarkdown(doc.RootElement);
+            var structuredJson = ExtractJsonPayload(doc.RootElement);
+
+            ReceiptOcrResult? parsed = null;
+            if (!string.IsNullOrWhiteSpace(structuredJson))
+            {
+                parsed = TryDeserialize(structuredJson);
+            }
+
+            if (parsed is null && !string.IsNullOrWhiteSpace(rawText))
+            {
+                parsed = new ReceiptOcrResult
+                {
+                    StoreName = ExtractFirstLine(rawText),
+                };
+            }
+
+            if (parsed is null)
+            {
+                return Result.Failure<ReceiptOcrResult>(InvalidResponseError);
+            }
+
+            return Result.Success(new ReceiptOcrResult
+            {
+                StoreName = parsed.StoreName,
+                MerchantName = parsed.MerchantName ?? parsed.StoreName,
+                Items = parsed.Items ?? [],
+                Subtotal = parsed.Subtotal,
+                Currency = parsed.Currency,
+                IsPendingReview = parsed.IsPendingReview,
+                RawText = parsed.RawText
+            });
+        }
+        catch (HttpRequestException)
         {
-            StoreName = parsed?.StoreName,
-            MerchantName = parsed?.MerchantName ?? parsed?.StoreName,
-            Items = parsed?.Items ?? [],
-            Subtotal = parsed?.Subtotal,
-            Currency = parsed?.Currency,
-            RawText = rawText ?? parsed?.RawText
-        };
+            return Result.Failure<ReceiptOcrResult>(HttpFailureError);
+        }
+        catch (TaskCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return Result.Failure<ReceiptOcrResult>(HttpFailureError);
+        }
+        catch (JsonException)
+        {
+            return Result.Failure<ReceiptOcrResult>(InvalidResponseError);
+        }
     }
 
     private static ReceiptOcrResult? TryDeserialize(string json)

@@ -9,39 +9,62 @@ public sealed class Money : ValueObject
 
     public const string DefaultCurrency = "JOD";
 
+    private static readonly Error NegativeAmountError = new(
+        "Common.Money.NegativeAmount",
+        "Money amount cannot be negative.",
+        ErrorType.Validation);
+
+    private static readonly Error CurrencyMismatchError = new(
+        "Common.Money.CurrencyMismatch",
+        "Cannot perform the operation on different currencies.",
+        ErrorType.Validation);
+
+    private static readonly Error NegativeResultError = new(
+        "Common.Money.NegativeResult",
+        "Resulting amount cannot be negative.",
+        ErrorType.Validation);
+
     private Money(decimal amount, string currency = DefaultCurrency)
     {
         Amount = amount;
         Currency = currency;
     }
 
-    public static Money Create(decimal amount)
+    public static Result<Money> Create(decimal amount)
     {
         if (amount < 0)
-            throw new ArgumentException("Money amount cannot be negative.", nameof(amount));
+        {
+            return Result.Failure<Money>(NegativeAmountError);
+        }
 
-        return new Money(Math.Round(amount, 2));
+        return Result.Success(new Money(Math.Round(amount, 2)));
     }
 
     public static Money Zero() => new(0m);
 
-    public Money Add(Money other)
+    public Result<Money> Add(Money other)
     {
         if (Currency != other.Currency)
-            throw new InvalidOperationException("Cannot add money of different currencies.");
+        {
+            return Result.Failure<Money>(CurrencyMismatchError);
+        }
 
-        return new(Amount + other.Amount, Currency);
+        return Result.Success(new Money(Amount + other.Amount, Currency));
     }
 
-    public Money Subtract(Money other)
+    public Result<Money> Subtract(Money other)
     {
         if (Currency != other.Currency)
-            throw new InvalidOperationException("Cannot subtract money of different currencies.");
+        {
+            return Result.Failure<Money>(CurrencyMismatchError);
+        }
 
         if (Amount - other.Amount < 0)
-            throw new InvalidOperationException("Resulting amount cannot be negative.");
+        {
+            return Result.Failure<Money>(NegativeResultError);
+        }
 
-        return new(Amount - other.Amount, Currency);
+        return Result.Success(new Money(Amount - other.Amount, Currency));
     }
 
     public override string ToString() => $"{Amount:F2} {Currency}";

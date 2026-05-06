@@ -46,18 +46,12 @@ public static class ConfirmPointsRedemptionQr
 
             PointsRedemptionQrTokenPayload? payload = await pointsRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(qrCode.QrCodeData);
 
-            if (payload is null)
-            {
-                return Result.Failure<bool>(TransactionErrors.InvalidQrPayload);
-            }
-
-            if (qrCode.UserId != payload.UserId)
+            if (payload is null || qrCode.UserId != payload.UserId)
             {
                 return Result.Failure<bool>(TransactionErrors.InvalidQrPayload);
             }
 
             DateTime utcNow = dateTimeProvider.UtcNow;
-
             if (payload.ExpiresAtUtc <= utcNow || qrCode.IsExpired(utcNow))
             {
                 return Result.Failure<bool>(TransactionErrors.QrCodeExpired);
@@ -99,18 +93,38 @@ public static class ConfirmPointsRedemptionQr
                 return Result.Failure<bool>(TransactionErrors.InsufficientPoints);
             }
 
+            var discountResult = systemConfig.CalculateDiscountValue(payload.PointsToRedeem);
+            if (discountResult.IsFailure)
+            {
+                return Result.Failure<bool>(discountResult.Error);
+            }
+
             var redeemTransaction = RedeemTransaction.Initiate(
                 payload.UserId,
                 shop.ShopId,
                 payload.PointsToRedeem,
-                systemConfig.CalculateDiscountValue(payload.PointsToRedeem),
+                discountResult.Value,
                 systemConfig.PointsToCurrencyRatio);
 
-            redeemTransaction.Verify();
-            user.DebitPoints(payload.PointsToRedeem);
-            shop.AddRedeemedPoints(payload.PointsToRedeem);
-            qrCode.Invalidate(utcNow);
+            var verifyResult = redeemTransaction.Verify();
+            if (verifyResult.IsFailure)
+            {
+                return Result.Failure<bool>(verifyResult.Error);
+            }
 
+            var debitResult = user.DebitPoints(payload.PointsToRedeem);
+            if (debitResult.IsFailure)
+            {
+                return Result.Failure<bool>(debitResult.Error);
+            }
+
+            var addPointsResult = shop.PointsWallet.AddPoints(payload.PointsToRedeem);
+            if (addPointsResult.IsFailure)
+            {
+                return Result.Failure<bool>(addPointsResult.Error);
+            }
+
+            qrCode.Invalidate(utcNow);
             await redeemTransactionRepo.AddAsync(redeemTransaction);
 
             var auditLog = AuditLog.Record(

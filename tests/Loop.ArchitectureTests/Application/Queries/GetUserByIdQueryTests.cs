@@ -47,11 +47,14 @@ public class GetUserByIdQueryTests
     [Fact]
     public async Task Handle_ShouldReturnUserResponse_WhenUserExists()
     {
+        var phone = Phone.Create("123456789");
+        var email = Email.Create("john.doe@example.com");
+
         var user = User.Create(
             "John",
             "Doe",
-            Phone.Create("123456789"),
-            Email.Create("john.doe@example.com"),
+            phone.IsSuccess ? phone.Value : throw new InvalidOperationException(phone.Error.Description),
+            email.IsSuccess ? email.Value : throw new InvalidOperationException(email.Error.Description),
             "hash",
             Gender.Male,
             Guid.NewGuid());

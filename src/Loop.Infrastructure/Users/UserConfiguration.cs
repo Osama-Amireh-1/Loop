@@ -25,12 +25,12 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100);
 
         builder.Property(u => u.Phone)
-            .HasConversion(p => p.Value, value => Phone.Create(value))
+            .HasConversion(p => p.Value, value => Phone.Create(value).Value)
             .IsRequired()
             .HasMaxLength(20);
 
         builder.Property(u => u.Email)
-            .HasConversion(e => e.Value, value => Email.Create(value))
+            .HasConversion(e => e.Value, value => Email.Create(value).Value)
             .IsRequired()
             .HasMaxLength(256);
 
@@ -67,8 +67,8 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             UserId = SeedUserId,
             FirstName = "Demo",
             LastName = "User",
-            Phone = Phone.Create("+962790000001"),
-            Email = Email.Create("demo.user@loop.local"),
+            Phone = Phone.Create("+962790000001").Value,
+            Email = Email.Create("demo.user@loop.local").Value,
             PasswordHash = "seeded-password-hash",
             Gender = Gender.Male,
             ProfileImageUrl = "https://cdn.loop.local/users/demo-user.png",

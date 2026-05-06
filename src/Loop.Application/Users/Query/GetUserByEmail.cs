@@ -24,9 +24,13 @@ public static class GetUserByEmail
     {
         public async Task<Result<UserResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
-            var email = Email.Create(query.Email);
+            var emailResult = Email.Create(query.Email);
+            if (emailResult.IsFailure)
+            {
+                return Result.Failure<UserResponse>(emailResult.Error);
+            }
 
-            UserResponse? user = await _userReadRepo.Find(new UserByEmailSpecification(email))
+            UserResponse? user = await _userReadRepo.Find(new UserByEmailSpecification(emailResult.Value))
                 .Select(u => new UserResponse
                 {
                     Id = u.UserId,
@@ -34,7 +38,8 @@ public static class GetUserByEmail
                     LastName = u.LastName,
                     Email = u.Email.Value,
                     Phone = u.Phone.Value,
-                    Gender = u.Gender.ToString()
+                    Gender = u.Gender.ToString(),
+                    ProfileImageUrl = u.ProfileImageUrl
                 })
                 .SingleOrDefaultAsync(cancellationToken);
 
@@ -52,6 +57,18 @@ public static class GetUserByEmail
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -18,6 +18,16 @@ public class User : AggregateRoot
 
     public UserPointsBalance PointsBalance { get; private set; }
 
+    private static readonly Error InvalidCreditAmountError = new(
+        "Users.InvalidCreditAmount",
+        "Credit amount must be positive.",
+        ErrorType.Validation);
+
+    private static readonly Error InvalidDebitAmountError = new(
+        "Users.InvalidDebitAmount",
+        "Debit amount must be positive.",
+        ErrorType.Validation);
+
     private User() { }
 
     public static User Create(
@@ -45,29 +55,42 @@ public class User : AggregateRoot
         };
     }
 
-    public void UpdateProfile(string firstName, string lastName, string? profileImageUrl)
+    public void UpdateProfile(string firstName, string lastName, string? profileImageUrl, Phone? phone = null)
     {
         FirstName = firstName;
         LastName = lastName;
         ProfileImageUrl = profileImageUrl;
+
+        if (phone is not null)
+        {
+            Phone = phone;
+        }
+    }
+
+    public Result CreditPoints(int amount)
+    {
+        if (amount <= 0)
+        {
+            return Result.Failure(InvalidCreditAmountError);
+        }
+
+        PointsBalance.Credit(amount);
+        return Result.Success();
+    }
+
+    public Result DebitPoints(int amount)
+    {
+        if (amount <= 0)
+        {
+            return Result.Failure(InvalidDebitAmountError);
+        }
+
+        PointsBalance.Debit(amount);
+        return Result.Success();
     }
 
     public void ChangePasswordHash(string newHash) => PasswordHash = newHash;
     public void UpgradeTier(Guid newTierId) => TierId = newTierId;
-
-    public void CreditPoints(int amount)
-    {
-        if (amount <= 0)
-            throw new DomainException("Credit amount must be positive.");
-        PointsBalance.Credit(amount);
-    }
-
-    public void DebitPoints(int amount)
-    {
-        if (amount <= 0)
-            throw new DomainException("Debit amount must be positive.");
-        PointsBalance.Debit(amount);
-    }
 
     public bool HasEnoughPoints(int required)
         => PointsBalance.TotalPoints >= required;

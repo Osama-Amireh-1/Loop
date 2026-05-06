@@ -13,5 +13,7 @@ public sealed record UserResponse
     public string Phone { get; init; }
 
     public string Gender { get; init; }
+
+    public string? ProfileImageUrl { get; init; }
 }
 

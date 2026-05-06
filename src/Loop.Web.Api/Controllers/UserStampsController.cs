@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Loop.Web.Api.Controllers;
 
-[Route("api/users/{userId:guid}/stamp-cards")]
+[Route("api/Users/{userId:guid}/StampCards")]
 [ApiController]
 [Authorize(Policy = "UserOnly")]
 public class UserStampCardsController(IDispatcher dispatcher) : ControllerBase
