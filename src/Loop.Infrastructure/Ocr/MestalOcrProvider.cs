@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Loop.Infrastructure.Ocr;
 
-internal sealed class MestalOcrProvider : IReceiptOcrProvider
+public sealed class MestalOcrProvider : IReceiptOcrProvider
 {
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 

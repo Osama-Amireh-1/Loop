@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Loop.Web.Api\Loop.Web.Api.csproj" />
+    <ProjectReference Include="..\..\src\Loop.Infrastructure\Loop.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
