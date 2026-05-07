@@ -13,18 +13,18 @@ primary
 lastDtbSucceeded
 
 [properties]
-AssemblyName=Loop.Infrastructure
+AssemblyName=Loop.IntegrationTests
 CommandLineArgsForDesignTimeEvaluation=-langversion:14.0 -define:TRACE
 CompilerGeneratedFilesOutputPath=
 MaxSupportedLangVersion=14.0
 ProjectAssetsFile=<PATH>obj/project.assets.json
-RootNamespace=Loop.Infrastructure
+RootNamespace=Loop.IntegrationTests
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-SolutionPath=<PATH>../Loop.sln
+SolutionPath=<PATH>../../src/Loop.sln
 TargetFrameworkIdentifier=.NETCoreApp
-TargetPath=<PATH>bin/Debug/net10.0/Loop.Infrastructure.dll
-TargetRefPath=<PATH>obj/Debug/net10.0/ref/Loop.Infrastructure.dll
+TargetPath=<PATH>bin/Debug/net10.0/Loop.IntegrationTests.dll
+TargetRefPath=<PATH>obj/Debug/net10.0/ref/Loop.IntegrationTests.dll
 TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [commandLineArguments]
@@ -44,9 +44,9 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /debug:portable
 /filealign:512
 /optimize-
-/out:obj\Debug\net10.0\Loop.Infrastructure.dll
-/refout:obj\Debug\net10.0\refint\Loop.Infrastructure.dll
-/target:library
+/out:obj\Debug\net10.0\Loop.IntegrationTests.dll
+/refout:obj\Debug\net10.0\refint\Loop.IntegrationTests.dll
+/target:exe
 /warnaserror+
 /utf8output
 /deterministic+
@@ -54,102 +54,22 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Audit/AuditLogConfiguration.cs
-Authentication/
- ClaimsPrincipalExtensions.cs
- PasswordHasher.cs
- PointsRedemptionQrTokenProvider.cs
- ShopAdminClaimsPrincipalExtensions.cs
- ShopAdminContext.cs
- ShopAdminContextUnavailableException.cs
- StampCollectionQrTokenProvider.cs
- StampRedemptionQrTokenProvider.cs
- TokenProvider.cs
- UserContext.cs
- UserContextUnavailableException.cs
-Authorization/
- HasPermissionAttribute.cs
- PermissionAuthorizationHandler.cs
- PermissionAuthorizationPolicyProvider.cs
- PermissionProvider.cs
- PermissionRequirement.cs
-Communication/SmtpEmailSender.cs
-Configuration/SystemConfigConfiguration.cs
-Database/
- LoopContext.cs
- Schemas.cs
-DependencyInjection.cs
-DomainEvents/
- DomainEventsDispatcher.cs
- IDomainEventsDispatcher.cs
-Malls/
- MallAdminConfiguration.cs
- MallAdminPasswordResetRequestConfiguration.cs
- MallAdminSessionConfiguration.cs
- MallConfiguration.cs
-Messaging/Dispatcher.cs
-Migrations/
- 20260412205604_Initial_DB.cs
- 20260412205604_Initial_DB.Designer.cs
- 20260420211028_AddStampRedemption.cs
- 20260420211028_AddStampRedemption.Designer.cs
- 20260425114200_UpdateStampRedemptionRelation.cs
- 20260425114200_UpdateStampRedemptionRelation.Designer.cs
- 20260425170053_AddShopPointsWalletAndRedeemRatio.cs
- 20260425170053_AddShopPointsWalletAndRedeemRatio.Designer.cs
- 20260429173812_AddStampTransactionQrForeignKey.cs
- 20260429173812_AddStampTransactionQrForeignKey.Designer.cs
- 20260505220132_AddReceiptImageHashUniqueIndex.cs
- 20260505220132_AddReceiptImageHashUniqueIndex.Designer.cs
- LoopContextModelSnapshot.cs
+<NUGET>/microsoft.net.test.sdk/18.0.1/build/net8.0/Microsoft.NET.Test.Sdk.Program.cs
+ApiIntegrationTests.cs
+GlobalUsings.cs
+IntegrationTestWebApplicationFactory.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
- Loop.Infrastructure.AssemblyInfo.cs
- Loop.Infrastructure.GlobalUsings.g.cs
-Ocr/
- MestalOcrProvider.cs
- ReceiptPrompts.cs
-Offers/
- OfferConfiguration.cs
- OfferRedemptionConfiguration.cs
-QrCode/QrCodeConfiguration.cs
-Receipts/
- MerchantMatcher/LocalMerchantMatcher.cs
- ReceiptConfiguration.cs
-Repository/
- ReadOnlyRepository.cs
- Repository.cs
-Shops/
- CategoryConfiguration.cs
- ShopAdminConfiguration.cs
- ShopAdminPasswordResetRequestConfiguration.cs
- ShopAdminSessionConfiguration.cs
- ShopConfiguration.cs
- ShopPointsWalletConfiguration.cs
- Specification/ShopByMallSpecification.cs
-Stamps/
- StampConfiguration.cs
- StampRedemptionConfiguration.cs
- StampTransactionConfiguration.cs
- UserStampCardConfiguration.cs
-Storage/LocalReceiptFileStore.cs
-Tiers/TierConfiguration.cs
-Time/DateTimeProvider.cs
-Transactions/
- EarnTransactionConfiguration.cs
- RedeemTransactionConfiguration.cs
-UnitOfWork/UnitOfWork.cs
-Users/
- PasswordResetRequestConfiguration.cs
- UserConfiguration.cs
- UserPointsBalanceConfiguration.cs
- UserSessionConfiguration.cs
+ Loop.IntegrationTests.AssemblyInfo.cs
+ Loop.IntegrationTests.GlobalUsings.g.cs
 
 [metadataReferences]
-../
+../../src/
  Loop.Application/obj/Debug/net10.0/ref/Loop.Application.dll
  Loop.Domain/obj/Debug/net10.0/ref/Loop.Domain.dll
+ Loop.Infrastructure/obj/Debug/net10.0/ref/Loop.Infrastructure.dll
  Loop.SharedKernel/obj/Debug/net10.0/ref/Loop.SharedKernel.dll
+ Loop.Web.Api/obj/Debug/net10.0/ref/Loop.Web.Api.dll
 <DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
@@ -461,29 +381,66 @@ Users/
  WindowsBase.dll
 <NUGET>/
  aspnetcore.healthchecks.npgsql/9.0.0/lib/net8.0/HealthChecks.NpgSql.dll
+ aspnetcore.healthchecks.ui.client/9.0.0/lib/net8.0/HealthChecks.UI.Client.dll
+ aspnetcore.healthchecks.ui.core/9.0.0/lib/net8.0/HealthChecks.UI.Core.dll
+ diffengine/11.3.0/lib/net7.0/DiffEngine.dll
  efcore.namingconventions/10.0.1/lib/net10.0/EFCore.NamingConventions.dll
+ emptyfiles/4.4.0/lib/net7.0/EmptyFiles.dll
+ fluentvalidation.aspnetcore/11.3.1/lib/net6.0/FluentValidation.AspNetCore.dll
  fluentvalidation.dependencyinjectionextensions/12.1.1/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
  fluentvalidation/12.1.1/lib/net8.0/FluentValidation.dll
  mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
  mediatr.extensions.microsoft.dependencyinjection/11.1.0/lib/netstandard2.1/MediatR.Extensions.Microsoft.DependencyInjection.dll
  mediatr/14.1.0/lib/net10.0/MediatR.dll
  microsoft.aspnetcore.authentication.jwtbearer/10.0.5/lib/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+ microsoft.aspnetcore.mvc.testing/10.0.5/lib/net10.0/Microsoft.AspNetCore.Mvc.Testing.dll
+ microsoft.aspnetcore.testhost/10.0.5/lib/net10.0/Microsoft.AspNetCore.TestHost.dll
+ microsoft.codecoverage/18.0.1/lib/net8.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll
  microsoft.entityframeworkcore.abstractions/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
  microsoft.entityframeworkcore.relational/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
  microsoft.entityframeworkcore/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.dll
- microsoft.extensions.dependencymodel/10.0.0/lib/net10.0/Microsoft.Extensions.DependencyModel.dll
+ microsoft.extensions.dependencymodel/10.0.5/lib/net10.0/Microsoft.Extensions.DependencyModel.dll
  microsoft.identitymodel.abstractions/8.14.0/lib/net9.0/Microsoft.IdentityModel.Abstractions.dll
  microsoft.identitymodel.jsonwebtokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
  microsoft.identitymodel.logging/8.14.0/lib/net9.0/Microsoft.IdentityModel.Logging.dll
  microsoft.identitymodel.protocols.openidconnect/8.0.1/lib/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
  microsoft.identitymodel.protocols/8.0.1/lib/net9.0/Microsoft.IdentityModel.Protocols.dll
  microsoft.identitymodel.tokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.Tokens.dll
+ microsoft.openapi/1.6.14/lib/netstandard2.0/Microsoft.OpenApi.dll
+ microsoft.testplatform.testhost/18.0.1/lib/net8.0/
+  Microsoft.TestPlatform.CommunicationUtilities.dll
+  Microsoft.TestPlatform.CoreUtilities.dll
+  Microsoft.TestPlatform.CrossPlatEngine.dll
+  Microsoft.TestPlatform.PlatformAbstractions.dll
+  Microsoft.TestPlatform.Utilities.dll
+  Microsoft.VisualStudio.TestPlatform.Common.dll
+  Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
+  testhost.dll
  newtonsoft.json/13.0.4/lib/net6.0/Newtonsoft.Json.dll
  npgsql.entityframeworkcore.postgresql/10.0.1/lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
  npgsql/10.0.2/lib/net10.0/Npgsql.dll
  scrutor/7.0.0/lib/net10.0/Scrutor.dll
+ serilog.aspnetcore/10.0.0/lib/net10.0/Serilog.AspNetCore.dll
+ serilog.extensions.hosting/10.0.0/lib/net10.0/Serilog.Extensions.Hosting.dll
+ serilog.extensions.logging/10.0.0/lib/net10.0/Serilog.Extensions.Logging.dll
+ serilog.formatting.compact/3.0.0/lib/net8.0/Serilog.Formatting.Compact.dll
+ serilog.settings.configuration/10.0.0/lib/net10.0/Serilog.Settings.Configuration.dll
+ serilog.sinks.console/6.1.1/lib/net8.0/Serilog.Sinks.Console.dll
+ serilog.sinks.debug/3.0.0/lib/net8.0/Serilog.Sinks.Debug.dll
+ serilog.sinks.file/7.0.0/lib/net9.0/Serilog.Sinks.File.dll
+ serilog.sinks.seq/9.0.0/lib/net6.0/Serilog.Sinks.Seq.dll
  serilog/4.3.0/lib/net9.0/Serilog.dll
+ shouldly/4.3.0/lib/net9.0/Shouldly.dll
+ swashbuckle.aspnetcore.swagger/6.9.0/lib/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+ swashbuckle.aspnetcore.swaggergen/6.9.0/lib/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+ swashbuckle.aspnetcore.swaggerui/6.9.0/lib/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+ system.codedom/6.0.0/lib/net6.0/System.CodeDom.dll
  system.identitymodel.tokens.jwt/8.0.1/lib/net9.0/System.IdentityModel.Tokens.Jwt.dll
+ system.management/6.0.1/lib/net6.0/System.Management.dll
+ xunit.abstractions/2.0.3/lib/netstandard2.0/xunit.abstractions.dll
+ xunit.assert/2.9.3/lib/net6.0/xunit.assert.dll
+ xunit.extensibility.core/2.9.3/lib/netstandard1.1/xunit.core.dll
+ xunit.extensibility.execution/2.9.3/lib/netstandard1.1/xunit.execution.dotnet.dll
 
 [analyzerReferences]
 <DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/analyzers/dotnet/cs/
@@ -512,8 +469,11 @@ Users/
 <NUGET>/
  microsoft.entityframeworkcore.analyzers/10.0.5/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
  sonaranalyzer.csharp/10.19.0.132793/analyzers/SonarAnalyzer.CSharp.dll
+ xunit.analyzers/1.18.0/analyzers/dotnet/cs/
+  xunit.analyzers.dll
+  xunit.analyzers.fixes.dll
 
 [analyzerConfigFiles]
 ../../.editorconfig
 <DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
-obj/Debug/net10.0/Loop.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+obj/Debug/net10.0/Loop.IntegrationTests.GeneratedMSBuildEditorConfig.editorconfig

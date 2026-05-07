@@ -27,7 +27,10 @@ builder.Services.AddFluentValidationAutoValidation();
 
 WebApplication app = builder.Build();
 
-app.ApplyMigrations();
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.ApplyMigrations();
+}
 
 
     app.UseSwaggerWithUi();

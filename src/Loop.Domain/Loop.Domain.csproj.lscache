@@ -2,12 +2,10 @@ version=1
 
 # This file caches language service data to improve the performance of C# Dev Kit.
 # It is not intended for manual editing. It can safely be deleted and will be
-# regenerated automatically.
+# regenerated automatically. For more information, see https://aka.ms/lscache
 #
-# To exclude from version control, add *.lscache to your .gitignore file.
-#
-# To disable caching, add the following to your VS Code settings:
-#   "dotnet.projectsystem.enableLanguageServiceCache": false
+# To control where cache files are stored, use the following VS Code setting:
+#   "dotnet.projectsystem.cacheInProjectFolder": true
 
 [project]
 language=C#
@@ -23,7 +21,7 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=Loop.Domain
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-SolutionPath=*Undefined*
+SolutionPath=<PATH>../Loop.sln
 TargetFrameworkIdentifier=.NETCoreApp
 TargetPath=<PATH>bin/Debug/net10.0/Loop.Domain.dll
 TargetRefPath=<PATH>obj/Debug/net10.0/ref/Loop.Domain.dll
@@ -92,11 +90,15 @@ Offers/
 QRCode/
  QrCode.cs
  QrCodeErrors.cs
+ Specifications/
+  QrCodeByDataAndUserSpecification.cs
+  QrCodeByPKSpecification.cs
 Receipts/
  Receipt.cs
  ReceiptApprovedDomainEvent.cs
  ReceiptErrors.cs
  ReceiptStatus.cs
+ Specifications/ReceiptByImageHashSpecification.cs
 Shops/
  Category.cs
  CategoryErrors.cs
@@ -106,10 +108,18 @@ Shops/
  ShopAdminPasswordResetRequest.cs
  ShopAdminSession.cs
  ShopErrors.cs
+ ShopPointsWallet.cs
  Specificarions/
+  ActiveShopsByMallSpecification.cs
+  AllShopsSpecification.cs
   CategoryByMallSpecification.cs
+  ShopByIdSpecification.cs
   ShopByMallSpecification.cs
   ShopByPKSpecification.cs
+ Specifications/
+  ShopAdminByEmailSpecification.cs
+  ShopAdminByPKSpecification.cs
+  ShopAdminSessionByRefreshTokenHashSpecification.cs
 Specifications/
  Specification.cs
  SpecificationEvaluator.cs
@@ -118,8 +128,12 @@ Stamps/
  Specificarions/
   ActiveStampByPKSpecification.cs
   ActiveUserStampCardsWithDetailsSpecification.cs
+  StampRedemptionByQrIdSpecification.cs
   StampRedemptionByUserSpecification.cs
   StampTransactionByUserSpecification.cs
+ Specifications/
+  ActiveStampsByShopSpecification.cs
+  StampTransactionByQrIdSpecification.cs
  Stamp.cs
  StampCollectedDomainEvent.cs
  StampErrors.cs
@@ -148,6 +162,7 @@ Users/
   UserByPKSpecification.cs
   UserSessionByRefreshTokenHashSpecification.cs
   UserSessionsByUserIdSpecification.cs
+  UserWithDetailsSpecification.cs
  User.cs
  UserErrors.cs
  UserPointsBalance.cs
@@ -157,7 +172,7 @@ Users/
 
 [metadataReferences]
 ../Loop.SharedKernel/obj/Debug/net10.0/ref/Loop.SharedKernel.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -345,17 +360,17 @@ Users/
  microsoft.identitymodel.tokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.Tokens.dll
 
 [analyzerReferences]
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/codestyle/cs/
  Microsoft.CodeAnalysis.CodeStyle.dll
  Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
  Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
@@ -368,5 +383,5 @@ Users/
 
 [analyzerConfigFiles]
 ../../.editorconfig
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
 obj/Debug/net10.0/Loop.Domain.GeneratedMSBuildEditorConfig.editorconfig

@@ -2,12 +2,10 @@ version=1
 
 # This file caches language service data to improve the performance of C# Dev Kit.
 # It is not intended for manual editing. It can safely be deleted and will be
-# regenerated automatically.
+# regenerated automatically. For more information, see https://aka.ms/lscache
 #
-# To exclude from version control, add *.lscache to your .gitignore file.
-#
-# To disable caching, add the following to your VS Code settings:
-#   "dotnet.projectsystem.enableLanguageServiceCache": false
+# To control where cache files are stored, use the following VS Code setting:
+#   "dotnet.projectsystem.cacheInProjectFolder": true
 
 [project]
 language=C#
@@ -23,7 +21,7 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=Loop.Application
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-SolutionPath=*Undefined*
+SolutionPath=<PATH>../Loop.sln
 TargetFrameworkIdentifier=.NETCoreApp
 TargetPath=<PATH>bin/Debug/net10.0/Loop.Application.dll
 TargetRefPath=<PATH>obj/Debug/net10.0/ref/Loop.Application.dll
@@ -58,6 +56,10 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 [sourceFiles]
 Abstractions/Authentication/
  IPasswordHasher.cs
+ IPointsRedemptionQrTokenProvider.cs
+ IShopAdminContext.cs
+ IStampCollectionQrTokenProvider.cs
+ IStampRedemptionQrTokenProvider.cs
  ITokenProvider.cs
  IUserContext.cs
 Abstractions/Behaviors/
@@ -72,6 +74,8 @@ Abstractions/
   IDispatcher.cs
   IQuery.cs
   IQueryHandler.cs
+ Ocr/IReceiptOcrProvider.cs
+ Storage/IReceiptFileStore.cs
 Categories/
  Contract/GetCategoriesResponse.cs
  Query/GetCategories.cs
@@ -90,35 +94,64 @@ Offers/Contract/
 Offers/Query/
  GetOffersByShop.cs
  GetOffersByShopCategory.cs
+Receipts/
+ Command/ProcessReceiptOcr.cs
+ Contract/
+  ReceiptLineItem.cs
+  ReceiptOcrResult.cs
+ Services/IMerchantMatcher.cs
+Shops/Command/
+ LoginShopAdmin.cs
+ RefreshShopAdminToken.cs
 Shops/Contract/
  GetShopByIdResponse.cs
  GetShopsParams.cs
  GetShopsResponse.cs
+ LoginShopAdminParams.cs
+ RefreshShopAdminTokenParams.cs
 Shops/Query/
  GetShopById.cs
  GetShops.cs
+Stamps/Command/
+ ConfirmStampRedemptionQr.cs
+ GenerateStampCollectQr.cs
+ GenerateStampRedemptionQr.cs
+ ScanStampCollectQr.cs
 Stamps/Contract/
+ ConfirmStampRedemptionQrRequest.cs
+ GenerateStampCollectQrResponse.cs
+ GenerateStampRedemptionQrResponse.cs
+ GetActiveShopStampsResponse.cs
  GetComletedStampsResponse.cs
  GetStampsResponse.cs
  GetUserStampCardsResponse.cs
+ ScanStampCollectQrRequest.cs
+ ScanStampCollectQrResponse.cs
 Stamps/Query/
+ GetActiveShopStamps.cs
  GetComletedStamps.cs
  GetStamps.cs
  GetUserStampCards.cs
 Users/Command/
+ ConfirmPointsRedemptionQr.cs
  ForgotPassword.cs
+ GeneratePointsRedemptionQr.cs
  LoginUser.cs
  LogoutUser.cs
  RefreshToken.cs
  RegisterUser.cs
  ResetPassword.cs
+ UpdateUser.cs
 Users/Contract/
  AuthTokensResponse.cs
+ ConfirmPointsRedemptionQrRequest.cs
+ GeneratePointsRedemptionQrResponse.cs
  LoginUserParams.cs
  PasswordResetParams.cs
  PointsBalancRespose.cs
  RefreshTokenParams.cs
  RegisterUserParams.cs
+ UpdateUserParams.cs
  UserResponse.cs
 Users/
  Events/UserRegisteredDomainEventHandler.cs
@@ -131,7 +164,7 @@ Users/
 ../
  Loop.Domain/obj/Debug/net10.0/ref/Loop.Domain.dll
  Loop.SharedKernel/obj/Debug/net10.0/ref/Loop.SharedKernel.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -328,17 +361,17 @@ Users/
  serilog/4.3.0/lib/net9.0/Serilog.dll
 
 [analyzerReferences]
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/codestyle/cs/
  Microsoft.CodeAnalysis.CodeStyle.dll
  Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
  Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
@@ -351,5 +384,5 @@ Users/
 
 [analyzerConfigFiles]
 ../../.editorconfig
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
 obj/Debug/net10.0/Loop.Application.GeneratedMSBuildEditorConfig.editorconfig

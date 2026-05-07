@@ -72,6 +72,82 @@ public class LocalMerchantMatcherTests
         result.MatchScore!.Value.ShouldBe(1);
     }
 
+    [Fact]
+    public async Task MatchAsync_ShouldReturnNormalizedReceipt_WhenMerchantIdentityIsMissing()
+    {
+        var repository = new ShopReadOnlyRepositoryStub([]);
+        var matcher = new LocalMerchantMatcher(repository);
+
+        var result = await matcher.MatchAsync(
+            Guid.NewGuid(),
+            new ReceiptOcrResult
+            {
+                StoreName = "   ",
+                MerchantName = null,
+                Currency = " JOD "
+            },
+            CancellationToken.None);
+
+        result.StoreName.ShouldBe(string.Empty);
+        result.MerchantName.ShouldBe(string.Empty);
+        result.Currency.ShouldBe("JOD");
+        result.MatchedShopId.ShouldBeNull();
+        result.MatchScore.ShouldBeNull();
+        result.IsPendingReview.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task MatchAsync_ShouldReturnReceiptWithoutMatch_WhenNoShopsExist()
+    {
+        var repository = new ShopReadOnlyRepositoryStub([]);
+        var matcher = new LocalMerchantMatcher(repository);
+
+        var result = await matcher.MatchAsync(
+            Guid.NewGuid(),
+            new ReceiptOcrResult
+            {
+                StoreName = "Carrefour",
+                MerchantName = "Carrefour",
+                Currency = "JOD"
+            },
+            CancellationToken.None);
+
+        result.StoreName.ShouldBe("Carrefour");
+        result.MerchantName.ShouldBe("Carrefour");
+        result.MatchedShopId.ShouldBeNull();
+        result.MatchedShopName.ShouldBeNull();
+        result.MatchScore.ShouldBeNull();
+        result.IsPendingReview.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task MatchAsync_ShouldMatchNamesWithDiacriticsNormalization()
+    {
+        var mallId = Guid.NewGuid();
+        var shops = new[]
+        {
+            Shop.Create(mallId, "CAFÉ MALL", Guid.NewGuid())
+        };
+
+        var repository = new ShopReadOnlyRepositoryStub(shops);
+        var matcher = new LocalMerchantMatcher(repository);
+
+        var result = await matcher.MatchAsync(
+            mallId,
+            new ReceiptOcrResult
+            {
+                StoreName = "Cafe Mall",
+                MerchantName = "Cafe Mall"
+            },
+            CancellationToken.None);
+
+        result.MatchedShopId.ShouldBe(shops[0].ShopId);
+        result.MatchedShopName.ShouldBe(shops[0].Name);
+        result.IsPendingReview.ShouldBeFalse();
+        result.MatchScore.ShouldNotBeNull();
+        result.MatchScore!.Value.ShouldBe(1);
+    }
+
     private sealed class ShopReadOnlyRepositoryStub(IEnumerable<Shop> shops) : IReadOnlyRepository<Shop>
     {
         private readonly List<Shop> _shops = shops.ToList();

@@ -35,8 +35,23 @@ public sealed class MestalOcrProvider : IReceiptOcrProvider
 
     public async Task<Result<ReceiptOcrResult>> ProcessAsync(Stream imageStream, string contentType = "image/jpeg", CancellationToken cancellationToken = default)
     {
+        // If cancellation already requested, return failure immediately
+        if (cancellationToken.IsCancellationRequested)
+            return Result.Failure<ReceiptOcrResult>(HttpFailureError);
+
         using var buffer = new MemoryStream();
-        await imageStream.CopyToAsync(buffer, cancellationToken);
+        try
+        {
+            await imageStream.CopyToAsync(buffer, cancellationToken);
+        }
+        catch (TaskCanceledException)
+        {
+            // Caller cancelled the operation
+            if (cancellationToken.IsCancellationRequested)
+                return Result.Failure<ReceiptOcrResult>(HttpFailureError);
+            throw;
+        }
+
         var base64 = Convert.ToBase64String(buffer.ToArray());
         var mimeType = NormalizeMimeType(contentType);
 
@@ -136,9 +151,12 @@ public sealed class MestalOcrProvider : IReceiptOcrProvider
         {
             return Result.Failure<ReceiptOcrResult>(HttpFailureError);
         }
-        catch (TaskCanceledException) when (cancellationToken.IsCancellationRequested)
+        catch (TaskCanceledException)
         {
-            return Result.Failure<ReceiptOcrResult>(HttpFailureError);
+            // If the caller requested cancellation, return failure; otherwise rethrow to let the caller observe unexpected cancellation
+            if (cancellationToken.IsCancellationRequested)
+                return Result.Failure<ReceiptOcrResult>(HttpFailureError);
+            throw;
         }
         catch (JsonException)
         {

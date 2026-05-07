@@ -2,12 +2,10 @@ version=1
 
 # This file caches language service data to improve the performance of C# Dev Kit.
 # It is not intended for manual editing. It can safely be deleted and will be
-# regenerated automatically.
+# regenerated automatically. For more information, see https://aka.ms/lscache
 #
-# To exclude from version control, add *.lscache to your .gitignore file.
-#
-# To disable caching, add the following to your VS Code settings:
-#   "dotnet.projectsystem.enableLanguageServiceCache": false
+# To control where cache files are stored, use the following VS Code setting:
+#   "dotnet.projectsystem.cacheInProjectFolder": true
 
 [project]
 language=C#
@@ -23,7 +21,7 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=Loop.ArchitectureTests
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-SolutionPath=*Undefined*
+SolutionPath=<PATH>../../src/Loop.sln
 TargetFrameworkIdentifier=.NETCoreApp
 TargetPath=<PATH>bin/Debug/net10.0/Loop.ArchitectureTests.dll
 TargetRefPath=<PATH>obj/Debug/net10.0/ref/Loop.ArchitectureTests.dll
@@ -57,9 +55,24 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [sourceFiles]
 <NUGET>/microsoft.net.test.sdk/18.0.1/build/net8.0/Microsoft.NET.Test.Sdk.Program.cs
-Application/Queries/GetUserByIdQueryTests.cs
+Application/
+ Queries/GetUserByIdQueryTests.cs
+ Receipts/LocalMerchantMatcherTests.cs
 BaseTest.cs
+Domain/Common/
+ EmailTests.cs
+ MoneyTests.cs
+ PhoneTests.cs
+Domain/
+ Offers/OfferTests.cs
+ Receipts/ReceiptTests.cs
+ Stamps/StampRedemptionTests.cs
+ Transactions/
+  EarnTransactionTests.cs
+  RedeemTransactionTests.cs
+ Users/UserTests.cs
 GlobalUsings.cs
+Infrastructure/Ocr/MestalOcrProviderTests.cs
 Layers/
  ApplicationLayerTests.cs
  DomainLayerTests.cs
@@ -78,7 +91,7 @@ obj/Debug/net10.0/
  Loop.Infrastructure/obj/Debug/net10.0/ref/Loop.Infrastructure.dll
  Loop.SharedKernel/obj/Debug/net10.0/ref/Loop.SharedKernel.dll
  Loop.Web.Api/obj/Debug/net10.0/ref/Loop.Web.Api.dll
-<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.6/ref/net10.0/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
  Microsoft.AspNetCore.Authentication.BearerToken.dll
@@ -219,7 +232,7 @@ obj/Debug/net10.0/
  System.Formats.Cbor.dll
  System.Security.Cryptography.Xml.dll
  System.Threading.RateLimiting.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -455,7 +468,7 @@ obj/Debug/net10.0/
  xunit.extensibility.execution/2.9.3/lib/netstandard1.1/xunit.execution.dotnet.dll
 
 [analyzerReferences]
-<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.6/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.AspNetCore.App.Analyzers.dll
  Microsoft.AspNetCore.App.CodeFixes.dll
  Microsoft.AspNetCore.App.SourceGenerators.dll
@@ -463,17 +476,17 @@ obj/Debug/net10.0/
  Microsoft.Extensions.Logging.Generators.dll
  Microsoft.Extensions.Options.SourceGeneration.dll
  Microsoft.Extensions.Validation.ValidationsGenerator.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/codestyle/cs/
  Microsoft.CodeAnalysis.CodeStyle.dll
  Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
  Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
@@ -487,5 +500,5 @@ obj/Debug/net10.0/
 
 [analyzerConfigFiles]
 ../../.editorconfig
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
 obj/Debug/net10.0/Loop.ArchitectureTests.GeneratedMSBuildEditorConfig.editorconfig
