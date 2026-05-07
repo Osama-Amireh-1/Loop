@@ -74,9 +74,13 @@ public static class DependencyInjection
 
     private static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
-        services
-            .AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("Database")!);
+        var healthChecks = services.AddHealthChecks();
+
+        string? connectionString = configuration.GetConnectionString("Database");
+        if (!string.IsNullOrWhiteSpace(connectionString))
+        {
+            healthChecks.AddNpgSql(connectionString);
+        }
 
         return services;
     }
