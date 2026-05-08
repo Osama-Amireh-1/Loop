@@ -18,7 +18,8 @@ internal sealed class StampRedemptionConfiguration : IEntityTypeConfiguration<St
             .HasDefaultValueSql("now()");
 
         builder.Property(sr => sr.QrId)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnName("qr_id");
 
         builder.HasOne<User>()
             .WithMany()

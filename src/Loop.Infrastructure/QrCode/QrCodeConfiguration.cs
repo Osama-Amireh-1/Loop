@@ -22,9 +22,9 @@ internal sealed class QrCodeConfiguration : IEntityTypeConfiguration<QrCode>
             .HasForeignKey(q => q.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(q => q.Shop)
-    .WithMany()
-    .HasForeignKey(q => q.ShopId)
-    .OnDelete(DeleteBehavior.Cascade);
+            .WithMany()
+            .HasForeignKey(q => q.ShopId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(q => q.UserId);
         builder.HasIndex(q => q.ExpiresAt);

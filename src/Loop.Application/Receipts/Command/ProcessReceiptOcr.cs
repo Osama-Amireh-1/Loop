@@ -32,7 +32,7 @@ public sealed class ProcessReceiptOcr
     public sealed class Handler(
         IReceiptOcrProvider ocrProvider,
         IMerchantMatcher merchantMatcher,
-        IReadOnlyRepository<User> userReadRepo,
+        IRepository<User> userReadRepo,
         IReadOnlyRepository<SystemConfig> systemConfigReadRepo,
         IReadOnlyRepository<Receipt> receiptReadRepo,
         IRepository<Receipt> receiptRepo,

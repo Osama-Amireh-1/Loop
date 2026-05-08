@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text.Json;
 using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Interfaces;
@@ -55,7 +56,7 @@ public static class GeneratePointsRedemptionQr
                     request.PointsToRedeem,
                     expiresAtUtc));
 
-            var qrCode = QrCode.Create(userContext.UserId, null, qrCodeData, expiresAtUtc);
+            var qrCode = QrCode.Create(userContext.UserId, null, JsonSerializer.Serialize(qrCodeData), expiresAtUtc);
             await qrCodeRepo.AddAsync(qrCode);
 
             return Result.Success(new GeneratePointsRedemptionQrResponse

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Interfaces;
@@ -37,7 +38,8 @@ public static class ScanStampCollectQr
                 return Result.Failure<ScanStampCollectQrResponse>(StampErrors.QrCodeNotFound);
             }
 
-            StampCollectionQrTokenPayload? payload = await stampCollectionQrTokenProvider.ValidateAndGetPayloadAsync(qrCode.QrCodeData);
+            var token = JsonSerializer.Deserialize<string>(qrCode.QrCodeData) ?? qrCode.QrCodeData;
+            StampCollectionQrTokenPayload? payload = await stampCollectionQrTokenProvider.ValidateAndGetPayloadAsync(token);
 
             if (payload is null)
             {

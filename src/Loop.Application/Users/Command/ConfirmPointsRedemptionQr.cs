@@ -44,7 +44,8 @@ public static class ConfirmPointsRedemptionQr
                 return Result.Failure<bool>(TransactionErrors.QrCodeNotFound);
             }
 
-            PointsRedemptionQrTokenPayload? payload = await pointsRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(qrCode.QrCodeData);
+            var token = JsonSerializer.Deserialize<string>(qrCode.QrCodeData) ?? qrCode.QrCodeData;
+            PointsRedemptionQrTokenPayload? payload = await pointsRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(token);
 
             if (payload is null || qrCode.UserId != payload.UserId)
             {

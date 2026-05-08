@@ -26,10 +26,10 @@ public sealed class GetUserPointsBalance
     {
         public async Task<Result<PointsBalancResponse>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var user = await userReadRepo.Find(new UserByPKSpecification(userContext.UserId))
-                .Select(u => u.PointsBalance.TotalPoints).FirstOrDefaultAsync(cancellationToken);
+            var user = await userReadRepo.Find(new UserWithDetailsSpecification(userContext.UserId))
+                .FirstOrDefaultAsync(cancellationToken);
             
-            if (user == 0)
+            if (user == null)
             {
                 return Result.Failure<PointsBalancResponse>(UserErrors.NotFound(userContext.UserId));
             }
@@ -43,9 +43,9 @@ public sealed class GetUserPointsBalance
                     SystemConfigErrors.NotFound(request.MallId));
             }
 
-            var evaluatedValue = user / systemConfig.PointsToCurrencyRatio;
+            var evaluatedValue = user.PointsBalance.TotalPoints / systemConfig.PointsToCurrencyRatio;
 
-            return Result.Success(new PointsBalancResponse(user, evaluatedValue));
+            return Result.Success(new PointsBalancResponse(user.PointsBalance.TotalPoints, evaluatedValue));
         }
     }
 }

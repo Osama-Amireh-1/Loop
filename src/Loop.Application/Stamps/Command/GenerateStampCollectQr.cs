@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text.Json;
 using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Interfaces;
@@ -49,7 +50,7 @@ public static class GenerateStampCollectQr
                     request.StampsCount,
                     expiresAtUtc));
 
-            var qrCode = QrCode.Create(null, shopAdminContext.ShopId, qrCodeData, expiresAtUtc);
+            var qrCode = QrCode.Create(null, shopAdminContext.ShopId, JsonSerializer.Serialize(qrCodeData), expiresAtUtc);
             await qrCodeRepo.AddAsync(qrCode);
 
             return Result.Success(new GenerateStampCollectQrResponse

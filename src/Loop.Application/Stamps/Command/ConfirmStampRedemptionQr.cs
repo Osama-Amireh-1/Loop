@@ -2,10 +2,10 @@ using System.Text.Json;
 using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Interfaces;
-using Loop.Domain.Audit;
 using Loop.Domain.QRCode;
 using Loop.Domain.QRCode.Specifications;
 using Loop.Domain.Stamps;
+using Loop.Domain.Stamps.Specifications;
 using Loop.Domain.Stamps.Specificarions;
 using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +18,8 @@ public static class ConfirmStampRedemptionQr
 
     public sealed class Handler(
         IRepository<QrCode> qrCodeRepo,
+        IRepository<UserStampCard> userStampCardRepo,
         IRepository<StampRedemption> stampRedemptionRepo,
-        IRepository<AuditLog> auditLogRepo,
         IReadOnlyRepository<StampRedemption> stampRedemptionReadRepo,
         IDateTimeProvider dateTimeProvider,
         IStampRedemptionQrTokenProvider stampRedemptionQrTokenProvider,
@@ -28,7 +28,7 @@ public static class ConfirmStampRedemptionQr
     {
         public async Task<Result<bool>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var qrCode = await qrCodeRepo
+            QrCode? qrCode = await qrCodeRepo
                 .Find(new QrCodeByPKSpecification(request.QrId))
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -37,14 +37,15 @@ public static class ConfirmStampRedemptionQr
                 return Result.Failure<bool>(StampErrors.QrCodeNotFound);
             }
 
-            StampRedemptionQrTokenPayload? payload = await stampRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(qrCode.QrCodeData);
+            var token = JsonSerializer.Deserialize<string>(qrCode.QrCodeData) ?? qrCode.QrCodeData;
+            StampRedemptionQrTokenPayload? payload = await stampRedemptionQrTokenProvider.ValidateAndGetPayloadAsync(token);
 
             if (payload is null)
             {
                 return Result.Failure<bool>(StampErrors.InvalidQrPayload);
             }
 
-            if (payload.ShopId != shopAdminContext.ShopId || qrCode.ShopId != shopAdminContext.ShopId)
+            if (payload.ShopId != shopAdminContext.ShopId)
             {
                 return Result.Failure<bool>(StampErrors.InvalidQrPayload);
             }
@@ -56,40 +57,39 @@ public static class ConfirmStampRedemptionQr
                 return Result.Failure<bool>(StampErrors.QrCodeExpired);
             }
 
-            bool alreadyUsed = await stampRedemptionReadRepo
+            bool alreadyRedeemed = await stampRedemptionReadRepo
                 .Find(new StampRedemptionByQrIdSpecification(qrCode.QrId))
                 .AnyAsync(cancellationToken);
 
-            if (alreadyUsed)
+            if (alreadyRedeemed)
             {
                 return Result.Failure<bool>(StampErrors.QrCodeAlreadyUsed);
             }
 
-            var redemption = StampRedemption.Create(
+            UserStampCard? userStampCard = await userStampCardRepo
+                .Find(new ActiveUserStampCardsWithDetailsSpecification(payload.UserId))
+                .Where(usc => usc.StampId == payload.StampId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (userStampCard is null)
+            {
+                return Result.Failure<bool>(StampErrors.CardNotFound(payload.UserId, payload.StampId));
+            }
+
+            if (!userStampCard.IsCompleted)
+            {
+                return Result.Failure<bool>(StampErrors.CardNotCompleted);
+            }
+
+            qrCode.Invalidate(utcNow);
+
+            var stampRedemption = StampRedemption.Create(
                 payload.UserId,
                 payload.ShopId,
                 payload.StampId,
                 qrCode.QrId);
 
-            await stampRedemptionRepo.AddAsync(redemption);
-
-            var auditLog = AuditLog.Record(
-                actionType: "StampRedeemed",
-                userId: payload.UserId,
-                shopId: payload.ShopId,
-                shopAdminId: shopAdminContext.ShopAdminId,
-                adminType: AdminType.ShopAdmin,
-                metadata: JsonSerializer.Serialize(new
-                {
-                    redemptionId = redemption.RedemptionId,
-                    redemptionRef = qrCode.QrId,
-                    stampId = payload.StampId,
-                    shopId = payload.ShopId,
-                    userId = payload.UserId,
-                    redeemedAtUtc = redemption.CreatedAt
-                }));
-
-            await auditLogRepo.AddAsync(auditLog);
+            await stampRedemptionRepo.AddAsync(stampRedemption);
 
             return Result.Success(true);
         }

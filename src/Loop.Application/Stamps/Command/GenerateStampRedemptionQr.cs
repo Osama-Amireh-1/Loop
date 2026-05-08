@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text.Json;
 using Loop.Application.Abstractions.Authentication;
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Interfaces;
@@ -52,7 +53,7 @@ public static class GenerateStampRedemptionQr
                     userStampCard.ShopId,
                     expiresAtUtc));
 
-            var qrCode = QrCode.Create(userContext.UserId, userStampCard.ShopId, qrCodeData, expiresAtUtc);
+            var qrCode = QrCode.Create(userContext.UserId, userStampCard.ShopId, JsonSerializer.Serialize(qrCodeData), expiresAtUtc);
             await qrCodeRepo.AddAsync(qrCode);
 
             return Result.Success(new GenerateStampRedemptionQrResponse
