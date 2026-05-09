@@ -8,7 +8,7 @@ namespace Loop.Domain.Offers.Specifications;
 
 public class ActiveOfferByMallSpecification:Specification<Offer>
 {
-    public ActiveOfferByMallSpecification(Guid mallId) :base(o=>o.IsActive&& o.StartDate<= DateTime.Now&& o.EndDate >= DateTime.Now && o.Shop.MallId== mallId)
+    public ActiveOfferByMallSpecification(Guid mallId) :base(o=>o.IsActive&& o.StartDate<= DateTime.UtcNow&& o.EndDate >= DateTime.UtcNow && o.Shop.MallId== mallId)
     {
         AddInclude(o => o.Shop);
         AddInclude(o => o.Redemptions);

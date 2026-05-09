@@ -7,7 +7,7 @@ namespace Loop.Domain.Offers.Specifications;
 
 public class ActiveOfferByPKSpecification:Specification<Offer>
 {
-    public ActiveOfferByPKSpecification(Guid mallId,  Guid shopId) : base(o => o.IsActive && o.StartDate <= DateTime.Now && o.EndDate >= DateTime.Now && o.Shop.MallId == mallId && o.ShopId==shopId)
+    public ActiveOfferByPKSpecification(Guid mallId,  Guid shopId) : base(o => o.IsActive && o.StartDate <= DateTime.UtcNow && o.EndDate >= DateTime.UtcNow && o.Shop.MallId == mallId && o.ShopId==shopId)
     {
         AddInclude(o => o.Shop);
         AddInclude(o => o.Redemptions);
