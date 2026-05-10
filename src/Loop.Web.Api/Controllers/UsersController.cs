@@ -94,10 +94,22 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
             request.FirstName,
             request.LastName,
             request.Phone,
+            request.Gender,
             request.ProfileImageUrl);
 
         Result<UserResponse> result = await dispatcher.Dispatch(command, cancellationToken);
 
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+
+    [HttpPost("redeem/points/qr")]
+    [Authorize(Policy = "UserOnly")]
+    [ProducesResponseType(typeof(GeneratePointsRedemptionQrResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GeneratePointsRedemptionQr([FromBody] GeneratePointsRedemptionQrRequest request, CancellationToken cancellationToken)
+    {
+        var command = new GeneratePointsRedemptionQr.Command(request.PointsToRedeem);
+        Result<GeneratePointsRedemptionQrResponse> result = await dispatcher.Dispatch(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }

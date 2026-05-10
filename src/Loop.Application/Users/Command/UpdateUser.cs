@@ -12,7 +12,7 @@ namespace Loop.Application.Users.Command;
 
 public static class UpdateUser
 {
-    public sealed record UpdateUserCommand(string? FirstName, string? LastName, string? Phone, string? ProfileImageUrl) : ICommand<UserResponse>;
+    public sealed record UpdateUserCommand(string? FirstName, string? LastName, string? Phone, Gender? Gender, string? ProfileImageUrl) : ICommand<UserResponse>;
 
     public sealed class Handler(
         IRepository<User> userRepo,
@@ -32,6 +32,7 @@ public static class UpdateUser
             string firstName = command.FirstName ?? user.FirstName;
             string lastName = command.LastName ?? user.LastName;
             string? profileImageUrl = command.ProfileImageUrl ?? user.ProfileImageUrl;
+            Gender gender = command.Gender ?? user.Gender;
 
             Phone? phone = null;
             if (!string.IsNullOrWhiteSpace(command.Phone))
@@ -53,7 +54,7 @@ public static class UpdateUser
                 }
             }
 
-            user.UpdateProfile(firstName, lastName, profileImageUrl, phone);
+            user.UpdateProfile(firstName, lastName, gender, profileImageUrl, phone);
 
             return new UserResponse
             {

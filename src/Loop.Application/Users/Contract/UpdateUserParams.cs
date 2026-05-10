@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
+using Loop.Domain.Common;
 
 namespace Loop.Application.Users.Contract;
 
@@ -10,6 +11,8 @@ public sealed class UpdateUserParams
     public string? LastName { get; set; }
 
     public string? Phone { get; set; }
+
+    public Gender? Gender { get; set; }
 
     public string? ProfileImageUrl { get; set; }
 }
@@ -23,6 +26,7 @@ public sealed class UpdateUserParamsValidator : AbstractValidator<UpdateUserPara
                 !string.IsNullOrWhiteSpace(c.FirstName) ||
                 !string.IsNullOrWhiteSpace(c.LastName) ||
                 !string.IsNullOrWhiteSpace(c.Phone) ||
+                c.Gender is not null ||
                 !string.IsNullOrWhiteSpace(c.ProfileImageUrl))
             .WithMessage("At least one field must be provided.");
 

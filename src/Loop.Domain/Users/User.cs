@@ -56,9 +56,13 @@ public class User : AggregateRoot
     }
 
     public void UpdateProfile(string firstName, string lastName, string? profileImageUrl, Phone? phone = null)
+        => UpdateProfile(firstName, lastName, Gender, profileImageUrl, phone);
+
+    public void UpdateProfile(string firstName, string lastName, Gender gender, string? profileImageUrl, Phone? phone = null)
     {
         FirstName = firstName;
         LastName = lastName;
+        Gender = gender;
         ProfileImageUrl = profileImageUrl;
 
         if (phone is not null)

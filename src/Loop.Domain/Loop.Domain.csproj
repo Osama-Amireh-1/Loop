@@ -5,4 +5,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Loop.SharedKernel\Loop.SharedKernel.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Transactions\Specifications\" />
+  </ItemGroup>
 </Project>
