@@ -69,12 +69,14 @@ public sealed class MestalOcrProvider : IReceiptOcrProvider
                 json_schema = new
                 {
                     name = "Receipt",
+                    strict = true,                          // ← add this
                     schema = new
                     {
                         type = "object",
                         properties = new
                         {
                             storeName = new { type = "string" },
+                            merchantName = new { type = "string" },
                             items = new
                             {
                                 type = "array",
@@ -87,12 +89,14 @@ public sealed class MestalOcrProvider : IReceiptOcrProvider
                                         quantity = new { type = "number" },
                                         unitPrice = new { type = "number" },
                                         totalPrice = new { type = "number" }
-                                    }
+                                    },
+                                    required = new[] { "name", "quantity", "unitPrice", "totalPrice" }
                                 }
                             },
                             subtotal = new { type = "number" },
                             currency = new { type = "string" }
-                        }
+                        },
+                        required = new[] { "storeName", "merchantName", "items", "subtotal", "currency" }
                     }
                 }
             },
@@ -153,7 +157,6 @@ public sealed class MestalOcrProvider : IReceiptOcrProvider
         }
         catch (TaskCanceledException)
         {
-            // If the caller requested cancellation, return failure; otherwise rethrow to let the caller observe unexpected cancellation
             if (cancellationToken.IsCancellationRequested)
                 return Result.Failure<ReceiptOcrResult>(HttpFailureError);
             throw;
