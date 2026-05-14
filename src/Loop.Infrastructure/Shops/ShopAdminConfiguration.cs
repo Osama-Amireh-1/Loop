@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Loop.Domain.Common;
 using Loop.Domain.Shops;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +19,26 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(sa => sa.Email)
-            .IsRequired()
-            .HasMaxLength(256);
+        builder.OwnsOne(sa => sa.Email, email =>
+        {
+            email.Property(e => e.Value)
+                .IsRequired()
+                .HasMaxLength(256)
+                .HasColumnName("Email");
+
+            email.HasIndex(e => e.Value).IsUnique();
+
+            email.HasData(new
+            {
+                ShopAdminId = SeedShopAdminId,
+                Value = "SHOP.ADMIN@LOOP.LOCAL"
+            });
+        });
 
         builder.Property(sa => sa.Phone)
             .IsRequired()
-            .HasMaxLength(20);
+            .HasMaxLength(20)
+            .HasConversion(p => p.Value, v => Phone.Create(v).Value);
 
         builder.Property(sa => sa.PasswordHash)
             .IsRequired();
@@ -44,18 +57,6 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
             .WithMany()
             .HasForeignKey(sa => sa.ShopId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        builder.Property(sa => sa.Email)
-            .IsRequired()
-            .HasMaxLength(256)
-            .HasConversion(e => e.Value, v => Email.Create(v).Value);
-
-        builder.Property(sa => sa.Phone)
-            .IsRequired()
-            .HasMaxLength(20)
-            .HasConversion(p => p.Value, v => Phone.Create(v).Value);
-
-        builder.HasIndex(sa => sa.Email).IsUnique();
         builder.HasIndex(sa => sa.Phone).IsUnique();
 
         builder.HasData(new
@@ -63,7 +64,6 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
             ShopAdminId = SeedShopAdminId,
             ShopId = SeedShopId,
             Name = "Loop Coffee Admin",
-            Email = Email.Create("shop.admin@loop.local").Value,
             Phone = Phone.Create("+962790000002").Value,
             PasswordHash = "seeded-password-hash",
             IsActive = true,

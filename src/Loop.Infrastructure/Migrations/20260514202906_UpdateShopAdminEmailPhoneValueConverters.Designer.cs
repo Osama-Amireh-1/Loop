@@ -3,6 +3,7 @@ using System;
 using Loop.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Loop.Infrastructure.Migrations
 {
     [DbContext(typeof(LoopContext))]
-    partial class LoopContextModelSnapshot : ModelSnapshot
+    [Migration("20260514202906_UpdateShopAdminEmailPhoneValueConverters")]
+    partial class UpdateShopAdminEmailPhoneValueConverters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -848,6 +851,12 @@ namespace Loop.Infrastructure.Migrations
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("email");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -878,6 +887,10 @@ namespace Loop.Infrastructure.Migrations
                     b.HasKey("ShopAdminId")
                         .HasName("pk_shop_admin");
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("ix_shop_admin_email");
+
                     b.HasIndex("Phone")
                         .IsUnique()
                         .HasDatabaseName("ix_shop_admin_phone");
@@ -892,6 +905,7 @@ namespace Loop.Infrastructure.Migrations
                         {
                             ShopAdminId = new Guid("44444444-4444-4444-4444-444444444444"),
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "SHOP.ADMIN@LOOP.LOCAL",
                             IsActive = true,
                             Name = "Loop Coffee Admin",
                             PasswordHash = "seeded-password-hash",
@@ -1881,41 +1895,6 @@ namespace Loop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_shop_admin_shop_shop_id");
-
-                    b.OwnsOne("Loop.Domain.Common.Email", "Email", b1 =>
-                        {
-                            b1.Property<Guid>("ShopAdminId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("shop_admin_id");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(256)
-                                .HasColumnType("character varying(256)")
-                                .HasColumnName("Email");
-
-                            b1.HasKey("ShopAdminId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique()
-                                .HasDatabaseName("ix_shop_admin_email");
-
-                            b1.ToTable("shop_admin", "public");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ShopAdminId")
-                                .HasConstraintName("fk_shop_admin_shop_admin_shop_admin_id");
-
-                            b1.HasData(
-                                new
-                                {
-                                    ShopAdminId = new Guid("44444444-4444-4444-4444-444444444444"),
-                                    Value = "SHOP.ADMIN@LOOP.LOCAL"
-                                });
-                        });
-
-                    b.Navigation("Email")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Loop.Domain.Shops.ShopAdminPasswordResetRequest", b =>
