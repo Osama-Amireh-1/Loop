@@ -31,7 +31,7 @@ public sealed class AddPointsToUser
                         ErrorType.Validation));
             }
 
-            var user = await userRepository.Find(new UserByPKSpecification(request.UserId))
+            var user = await userRepository.Find(new UserWithDetailsSpecification(request.UserId))
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (user is null)
