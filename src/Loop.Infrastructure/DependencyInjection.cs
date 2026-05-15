@@ -43,12 +43,13 @@ public static class DependencyInjection
 
         services.AddTransient<Application.Abstractions.Messaging.IDispatcher, Infrastructure.Messaging.Dispatcher>();
 
-        // OCR
         services.AddHttpClient();
         services.AddScoped<Loop.Application.Abstractions.Ocr.IReceiptOcrProvider, Loop.Infrastructure.Ocr.MestalOcrProvider>();
         services.AddSingleton<IReceiptFileStore, LocalReceiptFileStore>();
 
-        // Merchant matcher (local DB)
+        services.AddHttpClient<IImageFileStore, SupabaseImageStore>();
+
+
         services.AddScoped<Loop.Application.Receipts.Services.IMerchantMatcher, Loop.Infrastructure.Receipts.MerchantMatcher.LocalMerchantMatcher>();
 
         return services;

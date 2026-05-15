@@ -18,5 +18,5 @@ public class GetShopByIdResponse
 
     public string? WebsiteLink { get; set; }
 
-    public List<string> SocialLinks { get; set; }
+    public List<SocialLinkDto> SocialLinks { get; set; } = new();
 }
