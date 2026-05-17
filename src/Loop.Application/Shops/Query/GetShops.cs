@@ -32,7 +32,7 @@ public sealed class GetShops
                 {
                     ShopId = s.ShopId,
                     ShopName = s.Name,
-                    ShopImageUrl = s.CoverImageUrl,
+                    ShopImageUrl = s.LogoUrl,
                     CategoryName = s.Category.Name
                 })
                 .ToListAsync(cancellationToken);
