@@ -8,7 +8,7 @@ namespace Loop.Web.Api.Controllers;
 [Route("api/users/stamp-cards")]
 [ApiController]
 [Authorize(Policy = "UserOnly")]
-public class UserStampCardsController(IDispatcher dispatcher) : ControllerBase
+public class UserStampsController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(List<GetUserStampCardsResponse>), StatusCodes.Status200OK)]

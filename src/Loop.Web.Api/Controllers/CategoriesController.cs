@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Loop.Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/categories")]
 [ApiController]
 [Authorize(Policy = "UserOnly")]
 public class CategoriesController(IDispatcher dispatcher) : ControllerBase

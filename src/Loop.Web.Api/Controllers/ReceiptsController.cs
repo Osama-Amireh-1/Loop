@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Loop.Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/receipts")]
 [ApiController]
 [Authorize(Policy = "UserOnly")]
 public class ReceiptsController : ControllerBase

@@ -15,7 +15,7 @@ using Loop.Domain.Users.Specifications;
 using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Loop.Application.Users.Command;
+namespace Loop.Application.Shops.Command;
 
 public static class ConfirmPointsRedemptionQr
 {
@@ -76,7 +76,7 @@ public static class ConfirmPointsRedemptionQr
                 return Result.Failure<bool>(SystemConfigErrors.NotFound(shop.MallId));
             }
 
-            User? user = await userRepo.Find(new UserByPKSpecification(payload.UserId))
+            User? user = await userRepo.Find(new UserWithDetailsSpecification(payload.UserId))
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user is null)

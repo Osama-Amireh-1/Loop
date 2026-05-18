@@ -11,7 +11,7 @@ using Loop.SharedKernel;
 
 namespace Loop.Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/users")]
 [ApiController]
 [Authorize]
 public class UsersController(IDispatcher dispatcher, IUserContext userContext) : ControllerBase
@@ -37,7 +37,7 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
             : BadRequest(result.Error);
     }
 
-    [HttpPost("UploadProfileImage")]
+    [HttpPost("profile-image")]
     [Authorize(Policy = "UserOnly")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
@@ -53,7 +53,6 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
             return BadRequest(new { error = "Image file is required and cannot be empty" });
         }
 
-      
         var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/webp" };
         if (!allowedContentTypes.Contains(request.ImageFile.ContentType))
         {
@@ -84,7 +83,6 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
             return BadRequest(new { error = result.Error.Description });
         }
 
-
         return Ok(result.Value);
     }
 
@@ -101,7 +99,7 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
-    [HttpGet("GetLoginUserDetials")]
+    [HttpGet("me")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -114,7 +112,7 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
-    [HttpGet("GetUserPointsBalance")]
+    [HttpGet("points/balance")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(PointsBalancResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -125,18 +123,7 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
-    [HttpPost("redeem/points/confirm")]
-    [Authorize(Policy = "ShopAdminOnly")]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConfirmPointsRedemptionQr([FromBody] ConfirmPointsRedemptionQrRequest request, CancellationToken cancellationToken)
-    {
-        var command = new ConfirmPointsRedemptionQr.Command(request.QrId);
-        Result<bool> result = await dispatcher.Dispatch(command, cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
-    }
-
-    [HttpPost("AddPoints")]
+    [HttpPost("points")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -165,7 +152,7 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
         return Ok(result.Value);
     }
 
-    [HttpPut("UpdateMyProfile ")]
+    [HttpPut("me")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -184,7 +171,7 @@ public class UsersController(IDispatcher dispatcher, IUserContext userContext) :
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
-    [HttpPost("redeem/points/qr")]
+    [HttpPost("points/redemption-qr")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(GeneratePointsRedemptionQrResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

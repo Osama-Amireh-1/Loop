@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Loop.Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/stamps")]
 [ApiController]
 [Authorize]
 public class StampsController(IDispatcher dispatcher) : ControllerBase
@@ -22,7 +22,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
-    [HttpGet("Colmpeted")]
+    [HttpGet("completed")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(List<GetComletedStampsResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -33,7 +33,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
-    [HttpPost("{stampId:guid}/redeem/qr")]
+    [HttpPost("{stampId:guid}/redemption-qr")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(GenerateStampRedemptionQrResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,7 +44,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
-    [HttpPost("redeem/confirm")]
+    [HttpPost("redemption-qr/confirm")]
     [Authorize(Policy = "ShopAdminOnly")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,7 +66,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
     }
 
-    [HttpPost("{stampId:guid}/collect/qr")]
+    [HttpPost("{stampId:guid}/collection-qr")]
     [Authorize(Policy = "ShopAdminOnly")]
     [ProducesResponseType(typeof(GenerateStampCollectQrResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -77,7 +77,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
-    [HttpPost("collect/scan")]
+    [HttpPost("collection-qr/scan")]
     [Authorize(Policy = "UserOnly")]
     [ProducesResponseType(typeof(ScanStampCollectQrResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

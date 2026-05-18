@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Loop.Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/shops")]
 [ApiController]
 [Authorize(Policy = "UserOnly")]
 public class ShopsController(IDispatcher dispatcher) : ControllerBase

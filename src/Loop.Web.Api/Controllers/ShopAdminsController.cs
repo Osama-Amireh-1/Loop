@@ -8,7 +8,7 @@ using Loop.SharedKernel;
 
 namespace Loop.Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/shop-admins")]
 [ApiController]
 public class ShopAdminsController(IDispatcher dispatcher) : ControllerBase
 {
@@ -31,6 +31,17 @@ public class ShopAdminsController(IDispatcher dispatcher) : ControllerBase
     {
         var command = new RefreshShopAdminToken.RefreshShopAdminTokenCommand(request.RefreshToken);
         Result<AuthTokensResponse> result = await dispatcher.Dispatch(command, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+
+    [HttpPost("points/redemption-qr/confirm")]
+    [Authorize(Policy = "ShopAdminOnly")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ConfirmPointsRedemptionQr([FromBody] ConfirmPointsRedemptionQrRequest request, CancellationToken cancellationToken)
+    {
+        var command = new ConfirmPointsRedemptionQr.Command(request.QrId);
+        Result<bool> result = await dispatcher.Dispatch(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }

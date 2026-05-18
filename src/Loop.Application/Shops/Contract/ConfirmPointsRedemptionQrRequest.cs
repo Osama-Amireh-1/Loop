@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Loop.Application.Users.Contract;
+namespace Loop.Application.Shops.Contract;
 
 public sealed class ConfirmPointsRedemptionQrRequest
 {
