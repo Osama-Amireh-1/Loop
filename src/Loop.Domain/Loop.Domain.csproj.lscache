@@ -83,6 +83,7 @@ Offers/
  OfferErrors.cs
  OfferRedemption.cs
  OfferRedemptionErrors.cs
+ OfferTransactionType.cs
  RewardType.cs
  Specifications/
   ActiveOfferByMallSpecification.cs
@@ -109,17 +110,17 @@ Shops/
  ShopAdminSession.cs
  ShopErrors.cs
  ShopPointsWallet.cs
- Specificarions/
+ Specifications/
   ActiveShopsByMallSpecification.cs
   AllShopsSpecification.cs
   CategoryByMallSpecification.cs
-  ShopByIdSpecification.cs
-  ShopByMallSpecification.cs
-  ShopByPKSpecification.cs
- Specifications/
   ShopAdminByEmailSpecification.cs
   ShopAdminByPKSpecification.cs
   ShopAdminSessionByRefreshTokenHashSpecification.cs
+  ShopByIdSpecification.cs
+  ShopByMallSpecification.cs
+  ShopByPKSpecification.cs
+  ShopWithDetailsSpecification.cs
 Specifications/
  Specification.cs
  SpecificationEvaluator.cs
@@ -172,7 +173,7 @@ Users/
 
 [metadataReferences]
 ../Loop.SharedKernel/obj/Debug/net10.0/ref/Loop.SharedKernel.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -345,9 +346,11 @@ Users/
  mediatr.extensions.microsoft.dependencyinjection/11.1.0/lib/netstandard2.1/MediatR.Extensions.Microsoft.DependencyInjection.dll
  mediatr/14.1.0/lib/net10.0/MediatR.dll
  microsoft.entityframeworkcore.abstractions/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+ microsoft.entityframeworkcore.relational/10.0.4/lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
  microsoft.entityframeworkcore/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.dll
  microsoft.extensions.caching.abstractions/10.0.5/lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll
  microsoft.extensions.caching.memory/10.0.5/lib/net10.0/Microsoft.Extensions.Caching.Memory.dll
+ microsoft.extensions.configuration.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll
  microsoft.extensions.dependencyinjection.abstractions/10.0.5/lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
  microsoft.extensions.dependencyinjection/10.0.5/lib/net10.0/Microsoft.Extensions.DependencyInjection.dll
  microsoft.extensions.logging.abstractions/10.0.5/lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll
@@ -358,19 +361,21 @@ Users/
  microsoft.identitymodel.jsonwebtokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
  microsoft.identitymodel.logging/8.14.0/lib/net9.0/Microsoft.IdentityModel.Logging.dll
  microsoft.identitymodel.tokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.Tokens.dll
+ npgsql.entityframeworkcore.postgresql/10.0.1/lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+ npgsql/10.0.2/lib/net10.0/Npgsql.dll
 
 [analyzerReferences]
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/codestyle/cs/
  Microsoft.CodeAnalysis.CodeStyle.dll
  Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
  Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
@@ -383,5 +388,5 @@ Users/
 
 [analyzerConfigFiles]
 ../../.editorconfig
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
 obj/Debug/net10.0/Loop.Domain.GeneratedMSBuildEditorConfig.editorconfig

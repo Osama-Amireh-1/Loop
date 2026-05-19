@@ -5,7 +5,7 @@ using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Interfaces;
 using Loop.Application.Shops.Contract;
 using Loop.Domain.Shops;
-using Loop.Domain.Shops.Specificarions;
+using Loop.Domain.Shops.Specifications;
 using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 

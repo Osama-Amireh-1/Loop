@@ -1,6 +1,6 @@
 using Loop.Domain.Specifications;
 
-namespace Loop.Domain.Shops.Specificarions;
+namespace Loop.Domain.Shops.Specifications;
 
 public class ShopByIdSpecification : Specification<Shop>
 {

@@ -8,7 +8,7 @@ using Loop.Domain.Configuration.Specifications;
 using Loop.Domain.QRCode;
 using Loop.Domain.QRCode.Specifications;
 using Loop.Domain.Shops;
-using Loop.Domain.Shops.Specificarions;
+using Loop.Domain.Shops.Specifications;
 using Loop.Domain.Transactions;
 using Loop.Domain.Users;
 using Loop.Domain.Users.Specifications;
@@ -59,7 +59,7 @@ public static class ConfirmPointsRedemptionQr
             }
 
             var shop = await shopRepo
-                .Find(new ShopByIdSpecification(shopAdminContext.ShopId))
+                .Find(new ShopWithDetailsSpecification(shopAdminContext.ShopId))
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (shop is null)
@@ -119,11 +119,7 @@ public static class ConfirmPointsRedemptionQr
                 return Result.Failure<bool>(debitResult.Error);
             }
 
-            var addPointsResult = shop.PointsWallet.AddPoints(payload.PointsToRedeem);
-            if (addPointsResult.IsFailure)
-            {
-                return Result.Failure<bool>(addPointsResult.Error);
-            }
+            shop.AddRedeemedPoints(payload.PointsToRedeem);
 
             qrCode.Invalidate(utcNow);
             await redeemTransactionRepo.AddAsync(redeemTransaction);

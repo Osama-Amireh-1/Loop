@@ -7,7 +7,7 @@ using Loop.Application.Shops.Contract;
 using Loop.Application.Shops.Helpers;
 using Loop.Domain.Offers;
 using Loop.Domain.Shops;
-using Loop.Domain.Shops.Specificarions;
+using Loop.Domain.Shops.Specifications;
 using Loop.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 

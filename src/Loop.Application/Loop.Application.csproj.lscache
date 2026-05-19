@@ -75,7 +75,9 @@ Abstractions/
   IQuery.cs
   IQueryHandler.cs
  Ocr/IReceiptOcrProvider.cs
- Storage/IReceiptFileStore.cs
+ Storage/
+  IImageFileStore.cs
+  IReceiptFileStore.cs
 Categories/
  Contract/GetCategoriesResponse.cs
  Query/GetCategories.cs
@@ -101,17 +103,22 @@ Receipts/
   ReceiptOcrResult.cs
  Services/IMerchantMatcher.cs
 Shops/Command/
+ ConfirmPointsRedemptionQr.cs
  LoginShopAdmin.cs
  RefreshShopAdminToken.cs
 Shops/Contract/
+ ConfirmPointsRedemptionQrRequest.cs
  GetShopByIdResponse.cs
  GetShopsParams.cs
  GetShopsResponse.cs
  LoginShopAdminParams.cs
  RefreshShopAdminTokenParams.cs
-Shops/Query/
- GetShopById.cs
- GetShops.cs
+ SocialLinkDto.cs
+Shops/
+ Helpers/SocialLinksDeserializer.cs
+ Query/
+  GetShopById.cs
+  GetShops.cs
 Stamps/Command/
  ConfirmStampRedemptionQr.cs
  GenerateStampCollectQr.cs
@@ -133,7 +140,7 @@ Stamps/Query/
  GetStamps.cs
  GetUserStampCards.cs
 Users/Command/
- ConfirmPointsRedemptionQr.cs
+ AddPointsToUser.cs
  ForgotPassword.cs
  GeneratePointsRedemptionQr.cs
  LoginUser.cs
@@ -142,9 +149,10 @@ Users/Command/
  RegisterUser.cs
  ResetPassword.cs
  UpdateUser.cs
+ UploadUserProfileImage.cs
 Users/Contract/
  AuthTokensResponse.cs
- ConfirmPointsRedemptionQrRequest.cs
+ GeneratePointsRedemptionQrRequest.cs
  GeneratePointsRedemptionQrResponse.cs
  LoginUserParams.cs
  PasswordResetParams.cs
@@ -164,7 +172,7 @@ Users/
 ../
  Loop.Domain/obj/Debug/net10.0/ref/Loop.Domain.dll
  Loop.SharedKernel/obj/Debug/net10.0/ref/Loop.SharedKernel.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -361,17 +369,17 @@ Users/
  serilog/4.3.0/lib/net9.0/Serilog.dll
 
 [analyzerReferences]
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/codestyle/cs/
  Microsoft.CodeAnalysis.CodeStyle.dll
  Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
  Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
@@ -384,5 +392,5 @@ Users/
 
 [analyzerConfigFiles]
 ../../.editorconfig
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
 obj/Debug/net10.0/Loop.Application.GeneratedMSBuildEditorConfig.editorconfig

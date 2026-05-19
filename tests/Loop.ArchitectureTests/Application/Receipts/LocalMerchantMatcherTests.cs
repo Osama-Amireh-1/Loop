@@ -3,7 +3,7 @@ using Loop.Application.Interfaces;
 using Loop.Application.Receipts.Contract;
 using Loop.Infrastructure.Receipts.MerchantMatcher;
 using Loop.Domain.Shops;
-using Loop.Domain.Shops.Specificarions;
+using Loop.Domain.Shops.Specifications;
 using Loop.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore.Query;
 using Shouldly;

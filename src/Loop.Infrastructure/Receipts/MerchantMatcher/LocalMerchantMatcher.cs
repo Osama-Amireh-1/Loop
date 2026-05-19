@@ -5,7 +5,8 @@ using Loop.Application.Interfaces;
 using Loop.Application.Receipts.Contract;
 using Loop.Application.Receipts.Services;
 using Loop.Domain.Shops;
-using Loop.Domain.Shops.Specificarions;
+using Loop.Domain.Shops.Specifications;
+using Loop.Domain.Receipts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loop.Infrastructure.Receipts.MerchantMatcher;

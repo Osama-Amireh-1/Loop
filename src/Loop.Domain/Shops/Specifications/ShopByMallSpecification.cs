@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Loop.Domain.Shops;
 using Loop.Domain.Specifications;
 
-namespace Loop.Domain.Shops.Specificarions;
+namespace Loop.Domain.Shops.Specifications;
 
 public class ShopByMallSpecification:Specification<Shop>
 {

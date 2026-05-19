@@ -101,6 +101,16 @@ Migrations/
  20260429173812_AddStampTransactionQrForeignKey.Designer.cs
  20260505220132_AddReceiptImageHashUniqueIndex.cs
  20260505220132_AddReceiptImageHashUniqueIndex.Designer.cs
+ 20260508161153_RenameRedemptionRefToQrId.cs
+ 20260508161153_RenameRedemptionRefToQrId.Designer.cs
+ 20260514202906_UpdateShopAdminEmailPhoneValueConverters.cs
+ 20260514202906_UpdateShopAdminEmailPhoneValueConverters.Designer.cs
+ 20260514203837_NormalizeEmailsToUppercase.cs
+ 20260514203837_NormalizeEmailsToUppercase.Designer.cs
+ 20260514210928_ConfigureShopAdminEmailPhoneConversions.cs
+ 20260514210928_ConfigureShopAdminEmailPhoneConversions.Designer.cs
+ 20260514220957_ConfigureShopAdminEmailAsOwned.cs
+ 20260514220957_ConfigureShopAdminEmailAsOwned.Designer.cs
  LoopContextModelSnapshot.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
@@ -132,7 +142,9 @@ Stamps/
  StampRedemptionConfiguration.cs
  StampTransactionConfiguration.cs
  UserStampCardConfiguration.cs
-Storage/LocalReceiptFileStore.cs
+Storage/
+ LocalReceiptFileStore.cs
+ SupabaseImageStore.cs
 Tiers/TierConfiguration.cs
 Time/DateTimeProvider.cs
 Transactions/
@@ -150,7 +162,7 @@ Users/
  Loop.Application/obj/Debug/net10.0/ref/Loop.Application.dll
  Loop.Domain/obj/Debug/net10.0/ref/Loop.Domain.dll
  Loop.SharedKernel/obj/Debug/net10.0/ref/Loop.SharedKernel.dll
-<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/ref/net10.0/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.8/ref/net10.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
  Microsoft.AspNetCore.Authentication.BearerToken.dll
@@ -291,7 +303,7 @@ Users/
  System.Formats.Cbor.dll
  System.Security.Cryptography.Xml.dll
  System.Threading.RateLimiting.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -461,6 +473,7 @@ Users/
  WindowsBase.dll
 <NUGET>/
  aspnetcore.healthchecks.npgsql/9.0.0/lib/net8.0/HealthChecks.NpgSql.dll
+ bcrypt.net-next/4.0.3/lib/net6.0/BCrypt.Net-Next.dll
  efcore.namingconventions/10.0.1/lib/net10.0/EFCore.NamingConventions.dll
  fluentvalidation.dependencyinjectionextensions/12.1.1/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
  fluentvalidation/12.1.1/lib/net8.0/FluentValidation.dll
@@ -486,7 +499,7 @@ Users/
  system.identitymodel.tokens.jwt/8.0.1/lib/net9.0/System.IdentityModel.Tokens.Jwt.dll
 
 [analyzerReferences]
-<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.8/analyzers/dotnet/cs/
  Microsoft.AspNetCore.App.Analyzers.dll
  Microsoft.AspNetCore.App.CodeFixes.dll
  Microsoft.AspNetCore.App.SourceGenerators.dll
@@ -494,17 +507,17 @@ Users/
  Microsoft.Extensions.Logging.Generators.dll
  Microsoft.Extensions.Options.SourceGeneration.dll
  Microsoft.Extensions.Validation.ValidationsGenerator.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.8/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/codestyle/cs/
  Microsoft.CodeAnalysis.CodeStyle.dll
  Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
  Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
@@ -515,5 +528,5 @@ Users/
 
 [analyzerConfigFiles]
 ../../.editorconfig
-<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
+<DOTNET>/sdk/10.0.204/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_all_warnaserror.globalconfig
 obj/Debug/net10.0/Loop.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
