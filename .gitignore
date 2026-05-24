@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 .containers/
 /src/Loop.Domain/Offers
+/performance/k6/README.md
+/src/OFFER_REDEMPTION_IMPLEMENTATION.md
