@@ -45,14 +45,14 @@ public class Offer : AggregateRoot
             CreatedAt = DateTime.UtcNow
         };
 
-    public OfferRedemption Redeem(Guid userId, Guid shopId, Guid? receiptId)
+    public OfferRedemption Redeem(Guid userId, Guid shopId, Guid? qrId = null)
     {
         if (!IsActive)
             throw new DomainException("Offer is not active.");
         if (DateTime.UtcNow < StartDate ||  DateTime.UtcNow > EndDate)
             throw new DomainException("Offer is outside its active period.");
 
-        var redemption = OfferRedemption.Create(OfferId, userId, shopId, receiptId);
+        var redemption = OfferRedemption.Create(OfferId, userId, shopId, qrId);
         _redemptions.Add(redemption);
         return redemption;
     }

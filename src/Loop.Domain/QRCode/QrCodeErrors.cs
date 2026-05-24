@@ -11,6 +11,10 @@ public static class QrCodeErrors
     public static readonly Error Expired = Error.Failure(
         "QRCode.Expired",
         "The QR code has expired");
+
+    public static readonly Error InvalidPayload = Error.Failure(
+        "QRCode.InvalidPayload",
+        "The QR code payload is invalid or tampered");
 }
 
 

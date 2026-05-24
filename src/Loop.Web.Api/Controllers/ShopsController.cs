@@ -1,5 +1,6 @@
 using Loop.Application.Abstractions.Messaging;
 using Loop.Application.Shops.Contract;
+using Loop.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +14,36 @@ public class ShopsController(IDispatcher dispatcher) : ControllerBase
     private const string MallIdHeaderName = "X-Mall-Id";
 
     [HttpGet]
-    [ProducesResponseType(typeof(List<GetShopsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedShopsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetShops([FromHeader(Name = MallIdHeaderName)] Guid mallId, [FromQuery] GetShopsParams param, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetShops(
+        [FromHeader(Name = MallIdHeaderName)] Guid mallId,
+        [FromQuery] Guid? categoryId = null,
+        [FromQuery] string? searchTerm = null,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
     {
         var query = new Application.Shops.Query.GetShops.Query(
             mallId,
-            param.CategoryId,
-            param.SearchTerm);
+            categoryId,
+            searchTerm,
+            pageNumber,
+            pageSize);
         var result = await dispatcher.Dispatch(query, cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        
+        if (!result.IsSuccess)
+        {
+            return result.Error.Type switch
+            {
+                ErrorType.Validation => BadRequest(result.Error),
+                ErrorType.NotFound => NotFound(result.Error),
+                _ => BadRequest(result.Error)
+            };
+        }
+
+        return Ok(result.Value);
     }
 
     [HttpGet("{shopId:guid}")]

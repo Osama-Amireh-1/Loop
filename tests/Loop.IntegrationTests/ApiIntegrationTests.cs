@@ -36,4 +36,13 @@ public sealed class ApiIntegrationTests(IntegrationTestWebApplicationFactory fac
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
+
+    [Fact]
+    public async Task GetOfferById_ShouldReturnUnauthorized_WhenTokenIsMissing()
+    {
+        using var client = factory.CreateClient();
+        using var response = await client.GetAsync($"/api/offers/{Guid.NewGuid()}");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
 }

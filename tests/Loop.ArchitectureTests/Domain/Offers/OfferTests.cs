@@ -29,7 +29,7 @@ public class OfferTests
         redemption.OfferId.ShouldBe(offer.OfferId);
         redemption.UserId.ShouldBe(userId);
         redemption.ShopId.ShouldBe(shopId);
-        redemption.RedemptionRef.ShouldBe(receiptId);
+        redemption.QrId.ShouldBe(receiptId);
         offer.Redemptions.Count.ShouldBe(1);
         offer.Redemptions[0].RedemptionId.ShouldBe(redemption.RedemptionId);
     }

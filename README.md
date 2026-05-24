@@ -94,3 +94,20 @@ Loop is a .NET 10 loyalty and rewards platform built with Clean Architecture. Th
 ## Testing
 
 Run the architecture and integration test projects from Visual Studio or the command line after configuring the required dependencies.
+
+## Performance testing (k6)
+
+k6 scripts are available under `performance/k6`.
+
+- Smoke script: `performance/k6/api-smoke.js`
+- Docs: `performance/k6/README.md`
+- CI workflow: `.github/workflows/k6-performance.yml`
+
+Run locally:
+
+```powershell
+$env:BASE_URL = "http://localhost:5000"
+k6 run .\performance\k6\api-smoke.js
+```
+
+The workflow runs on pushes to `main` and pull requests, starts the API, waits for `GET /health`, and executes the k6 smoke test.

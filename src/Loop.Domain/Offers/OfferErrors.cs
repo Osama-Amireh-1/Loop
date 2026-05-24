@@ -19,6 +19,18 @@ public static class OfferErrors
     public static readonly Error OfferNotStarted = Error.Failure(
         "Offers.OfferNotStarted",
         "The offer has not started yet");
+
+    public static readonly Error InvalidRewardValue = Error.Failure(
+        "Offers.InvalidRewardValue",
+        "The offer's reward value is invalid");
+
+    public static Error UserAlreadyRedeemed(Guid userId, Guid offerId) => Error.Failure(
+        "Offers.UserAlreadyRedeemed",
+        $"User {userId} has already redeemed offer {offerId}");
+
+    public static readonly Error QrCodeAlreadyUsed = Error.Failure(
+        "Offers.QrCodeAlreadyUsed",
+        "This QR code has already been used");
 }
 
 

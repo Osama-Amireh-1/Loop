@@ -110,6 +110,7 @@ public static class DependencyInjection
         services.AddSingleton<ITokenProvider, TokenProvider>();
         services.AddSingleton<IStampRedemptionQrTokenProvider, StampRedemptionQrTokenProvider>();
         services.AddSingleton<IPointsRedemptionQrTokenProvider, PointsRedemptionQrTokenProvider>();
+        services.AddSingleton<IOfferRedemptionQrTokenProvider, OfferRedemptionQrTokenProvider>();
         services.AddSingleton<IStampCollectionQrTokenProvider, StampCollectionQrTokenProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
 

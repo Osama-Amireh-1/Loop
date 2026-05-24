@@ -16,22 +16,32 @@ internal sealed class OfferRedemptionConfiguration : IEntityTypeConfiguration<Of
             .IsRequired()
             .HasDefaultValueSql("now()");
 
-        builder.Property(or => or.RedemptionRef)
+        builder.Property(or => or.QrId)
+            .IsRequired(false);
+
+        builder.Property(or => or.Status)
+            .IsRequired()
+            .HasConversion<int>()
+            .HasDefaultValue(OfferRedemptionStatus.Pending);
+
+        builder.Property(or => or.ConfirmedAt)
             .IsRequired(false);
 
         builder.HasOne<Shop>()
-        .WithMany()
-        .HasForeignKey(or => or.ShopId)
-        .OnDelete(DeleteBehavior.Restrict);
+            .WithMany()
+            .HasForeignKey(or => or.ShopId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-     builder.HasOne<User>()
-    .WithMany()
-    .HasForeignKey(or => or.UserId)
-    .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(or => or.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(or => or.OfferId);  
         builder.HasIndex(or => or.UserId);
         builder.HasIndex(or => new { or.UserId, or.OfferId });
+        builder.HasIndex(or => or.Status);
     }
 }
+
 

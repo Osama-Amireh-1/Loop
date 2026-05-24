@@ -11,6 +11,5 @@ public class ActiveOfferByPKSpecification:Specification<Offer>
     {
         AddInclude(o => o.Shop);
         AddInclude(o => o.Redemptions);
-
     }
 }

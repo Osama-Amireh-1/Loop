@@ -17,27 +17,25 @@ public sealed class GetOffersByShop
 {
     public sealed record Query(Guid mallId, Guid shopId) : IQuery<List<GetOffersByShopResponse>>;
 
-
-
-    public sealed class Handler(IReadOnlyRepository<Offer> _offerReadRepo, IUserContext userContext)
+    public sealed class Handler(
+        IReadOnlyRepository<Offer> offerReadRepo,
+        IUserContext userContext)
        : IQueryHandler<Query, List<GetOffersByShopResponse>>
     {
-
-        public async Task <Result<List<GetOffersByShopResponse>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<GetOffersByShopResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var offers = await _offerReadRepo
-                 .Find(new ActiveOfferByPKSpecification(request.mallId,request.shopId))
-                 .Select(g => new GetOffersByShopResponse
-                 {
-                    CoverImageUrl=g.Shop.CoverImageUrl,
-                    IsRedeemed= g.Redemptions.Any(r => r.UserId == userContext.UserId),
-                    OfferDescription=g.Description
-                    
-                 })
-                 .ToListAsync(cancellationToken);
+            var offers = await offerReadRepo
+                .Find(new ActiveOfferByPKSpecification(request.mallId, request.shopId))
+                .Where(g => !g.Redemptions.Any(r => r.UserId == userContext.UserId && r.Status == OfferRedemptionStatus.Confirmed))
+                .Select(g => new GetOffersByShopResponse
+                {
+                    OfferId = g.OfferId,
+                    CoverImageUrl = g.Shop.CoverImageUrl,
+                    OfferDescription = g.Description
+                })
+                .ToListAsync(cancellationToken);
 
             return Result.Success(offers);
         }
     }
-
 }

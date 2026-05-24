@@ -4,4 +4,4 @@ using System.Text;
 
 namespace Loop.Application.Users.Contract;
 
-public record PointsBalancResponse (int TotalPoints, decimal EvaluatedValue);
+public record PointsBalancResponse (int TotalPoints, decimal EvaluatedValue, decimal PointsToCurrencyRatio);

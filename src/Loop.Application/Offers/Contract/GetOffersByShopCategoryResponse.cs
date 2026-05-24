@@ -16,6 +16,8 @@ public class GetOffersByShopCategoryResponse
 public class OfferItem
 {
     [Required]
+    public Guid OfferId { get; set; }
+    [Required]
     public string ShopName { get; set; }
     [Required]
     public string OfferDescription { get; set; }
