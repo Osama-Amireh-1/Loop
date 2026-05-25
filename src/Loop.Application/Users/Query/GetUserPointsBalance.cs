@@ -45,7 +45,7 @@ public sealed class GetUserPointsBalance
 
             var evaluatedValue = user.PointsBalance.TotalPoints / systemConfig.PointsToCurrencyRatio;
 
-            return Result.Success(new PointsBalancResponse(user.PointsBalance.TotalPoints, evaluatedValue,systemConfig.PointsToCurrencyRatio));
+            return Result.Success(new PointsBalancResponse(user.PointsBalance.TotalPoints, evaluatedValue,systemConfig.PointsToCurrencyRatio,systemConfig.MinRedemptionThreshold));
         }
     }
 }

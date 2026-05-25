@@ -69,6 +69,8 @@ Loop is a .NET 10 loyalty and rewards platform built with Clean Architecture. Th
 - `GET /api/shops/{shopId}`
 - `GET /api/offers?mallId={mallId}`
 - `GET /api/offers/{mallId}/{shopId}`
+- `GET /api/offers/{offerId}`
+- `GET /api/offers/offerId`
 
 ### Stamps
 - `GET /api/stamps?mallId={mallId}&shopId={shopId}`
