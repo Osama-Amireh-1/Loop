@@ -8,8 +8,6 @@ namespace Loop.Infrastructure.Shops;
 
 internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmin>
 {
-    private static readonly Guid SeedShopId = Guid.Parse("7d5dc255-7f80-4f6f-b962-b83f0d0ac001");
-    private static readonly Guid SeedShopAdminId = Guid.Parse("44444444-4444-4444-4444-444444444444");
 
     public void Configure(EntityTypeBuilder<ShopAdmin> builder)
     {
@@ -28,11 +26,7 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
 
             email.HasIndex(e => e.Value).IsUnique();
 
-            email.HasData(new
-            {
-                ShopAdminId = SeedShopAdminId,
-                Value = "SHOP.ADMIN@LOOP.LOCAL"
-            });
+           
         });
 
         builder.Property(sa => sa.Phone)
@@ -59,16 +53,7 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasIndex(sa => sa.Phone).IsUnique();
 
-        builder.HasData(new
-        {
-            ShopAdminId = SeedShopAdminId,
-            ShopId = SeedShopId,
-            Name = "Loop Coffee Admin",
-            Phone = Phone.Create("+962790000002").Value,
-            PasswordHash = "seeded-password-hash",
-            IsActive = true,
-            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-        });
+
     }
 }
 
