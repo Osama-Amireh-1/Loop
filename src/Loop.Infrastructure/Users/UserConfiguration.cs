@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable IDE0037 // Member name can be simplified
+using System;
 using Loop.Domain.Common;
 using Loop.Domain.Tiers;
 using Loop.Domain.Users;
@@ -9,8 +10,7 @@ namespace Loop.Infrastructure.Users;
 
 internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    private static readonly Guid SeedTierId = Guid.Parse("11111111-1111-1111-1111-111111111111");
-    private static readonly Guid SeedUserId = Guid.Parse("22222222-2222-2222-2222-222222222222");
+
 
     public void Configure(EntityTypeBuilder<User> builder)
     {
@@ -24,15 +24,31 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(u => u.Phone)
-            .HasConversion(p => p.Value, value => Phone.Create(value).Value)
-            .IsRequired()
-            .HasMaxLength(20);
+        // Configure Phone and Email as owned value objects mapped to simple columns
+        builder.OwnsOne(u => u.Phone, pb =>
+        {
+            pb.Property(p => p.Value)
+                .HasColumnName("phone")
+                .IsRequired()
+                .HasMaxLength(20);
 
-        builder.Property(u => u.Email)
-            .HasConversion(e => e.Value, value => Email.Create(value).Value)
-            .IsRequired()
-            .HasMaxLength(256);
+            pb.HasIndex(p => p.Value).IsUnique();
+
+            // Seed owned phone value
+           
+        });
+
+        builder.OwnsOne(u => u.Email, eb =>
+        {
+            eb.Property(e => e.Value)
+                .HasColumnName("email")
+                .IsRequired()
+                .HasMaxLength(256);
+
+            eb.HasIndex(e => e.Value).IsUnique();
+
+
+        });
 
         builder.Property(u => u.PasswordHash)
             .IsRequired();
@@ -53,8 +69,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey(u => u.TierId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(u => u.Email).IsUnique();
-        builder.HasIndex(u => u.Phone).IsUnique();
         builder.HasIndex(u => u.TierId);
 
         builder.HasOne(u => u.PointsBalance)
@@ -62,19 +76,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey<UserPointsBalance>(pb => pb.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasData(new
-        {
-            UserId = SeedUserId,
-            FirstName = "Demo",
-            LastName = "User",
-            Phone = Phone.Create("+962790000001").Value,
-            Email = Email.Create("demo.user@loop.local").Value,
-            PasswordHash = "seeded-password-hash",
-            Gender = Gender.Male,
-            ProfileImageUrl = "https://cdn.loop.local/users/demo-user.png",
-            TierId = SeedTierId,
-            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-        });
+        
     }
 }
 
