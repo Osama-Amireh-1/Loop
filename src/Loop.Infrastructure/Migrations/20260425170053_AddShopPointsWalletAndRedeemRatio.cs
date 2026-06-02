@@ -8,9 +8,7 @@ namespace Loop.Infrastructure.Migrations;
 /// <inheritdoc />
 public partial class AddShopPointsWalletAndRedeemRatio : Migration
 {
-    private static readonly Guid SeedShopLoopCoffeeId = Guid.Parse("7d5dc255-7f80-4f6f-b962-b83f0d0ac001");
-    private static readonly Guid SeedShopUrbanWearId = Guid.Parse("7d5dc255-7f80-4f6f-b962-b83f0d0ac002");
-    private static readonly Guid SeedShopTechZoneId = Guid.Parse("7d5dc255-7f80-4f6f-b962-b83f0d0ac003");
+
 
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,24 +43,6 @@ public partial class AddShopPointsWalletAndRedeemRatio : Migration
                     principalColumn: "shop_id",
                     onDelete: ReferentialAction.Cascade);
             });
-
-        migrationBuilder.InsertData(
-            schema: "public",
-            table: "shop_points_wallet",
-            columns: ["shop_id", "points_received", "last_updated"],
-            values: new object[] { SeedShopLoopCoffeeId, 0, new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) });
-
-        migrationBuilder.InsertData(
-            schema: "public",
-            table: "shop_points_wallet",
-            columns: ["shop_id", "points_received", "last_updated"],
-            values: new object[] { SeedShopUrbanWearId, 0, new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) });
-
-        migrationBuilder.InsertData(
-            schema: "public",
-            table: "shop_points_wallet",
-            columns: ["shop_id", "points_received", "last_updated"],
-            values: new object[] { SeedShopTechZoneId, 0, new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) });
     }
 
     /// <inheritdoc />
