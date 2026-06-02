@@ -24,7 +24,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
 
-        // Configure Phone and Email as owned value objects mapped to simple columns
         builder.OwnsOne(u => u.Phone, pb =>
         {
             pb.Property(p => p.Value)
@@ -34,7 +33,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
             pb.HasIndex(p => p.Value).IsUnique();
 
-            // Seed owned phone value
            
         });
 
