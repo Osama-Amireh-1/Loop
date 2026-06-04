@@ -46,7 +46,8 @@ public static class RegisterUser
                 return Result.Failure<Guid>(phoneResult.Error);
             }
 
-            bool phoneExists = await userRepo.GetAll().AnyAsync(u => u.Phone == phoneResult.Value, cancellationToken);
+            bool phoneExists = await userRepo.GetAll()
+    .AnyAsync(u => u.Phone.Value == phoneResult.Value.Value, cancellationToken);
 
             if (phoneExists)
             {
@@ -79,6 +80,7 @@ public static class RegisterUser
         }
     }
 }
+
 
 
 

@@ -46,7 +46,7 @@ public static class UpdateUser
                 phone = phoneResult.Value;
 
                 bool phoneExists = await userRepo.GetAll()
-                    .AnyAsync(u => u.UserId != user.UserId && u.Phone == phone, cancellationToken);
+                    .AnyAsync(u => u.UserId != user.UserId && u.Phone.Value == phone.Value, cancellationToken);
 
                 if (phoneExists)
                 {
