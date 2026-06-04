@@ -45,4 +45,27 @@ public sealed class ApiIntegrationTests(IntegrationTestWebApplicationFactory fac
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
+
+    [Fact]
+    public async Task ReceiptsOcr_ShouldReturnBadRequest_WhenFileIsMissing_ForAuthenticatedUser()
+    {
+        using var client = factory.CreateClient();
+
+        using var content = new MultipartFormDataContent();
+        using var fileContent = new ByteArrayContent(Array.Empty<byte>());
+        content.Add(fileContent, "file", "empty.jpg");
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, "/api/receipts/ocr")
+        {
+            Content = content
+        };
+        request.Headers.Add("X-Test-Auth", "user");
+        request.Headers.Add("X-Mall-Id", Guid.NewGuid().ToString());
+
+        using var response = await client.SendAsync(request);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        responseBody.ShouldContain("file is required");
+    }
 }

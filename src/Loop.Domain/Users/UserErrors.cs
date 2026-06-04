@@ -13,11 +13,11 @@ public static class UserErrors
         "You are not authorized to perform this action.");
 
     public static readonly Error NotFoundByEmail = Error.NotFound(
-        "Users.NotFoundByEmail",
-        "The user with the specified email was not found");
+        "Users.NotFound",
+        "Invalid Email or Password");
 
     public static readonly Error EmailNotUnique = Error.Conflict(
-        "Users.EmailNotUnique",
+        "Users.InvalidEmail",
         "The provided email is not unique");
 
     public static readonly Error PhoneNotUnique = Error.Conflict(

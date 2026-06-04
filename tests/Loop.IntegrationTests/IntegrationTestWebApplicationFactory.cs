@@ -1,7 +1,9 @@
 using Loop.Web.Api;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Loop.IntegrationTests;
 
@@ -22,6 +24,18 @@ public sealed class IntegrationTestWebApplicationFactory : WebApplicationFactory
                 ["Mestal:OcrEndpoint"] = "https://example.com/ocr",
                 ["Mestal:ApiKey"] = "test-key"
             });
+        });
+
+        builder.ConfigureServices(services =>
+        {
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = TestAuthenticationHandler.SchemeName;
+                    options.DefaultChallengeScheme = TestAuthenticationHandler.SchemeName;
+                })
+                .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>(
+                    TestAuthenticationHandler.SchemeName,
+                    _ => { });
         });
     }
 }

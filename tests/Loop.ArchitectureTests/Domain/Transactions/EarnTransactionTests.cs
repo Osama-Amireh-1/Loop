@@ -7,7 +7,7 @@ namespace Loop.ArchitectureTests.Domain.Transactions;
 public class EarnTransactionTests
 {
     [Fact]
-    public void Record_ShouldSetAllFields()
+    public void Record_ShouldSetAllFields_AndTimestamp_WhenTransactionRefIsProvided()
     {
         var userId = Guid.NewGuid();
         var shopId = Guid.NewGuid();
@@ -26,5 +26,20 @@ public class EarnTransactionTests
         transaction.PurchaseAmount.ShouldBe(amount);
         transaction.PointsEarned.ShouldBe(30);
         transaction.TransactionRef.ShouldBe("tx-ref-1");
+        transaction.CreatedAt.ShouldBeLessThanOrEqualTo(DateTime.UtcNow);
+    }
+
+    [Fact]
+    public void Record_ShouldAllowNullTransactionRef()
+    {
+        var transaction = EarnTransaction.Record(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Money.Create(0m).Value,
+            0,
+            null);
+
+        transaction.TransactionRef.ShouldBeNull();
+        transaction.CreatedAt.ShouldBeLessThanOrEqualTo(DateTime.UtcNow);
     }
 }

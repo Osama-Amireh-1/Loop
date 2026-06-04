@@ -7,6 +7,27 @@ namespace Loop.ArchitectureTests.Domain.Offers;
 public class OfferTests
 {
     [Fact]
+    public void DeactivateAndActivate_ShouldToggleOfferState()
+    {
+        var offer = Offer.Create(
+            Guid.NewGuid(),
+            "Discount",
+            "Description",
+            RewardType.Discount,
+            "10%",
+            DateTime.UtcNow.AddHours(-1),
+            DateTime.UtcNow.AddHours(1));
+
+        offer.IsActive.ShouldBeTrue();
+
+        offer.Deactivate();
+        offer.IsActive.ShouldBeFalse();
+
+        offer.Activate();
+        offer.IsActive.ShouldBeTrue();
+    }
+
+    [Fact]
     public void Redeem_ShouldCreateRedemption_WhenOfferIsActiveAndInDateRange()
     {
         var now = DateTime.UtcNow;
@@ -71,5 +92,24 @@ public class OfferTests
             offer.Redeem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()));
 
         exception.Message.ShouldBe("Offer is outside its active period.");
+    }
+
+    [Fact]
+    public void Redeem_ShouldNotAddRedemption_WhenOfferIsInactive()
+    {
+        var now = DateTime.UtcNow;
+        var offer = Offer.Create(
+            Guid.NewGuid(),
+            "Discount",
+            "Description",
+            RewardType.Discount,
+            "10%",
+            now.AddHours(-1),
+            now.AddHours(1));
+        offer.Deactivate();
+
+        Should.Throw<DomainException>(() => offer.Redeem(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()));
+
+        offer.Redemptions.Count.ShouldBe(0);
     }
 }

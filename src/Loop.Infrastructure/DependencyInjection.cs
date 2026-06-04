@@ -45,7 +45,7 @@ public static class DependencyInjection
 
         services.AddHttpClient();
         services.AddScoped<Loop.Application.Abstractions.Ocr.IReceiptOcrProvider, Loop.Infrastructure.Ocr.MestalOcrProvider>();
-        services.AddSingleton<IReceiptFileStore, LocalReceiptFileStore>();
+        services.AddHttpClient<IReceiptFileStore, SupabaseReceiptFileStore>();
 
         services.AddHttpClient<IImageFileStore, SupabaseImageStore>();
 

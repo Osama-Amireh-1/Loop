@@ -20,5 +20,6 @@ public class StampRedemptionTests
         redemption.ShopId.ShouldBe(shopId);
         redemption.StampId.ShouldBe(stampId);
         redemption.QrId.ShouldBe(qrId);
+        redemption.CreatedAt.ShouldBeLessThanOrEqualTo(DateTime.UtcNow);
     }
 }

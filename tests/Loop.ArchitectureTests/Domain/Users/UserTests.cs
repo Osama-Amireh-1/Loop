@@ -14,9 +14,15 @@ public class UserTests
 
         var user = CreateUser(tierId: tierId);
 
+        user.UserId.ShouldNotBe(Guid.Empty);
         user.FirstName.ShouldBe("John");
         user.LastName.ShouldBe("Doe");
+        user.Phone.Value.ShouldBe("1234567");
+        user.Email.Value.ShouldBe("JOHN.DOE@EXAMPLE.COM");
+        user.PasswordHash.ShouldBe("password-hash");
+        user.Gender.ShouldBe(Gender.Male);
         user.TierId.ShouldBe(tierId);
+        user.CreatedAt.ShouldBeLessThanOrEqualTo(DateTime.UtcNow);
         user.PointsBalance.TotalPoints.ShouldBe(0);
         user.PointsBalance.LifetimePoints.ShouldBe(0);
         user.PointsBalance.UserId.ShouldBe(user.UserId);
@@ -40,12 +46,14 @@ public class UserTests
     public void CreditPoints_ShouldIncreaseTotalAndLifetimePoints_WhenAmountIsPositive()
     {
         var user = CreateUser();
+        var before = user.PointsBalance.LastUpdated;
 
         var result = user.CreditPoints(25);
 
         result.IsSuccess.ShouldBeTrue();
         user.PointsBalance.TotalPoints.ShouldBe(25);
         user.PointsBalance.LifetimePoints.ShouldBe(25);
+        user.PointsBalance.LastUpdated.ShouldBeGreaterThan(before);
     }
 
     [Theory]
@@ -75,12 +83,14 @@ public class UserTests
     {
         var user = CreateUser();
         _ = user.CreditPoints(40);
+        var before = user.PointsBalance.LastUpdated;
 
         var result = user.DebitPoints(15);
 
         result.IsSuccess.ShouldBeTrue();
         user.PointsBalance.TotalPoints.ShouldBe(25);
         user.PointsBalance.LifetimePoints.ShouldBe(40);
+        user.PointsBalance.LastUpdated.ShouldBeGreaterThan(before);
     }
 
     [Fact]

@@ -52,6 +52,11 @@ public static class ConfirmPointsRedemptionQr
                 return Result.Failure<bool>(TransactionErrors.InvalidQrPayload);
             }
 
+            if (qrCode.ShopId != shopAdminContext.ShopId)
+            {
+                return Result.Failure<bool>(TransactionErrors.InvalidQrPayload);
+            }
+
             DateTime utcNow = dateTimeProvider.UtcNow;
             if (payload.ExpiresAtUtc <= utcNow || qrCode.IsExpired(utcNow))
             {
