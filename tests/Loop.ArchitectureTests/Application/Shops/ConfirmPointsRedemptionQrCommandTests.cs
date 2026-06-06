@@ -53,17 +53,13 @@ public class ConfirmPointsRedemptionQrCommandTests
         result.Error.Code.ShouldBe("Transactions.InvalidQrPayload");
     }
 
-
     [Fact]
-    public async Task Handle_ShouldReturnInvalidQrPayload_WhenShopIdMismatch()
+    public async Task Handle_ShouldReturnInvalidQrPayload_WhenUserIdMismatch()
     {
         var stubs = new HandlerStubs();
-        var userId = Guid.NewGuid();
-        var shopA = Shop.Create(Guid.NewGuid(), "Shop A", Guid.NewGuid());
-        var qrCode = QrCode.Create(userId, shopA.ShopId, "\"token\"", FixedUtcNow.AddHours(1));
+        var qrCode = QrCode.Create(Guid.NewGuid(), Guid.NewGuid(), "\"token\"", FixedUtcNow.AddHours(1));
         stubs.QrCodes = [qrCode];
-        stubs.ValidatePayloadResult = new PointsRedemptionQrTokenPayload("tok", userId, 50, FixedUtcNow.AddHours(1));
-        stubs.ShopAdminContext = new ShopAdminContextStub(Guid.NewGuid(), Guid.NewGuid());
+        stubs.ValidatePayloadResult = new PointsRedemptionQrTokenPayload("tok", Guid.NewGuid(), 50, FixedUtcNow.AddHours(1));
 
         var handler = CreateHandler(stubs);
 
@@ -74,6 +70,8 @@ public class ConfirmPointsRedemptionQrCommandTests
         result.IsFailure.ShouldBeTrue();
         result.Error.Code.ShouldBe("Transactions.InvalidQrPayload");
     }
+
+
 
     [Fact]
     public async Task Handle_ShouldReturnQrCodeExpired_WhenPayloadIsExpired()
