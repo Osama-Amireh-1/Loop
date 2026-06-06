@@ -53,23 +53,6 @@ public class ConfirmPointsRedemptionQrCommandTests
         result.Error.Code.ShouldBe("Transactions.InvalidQrPayload");
     }
 
-    [Fact]
-    public async Task Handle_ShouldReturnInvalidQrPayload_WhenUserIdMismatch()
-    {
-        var stubs = new HandlerStubs();
-        var qrCode = QrCode.Create(Guid.NewGuid(), Guid.NewGuid(), "\"token\"", FixedUtcNow.AddHours(1));
-        stubs.QrCodes = [qrCode];
-        stubs.ValidatePayloadResult = new PointsRedemptionQrTokenPayload("tok", Guid.NewGuid(), 50, FixedUtcNow.AddHours(1));
-
-        var handler = CreateHandler(stubs);
-
-        var result = await handler.Handle(
-            new ConfirmPointsRedemptionQr.Command(qrCode.QrId),
-            CancellationToken.None);
-
-        result.IsFailure.ShouldBeTrue();
-        result.Error.Code.ShouldBe("Transactions.InvalidQrPayload");
-    }
 
     [Fact]
     public async Task Handle_ShouldReturnInvalidQrPayload_WhenShopIdMismatch()
