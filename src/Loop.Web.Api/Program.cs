@@ -57,7 +57,6 @@ app.MapControllers();
 
 await app.RunAsync();
 
-
 namespace Loop.Web.Api
 {
     public partial class Program;
