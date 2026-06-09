@@ -45,6 +45,11 @@ public static class LoginShopAdmin
                 return Result.Failure<AuthTokensResponse>(ShopErrors.AdminNotFoundByEmail);
             }
 
+            if (shopAdmin.Role != ShopAdminRole.Staff)
+            {
+                return Result.Failure<AuthTokensResponse>(ShopErrors.AdminNotStaff);
+            }
+
             string accessToken = tokenProvider.CreateAccessToken(shopAdmin);
             (string refreshToken, DateTime refreshTokenExpiresAtUtc) = tokenProvider.CreateRefreshToken();
             string refreshTokenHash = HashRefreshToken(refreshToken);

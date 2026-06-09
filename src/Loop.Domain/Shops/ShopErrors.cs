@@ -44,6 +44,10 @@ public static class ShopErrors
         "Shops.InvalidRefreshToken",
         "The provided refresh token is invalid.");
 
+    public static readonly Error AdminNotStaff = Error.Failure(
+        "Shops.AdminNotStaff",
+        "Only staff shop admins can access this resource");
+
     public static readonly Error RefreshTokenExpired = Error.Failure(
         "Shops.RefreshTokenExpired",
         "The provided refresh token is expired.");

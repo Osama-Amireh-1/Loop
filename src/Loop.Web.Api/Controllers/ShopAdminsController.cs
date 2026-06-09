@@ -10,6 +10,7 @@ namespace Loop.Web.Api.Controllers;
 
 [Route("api/shop-admins")]
 [ApiController]
+[Authorize(Policy = "ShopAdminStaffOnly")]
 public class ShopAdminsController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpPost("login")]
@@ -35,7 +36,6 @@ public class ShopAdminsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpPost("points/redemption-qr/confirm")]
-    [Authorize(Policy = "ShopAdminOnly")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConfirmPointsRedemptionQr([FromBody] ConfirmPointsRedemptionQrRequest request, CancellationToken cancellationToken)

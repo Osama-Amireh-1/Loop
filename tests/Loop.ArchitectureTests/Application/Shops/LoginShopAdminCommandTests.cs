@@ -54,7 +54,7 @@ public class LoginShopAdminCommandTests
     {
         var email = Email.Create("admin@shop.com").Value;
         var phone = Phone.Create("0790000000").Value;
-        var shopAdmin = ShopAdmin.Create(Guid.NewGuid(), "Admin", email, phone, "hash");
+        var shopAdmin = ShopAdmin.Create(Guid.NewGuid(), "Admin", email, phone, "hash", Loop.Domain.Shops.ShopAdminRole.Staff);
         var shopAdminRepo = new ShopAdminRepositoryStub([shopAdmin]);
         var sessionRepo = new ShopAdminSessionRepositoryStub([]);
         var passwordHasher = new PasswordHasherStub(false);
@@ -74,7 +74,7 @@ public class LoginShopAdminCommandTests
     {
         var email = Email.Create("admin@shop.com").Value;
         var phone = Phone.Create("0790000000").Value;
-        var shopAdmin = ShopAdmin.Create(Guid.NewGuid(), "Admin", email, phone, "hash");
+        var shopAdmin = ShopAdmin.Create(Guid.NewGuid(), "Admin", email, phone, "hash", Loop.Domain.Shops.ShopAdminRole.Staff);
         var shopAdminRepo = new ShopAdminRepositoryStub([shopAdmin]);
         var sessionRepo = new ShopAdminSessionRepositoryStub([]);
         var passwordHasher = new PasswordHasherStub(true);

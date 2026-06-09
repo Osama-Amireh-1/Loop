@@ -45,7 +45,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpPost("redemption-qr/confirm")]
-    [Authorize(Policy = "ShopAdminOnly")]
+    [Authorize(Policy = "ShopAdminStaffOnly")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConfirmRedemptionQr([FromBody] ConfirmStampRedemptionQrRequest request, CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpGet("active")]
-    [Authorize(Policy = "ShopAdminOnly")]
+    [Authorize(Policy = "ShopAdminStaffOnly")]
     [ProducesResponseType(typeof(List<GetActiveShopStampsResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetActiveShopStamps(CancellationToken cancellationToken)
@@ -67,7 +67,7 @@ public class StampsController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpPost("{stampId:guid}/collection-qr")]
-    [Authorize(Policy = "ShopAdminOnly")]
+    [Authorize(Policy = "ShopAdminStaffOnly")]
     [ProducesResponseType(typeof(GenerateStampCollectQrResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GenerateCollectQr(Guid stampId, [FromQuery] int stampsCount, CancellationToken cancellationToken)

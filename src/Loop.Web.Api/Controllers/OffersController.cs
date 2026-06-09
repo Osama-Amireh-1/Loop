@@ -74,7 +74,7 @@ public class OffersController(IDispatcher dispatcher) : ControllerBase
     }
 
     [HttpPost("redeem/confirm")]
-    [Authorize(Policy = "ShopAdminOnly")]
+    [Authorize(Policy = "ShopAdminStaffOnly")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

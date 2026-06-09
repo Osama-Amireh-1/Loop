@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Loop.Domain.Shops;
 
 namespace Loop.Infrastructure.Authentication;
 
@@ -18,5 +19,13 @@ internal static class ShopAdminClaimsPrincipalExtensions
         return Guid.TryParse(shopId, out Guid parsedShopId)
             ? parsedShopId
             : throw new ApplicationException("Shop id is unavailable");
+    }
+
+    public static ShopAdminRole GetShopAdminRole(this ClaimsPrincipal? principal)
+    {
+        string? role = principal?.FindFirstValue("shop_admin_role");
+        return Enum.TryParse<ShopAdminRole>(role, out var parsedRole)
+            ? parsedRole
+            : throw new ApplicationException("Shop admin role is unavailable");
     }
 }

@@ -3,17 +3,20 @@ using System;
 using Loop.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Loop.Infrastructure.Migrations
+namespace Loop.Infrastructure.Migrations;
+
+[DbContext(typeof(LoopContext))]
+[Migration("20260609131822_DropShopAdminRoleDefault2")]
+partial class DropShopAdminRoleDefault2
 {
-    [DbContext(typeof(LoopContext))]
-    partial class LoopContextModelSnapshot : ModelSnapshot
-    {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2241,6 +2244,5 @@ namespace Loop.Infrastructure.Migrations
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
-        }
     }
 }

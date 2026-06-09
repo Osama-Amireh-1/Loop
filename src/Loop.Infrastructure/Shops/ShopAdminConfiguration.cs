@@ -37,6 +37,10 @@ internal sealed class ShopAdminConfiguration : IEntityTypeConfiguration<ShopAdmi
         builder.Property(sa => sa.PasswordHash)
             .IsRequired();
 
+        builder.Property(sa => sa.Role)
+            .IsRequired()
+            .HasConversion<string>();
+
         builder.Property(sa => sa.IsActive)
             .IsRequired()
             .HasDefaultValue(true);

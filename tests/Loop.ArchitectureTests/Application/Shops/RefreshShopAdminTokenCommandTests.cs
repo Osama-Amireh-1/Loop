@@ -86,7 +86,7 @@ public class RefreshShopAdminTokenCommandTests
     {
         var email = Loop.Domain.Common.Email.Create("admin@shop.com").Value;
         var phone = Loop.Domain.Common.Phone.Create("0790000000").Value;
-        var shopAdmin = ShopAdmin.Create(Guid.NewGuid(), "Admin", email, phone, "hash");
+        var shopAdmin = ShopAdmin.Create(Guid.NewGuid(), "Admin", email, phone, "hash", Loop.Domain.Shops.ShopAdminRole.Staff);
         var session = ShopAdminSession.Create(shopAdmin.ShopAdminId, HashToken("valid-token"), DateTime.UtcNow.AddDays(1));
 
         var sessionRepo = new ShopAdminSessionRepositoryStub([session]);

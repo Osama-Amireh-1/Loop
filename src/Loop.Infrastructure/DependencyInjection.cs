@@ -121,9 +121,10 @@ public static class DependencyInjection
     {
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("ShopAdminOnly", policy =>
+            options.AddPolicy("ShopAdminStaffOnly", policy =>
                 policy.RequireAuthenticatedUser()
-                    .RequireClaim("shop_admin_id"));
+                    .RequireClaim("shop_admin_id")
+                    .RequireClaim("shop_admin_role", "Staff"));
 
             options.AddPolicy("UserOnly", policy =>
                 policy.RequireAuthenticatedUser()

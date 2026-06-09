@@ -12,6 +12,7 @@ public class ShopAdmin : AggregateRoot
     public Phone Phone { get; private set; }
     public string PasswordHash { get; private set; }
     public bool IsActive { get; private set; }
+    public ShopAdminRole Role { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
 
@@ -22,7 +23,8 @@ public class ShopAdmin : AggregateRoot
         string name,
         Email email,
         Phone phone,
-        string passwordHash)
+        string passwordHash,
+        ShopAdminRole role)
         => new()
         {
             ShopAdminId = Guid.NewGuid(),
@@ -31,6 +33,7 @@ public class ShopAdmin : AggregateRoot
             Email = email,
             Phone = phone,
             PasswordHash = passwordHash,
+            Role = role,
             IsActive = true,
             CreatedAt = DateTime.UtcNow
         };
